@@ -2,6 +2,19 @@
 import { createTheme } from '@mui/material/styles';
 import { Poppins } from 'next/font/google';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    tosca: Palette['primary'];
+    limeGreen: Palette['primary'];
+    gray: Palette['primary'];
+  }
+  interface PaletteOptions {
+    tosca?: PaletteOptions['primary'];
+    limeGreen?: PaletteOptions['primary'];
+    gray?: PaletteOptions['primary'];
+  }
+}
+
 const poppins = Poppins({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
@@ -13,10 +26,37 @@ const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class',
   },
+  palette: {
+    tosca: {
+      main: '#00DDD8',
+      light: '#00DDD8',
+      dark: '#00DDD8',
+      contrastText: '#000',
+    },
+    limeGreen: {
+      main: '#d9f634',
+      light: '#d9f634',
+      dark: '#d9f634',
+      contrastText: '#000',
+    },
+    gray: {
+      main: '#C3C3C3',
+      light: '#C3C3C3',
+      dark: '#C3C3C3',
+      contrastText: '#000',
+    },
+  },
   typography: {
     fontFamily: poppins.style.fontFamily,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        hr: {
+          height: 1,
+        },
+      },
+    },
     MuiAlert: {
       styleOverrides: {
         root: {
@@ -45,15 +85,20 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: "none"
+          textTransform: "none",
+          boxShadow: 'none',
+          borderRadius: 999,
+          padding: "8px 16px"
         }
       }
     },
-    MuiSelect: {
+    MuiOutlinedInput: {
       styleOverrides: {
-        
+        root: {
+          borderRadius: 16
+        }
       }
-    }
+    },
   },
 });
 

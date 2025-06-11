@@ -9,9 +9,6 @@ export const Header = () => {
           component="img"
           src="/images/logo.png"
           alt="Logo"
-          sx={{
-            borderRadius: 2,
-          }}
         />
 
 
