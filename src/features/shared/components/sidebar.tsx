@@ -16,7 +16,7 @@ import {
   Settings,
   Logout,
 } from '@mui/icons-material';
-import { limeGreen, purple } from '@/lib/custom-color';
+import { limeGreen } from '@/lib/custom-color';
 import { usePathname } from 'next/navigation';
 import Select from './select';
 

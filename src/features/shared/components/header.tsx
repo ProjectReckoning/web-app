@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Icon, IconButton, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material"
 import { Logout, NotificationsNone } from "@mui/icons-material"
 
 export const Header = () => {
