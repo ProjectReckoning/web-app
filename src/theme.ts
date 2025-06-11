@@ -2,19 +2,6 @@
 import { createTheme } from '@mui/material/styles';
 import { Poppins } from 'next/font/google';
 
-declare module '@mui/material/styles' {
-  interface Palette {
-    tosca: Palette['primary'];
-    limeGreen: Palette['primary'];
-    gray: Palette['primary'];
-  }
-  interface PaletteOptions {
-    tosca?: PaletteOptions['primary'];
-    limeGreen?: PaletteOptions['primary'];
-    gray?: PaletteOptions['primary'];
-  }
-}
-
 const poppins = Poppins({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
