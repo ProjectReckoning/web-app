@@ -75,8 +75,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: "white",
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: 30,
           color: "black",
           padding: "10px 0"
         }
