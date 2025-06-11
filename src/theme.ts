@@ -1,20 +1,20 @@
 'use client';
 import { createTheme } from '@mui/material/styles';
-import { Roboto } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 
-const roboto = Roboto({
+const poppins = Poppins({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   display: 'swap',
 });
 
 const theme = createTheme({
-  colorSchemes: { light: true, dark: true },
+  colorSchemes: { light: true, dark: false },
   cssVariables: {
     colorSchemeSelector: 'class',
   },
   typography: {
-    fontFamily: roboto.style.fontFamily,
+    fontFamily: poppins.style.fontFamily,
   },
   components: {
     MuiAlert: {
@@ -31,6 +31,29 @@ const theme = createTheme({
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "white",
+          borderBottomRightRadius: 50,
+          borderBottomLeftRadius: 50,
+          color: "black",
+          padding: "10px 0"
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none"
+        }
+      }
+    },
+    MuiSelect: {
+      styleOverrides: {
+        
+      }
+    }
   },
 });
 

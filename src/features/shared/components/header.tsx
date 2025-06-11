@@ -1,16 +1,36 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material"
-import MenuIcon from "@mui/icons-material/Menu"
+import { AppBar, Box, Button, Icon, IconButton, Toolbar, Typography } from "@mui/material"
+import { Logout, NotificationsNone } from "@mui/icons-material"
 
 export const Header = () => {
   return (
-    <AppBar>
-      <Toolbar variant="dense">
-        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" color="inherit" component="div">
-          Photos
-        </Typography>
+    <AppBar position="fixed">
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Box
+          component="img"
+          src="/images/logo.png"
+          alt="Logo"
+          sx={{
+            borderRadius: 2,
+          }}
+        />
+
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <IconButton aria-label="notification">
+            <NotificationsNone />
+          </IconButton>
+
+          <Button
+            startIcon={<Logout />}
+            aria-label="Logout"
+            variant="text"
+            sx={{ color: "MenuText" }}
+          >
+            <Typography variant="body2" component="span">
+              Logout
+            </Typography>
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   )
