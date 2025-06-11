@@ -34,7 +34,7 @@ export const Sidebar = () => {
     },
     {
       text: 'Settings',
-      value: "home",
+      value: "settings",
       icon: <Settings />
     },
     {
