@@ -4,9 +4,7 @@ import { purple } from '@/lib/custom-color';
 
 export default function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <Box sx={{ display: "flex", alignItems: "center", backgroundColor: purple[500] }}>
+    <Box sx={{ display: "flex", alignItems: "center", backgroundColor: purple[500] }}>
           <Box component="main" sx={{
             flex: 1, borderTopRightRadius: {
               xs: 0,
@@ -14,7 +12,10 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
             }, borderBottomRightRadius: {
               xs: 0,
               md: 70,
-            }, backgroundColor: "white", height: "100vh", padding: 8
+        }, backgroundColor: "white", height: "100vh", padding: {
+          xs: 2,
+          sm: 4,
+        }
           }}>
             <Box
               component="img"
@@ -42,8 +43,6 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
               },
             }}
           />
-        </Box>
-      </body>
-    </html >
+    </Box>
   );
 }

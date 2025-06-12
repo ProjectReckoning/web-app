@@ -4,17 +4,20 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '@/theme';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { AuthGuard } from '@/features/shared/components/auth-guard';
 
-export default function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
         <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {props.children}
-          </ThemeProvider>
+          <AuthGuard>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              {props.children}
+            </ThemeProvider>
+          </AuthGuard>
         </AppRouterCacheProvider>
       </body>
     </html>
