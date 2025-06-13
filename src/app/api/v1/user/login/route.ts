@@ -1,14 +1,14 @@
-// interface RequestScheme {
-//   phone_number: string,
-//   password: string
-// }
+export interface RequestScheme {
+  phone_number: string,
+  password: string
+}
 
-// interface ResponseScheme {
-//   message: string
-//   data: {
-//     session_id: string
-//   }
-// }
+export interface ResponseScheme {
+  message: string
+  data: {
+    session_id: string
+  }
+}
 
 export async function POST(req: Request) {
   const { phone_number, password } = await req.json();

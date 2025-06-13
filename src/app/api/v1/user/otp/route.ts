@@ -1,14 +1,14 @@
-// interface RequestScheme {
-//   session_id: string,
-//   otp: string
-// }
+export interface RequestScheme {
+  session_id: string,
+  otp: string
+}
 
-// interface ResponseScheme {
-//   message: string
-//   data: {
-//     token: string
-//   }
-// }
+export interface ResponseScheme {
+  message: string
+  data: {
+    token: string
+  }
+}
 
 export async function POST(req: Request) {
   const { session_id, otp } = await req.json();
