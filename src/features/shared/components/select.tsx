@@ -2,28 +2,33 @@
 
 import {
   SelectChangeEvent,
+  SelectProps,
   Select as SelectUi,
 } from '@mui/material';
-import { purple } from '@mui/material/colors';
 import { useState } from 'react';
 
 export default function Select({
   defaultValue = '',
+  onChange,
   children,
-}: Readonly<{
+  ...props
+}: Omit<SelectProps, 'value' | 'onChange'> & {
+  onChange?: (event: SelectChangeEvent) => void;
   defaultValue?: string;
-  children: React.ReactNode[];
-}>) {
+  }) {
   const [value, setValue] = useState(defaultValue)
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value);
+    if (onChange) {
+      onChange(event);
+    }
   };
 
   return (
     <SelectUi
       value={value}
       onChange={handleChange}
-      sx={{ borderRadius: 99, backgroundColor: purple[500], }}
+      {...props}
     >
       {children}
     </SelectUi>

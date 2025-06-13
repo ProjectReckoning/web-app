@@ -13,15 +13,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { Box, Button } from '@mui/material';
-import { Logout, NotificationsNone } from '@mui/icons-material';
+import { Box, Button, MenuItem } from '@mui/material';
+import { HomeOutlined, LogoutRounded, NotificationsNoneRounded, PeopleOutlineRounded, SendOutlined, SettingsOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import authStore from '@/features/auth/stores/auth';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import Select from './select';
+import { Pocket } from '../entities/pocket';
+import CustomIcon from './custom-icon';
+import { purple } from '@/lib/custom-color';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -106,10 +108,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+const menus = [
+  { text: 'Beranda', icon: <HomeOutlined />, href: '/dashboard' },
+  { text: 'Transaksi', icon: <SendOutlined />, href: '#' },
+  { text: 'Anggota', icon: <PeopleOutlineRounded />, href: '#' },
+  { text: 'Pengaturan', icon: <SettingsOutlined />, href: '#' },
+]
+
+const pockets: Pocket[] = [
+  { name: 'Pilih Pocket', color: purple[500], icon: 'wallet' },
+  { name: 'Dompet Utama', color: '#4A90E2', icon: 'wallet' },
+  { name: 'Dompet Cadangan', color: '#50E3C2', icon: 'home' },
+  { name: 'Dompet Investasi', color: '#F5A623', icon: 'wallet' },
+]
+
 export const Header = () => {
   const [open, setOpen] = useState(false);
+  const [pocket, setPocket] = useState<Pocket>(pockets[0]);
   const { logout } = authStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   const toggleDrawerState = () => {
     setOpen((value) => !value);
@@ -124,18 +142,18 @@ export const Header = () => {
     <>
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h5" fontWeight="600" component="h2">
-            Pocket Saat Ini : <Typography variant="h5" color='purple' fontWeight="medium" component="span">
+          <Typography variant="h5" fontWeight="600" component="h2" paddingX={2}>
+            Pocket Saat Ini : <Typography variant="h5" color='purple' fontWeight="600" component="span">
               Semua Pocket
             </Typography>
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton aria-label="notification" sx={{ border: "solid 1px gray" }}>
-              <NotificationsNone />
+              <NotificationsNoneRounded />
             </IconButton>
 
             <Button
-              startIcon={<Logout />}
+              startIcon={<LogoutRounded />}
               aria-label="Keluar"
               variant="text"
               onClick={handleLogout}
@@ -162,14 +180,90 @@ export const Header = () => {
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
         </DrawerHeader>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+
+        <Select
+          defaultValue={pocket?.name}
+          sx={{
+            marginLeft: open ? 2 : 0,
+            marginRight: open ? 2 : 0,
+            width: 'auto',
+            borderRadius: 999,
+            '.MuiOutlinedInput-notchedOutline': { border: 'none' },
+            '&:hover .MuiOutlinedInput-notchedOutline': { border: 'none' },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: 'none' },
+            backgroundColor: open ? pocket?.color ?? purple[500] : 'transparent',
+            '& .MuiBox-root': {
+              color: open ? 'white' : pocket?.color ?? purple[500],
+              fontWeight: 'bold',
+            },
+            '& .MuiBox-root span': {
+              display: open ? 'flex' : 'none',
+            },
+            '& .MuiSvgIcon-root': {
+              color: open ? 'white' : 'inherit',
+            },
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                paddingX: 2,
+                paddingY: 1,
+                marginTop: 1,
+                gap: 12,
+                borderRadius: 2,
+              },
+            },
+          }}
+          onChange={(event) => {
+            const selectedPocket = pockets.find(p => p.name === event.target?.value);
+            setPocket(selectedPocket ?? pockets[0]);
+          }}
+        >
+          {pockets.map((pocket, index) => (
+            <MenuItem
+              key={pocket.name}
+              value={pocket.name}
+              disabled={index === 0}
+              sx={(theme) => ({
+                borderRadius: 999,
+                marginY: theme.spacing(0.5),
+                transition: 'background-color 0.2s, color 0.2s',
+                fontWeight: 'bold',
+
+                '&:hover': {
+                  backgroundColor: `${pocket.color} !important`,
+                  color: 'white',
+
+                  '& .MuiSvgIcon-root': {
+                    color: 'white',
+                  },
+
+                  '& span': {
+                    color: 'white',
+                  },
+                },
+              })}
+            >
+              <Box display="flex" alignItems="center" gap={1}>
+                <CustomIcon sx={{ color: pocket.color }} name={pocket?.icon ?? 'wallet'} />
+                <Box component="span" sx={{ color: pocket.color }}>
+                  {pocket.name}
+                </Box>
+              </Box>
+            </MenuItem>
+          ))}
+        </Select>
+
+        <List sx={{ marginTop: 2 }}>
+          {menus.map((menu) => (
+            <ListItem key={menu.text} disablePadding sx={{ display: 'block', paddingX: open ? 2 : 0 }}>
               <ListItemButton
+                selected={pathname === menu.href}
                 sx={[
                   {
                     minHeight: 48,
                     px: 2.5,
+                    borderRadius: 999,
                   },
                   open
                     ? {
@@ -195,10 +289,11 @@ export const Header = () => {
                       },
                   ]}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {menu.icon}
                 </ListItemIcon>
                 <ListItemText
-                  primary={text}
+                  primary={menu.text}
+                  onClick={() => router.push(menu.href)}
                   sx={[
                     open
                       ? {

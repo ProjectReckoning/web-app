@@ -1,6 +1,7 @@
 'use client';
 import { createTheme } from '@mui/material/styles';
 import { Poppins } from 'next/font/google';
+import { limeGreen } from './lib/custom-color';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -30,6 +31,12 @@ const theme = createTheme({
       main: '#C3C3C3',
       light: '#C3C3C3',
       dark: '#C3C3C3',
+      contrastText: '#000',
+    },
+    purple: {
+      main: '#a471e1',
+      light: '#a471e1',
+      dark: '#a471e1',
       contrastText: '#000',
     },
   },
@@ -85,6 +92,24 @@ const theme = createTheme({
         }
       }
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: limeGreen[500],
+          },
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          borderRadius: 20,
+          padding: 16,
+        },
+      },
+    },
+
   },
 });
 

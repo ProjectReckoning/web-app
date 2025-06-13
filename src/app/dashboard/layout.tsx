@@ -6,7 +6,6 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
   return (
     <Box sx={{ display: "flex" }}>
       <Header />
-      {/* <Sidebar /> */}
 
       <Box component="main" sx={{ flexGrow: 1, }}>
         <Toolbar />

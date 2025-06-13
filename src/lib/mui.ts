@@ -5,11 +5,13 @@ declare module '@mui/material/styles' {
     tosca: Palette['primary'];
     limeGreen: Palette['primary'];
     gray: Palette['primary'];
+    purple: Palette['primary'];
   }
   interface PaletteOptions {
     tosca?: PaletteColorOptions;
     limeGreen?: PaletteColorOptions;
     gray?: PaletteColorOptions;
+    purple?: PaletteColorOptions;
   }
 }
 
