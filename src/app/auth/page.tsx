@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { purple } from '@/lib/custom-color';
+import { gray, purple } from '@/lib/custom-color';
 import { Button, InputAdornment, TextField } from '@mui/material';
 import { QrCodeScanner } from '@mui/icons-material';
 import authStore from '@/features/auth/stores/auth';
@@ -110,11 +110,11 @@ export default function Home() {
           </Button>
 
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Box component="hr" flex={1} borderColor="gray"></Box>
-            <Typography color='gray' variant="body2" component="span">
+            <Box component="hr" flex={1} borderColor={gray[500]}></Box>
+            <Typography color={gray[500]} variant="body2" component="span">
               Atau
             </Typography>
-            <Box component="hr" flex={1} borderColor="gray"></Box>
+            <Box component="hr" flex={1} borderColor={gray[500]}></Box>
           </Box>
 
           <Button

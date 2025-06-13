@@ -109,24 +109,50 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const menus = [
   { text: 'Beranda', icon: <HomeOutlined />, href: '/dashboard' },
-  { text: 'Transaksi', icon: <SendOutlined />, href: '#' },
+  { text: 'Transaksi', icon: <SendOutlined />, href: '/dashboard/global' },
   { text: 'Anggota', icon: <PeopleOutlineRounded />, href: '#' },
   { text: 'Pengaturan', icon: <SettingsOutlined />, href: '#' },
 ]
 
 const pockets: Pocket[] = [
   { name: 'Pilih Pocket', color: purple[500], icon: 'wallet' },
+  { name: 'Semua Pocket', color: purple[500], icon: 'wallet' },
   { name: 'Dompet Utama', color: '#4A90E2', icon: 'wallet' },
   { name: 'Dompet Cadangan', color: '#50E3C2', icon: 'home' },
   { name: 'Dompet Investasi', color: '#F5A623', icon: 'wallet' },
 ]
 
-export const Header = () => {
+export default function Header() {
   const [open, setOpen] = useState(false);
   const [pocket, setPocket] = useState<Pocket>(pockets[0]);
   const { logout } = authStore();
   const router = useRouter();
   const pathname = usePathname();
+
+  const handlePocketChange = (
+    event:
+      | React.ChangeEvent<Omit<HTMLInputElement, "value"> & { value: string }>
+      | (Event & { target: { value: string; name?: string } })
+  ) => {
+    const value =
+      "target" in event && typeof event.target.value === "string"
+        ? event.target.value
+        : "";
+    const selectedPocket = pockets.find((p) => p.name === value);
+    setPocket(selectedPocket ?? pockets[0]);
+    
+    switch (selectedPocket?.name) {
+      case 'Pilih Pocket':
+        router.replace('/dashboard');
+        break;
+      case 'Semua Pocket':
+        router.replace('/dashboard/global');
+        break;
+      default:
+        router.replace('/dashboard');
+        break;
+    }
+  };
 
   const toggleDrawerState = () => {
     setOpen((value) => !value);
@@ -213,10 +239,7 @@ export const Header = () => {
               },
             },
           }}
-          onChange={(event) => {
-            const selectedPocket = pockets.find(p => p.name === event.target?.value);
-            setPocket(selectedPocket ?? pockets[0]);
-          }}
+          onChange={handlePocketChange}
         >
           {pockets.map((pocket, index) => (
             <MenuItem
@@ -244,7 +267,6 @@ export const Header = () => {
               })}
             >
               <Box display="flex" alignItems="center" gap={1}>
-                {/* <CustomIcon sx={{ color: pocket.color }} name={pocket?.icon ?? 'wallet'} /> */}
                 <Icon>
                   money_bag
                 </Icon>

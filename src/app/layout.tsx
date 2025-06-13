@@ -9,13 +9,16 @@ import { AuthGuard } from '@/features/shared/components/auth-guard';
 export default async function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
-
-
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded&display=optional"
+          rel="stylesheet"
+        />
+      </head>
+      <body style={{ overflowX: 'hidden' }}>
         <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
             <AuthGuard>
               <CssBaseline />
               {props.children}
