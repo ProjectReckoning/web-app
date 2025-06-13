@@ -12,7 +12,7 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
     if (!sessionId) {
       router.replace('/auth');
     }
-  }, [sessionId]);
+  }, [sessionId, router]);
 
   return <>{children}</>;
 }

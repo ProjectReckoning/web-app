@@ -18,6 +18,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import { Box, Button } from '@mui/material';
 import { Logout, NotificationsNone } from '@mui/icons-material';
 import { useState } from 'react';
+import authStore from '@/features/auth/stores/auth';
+import { useRouter } from 'next/navigation';
 
 const drawerWidth = 240;
 
@@ -106,9 +108,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
+  const { logout } = authStore();
+  const router = useRouter();
 
   const toggleDrawerState = () => {
     setOpen((value) => !value);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.replace('/auth');
   };
 
   return (
@@ -129,6 +138,7 @@ export const Header = () => {
               startIcon={<Logout />}
               aria-label="Keluar"
               variant="text"
+              onClick={handleLogout}
               sx={{ color: "MenuText", border: "solid 1px gray" }}
             >
               <Typography variant="body2" component="span">
