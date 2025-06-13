@@ -1,20 +1,26 @@
 'use client'
 
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { purple } from '@/lib/custom-color';
-import { Button, InputAdornment, TextField, Toolbar } from '@mui/material';
+import { Button, InputAdornment, TextField } from '@mui/material';
 import { QrCodeScanner } from '@mui/icons-material';
 import authStore from '@/features/auth/stores/auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const { isLoading, errorMessage, loginWithCredential } = authStore();
+  // TODO: change sessionId to token
+  const { isLoading, errorMessage, sessionId, loginWithCredential } = authStore();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useRouter();
+
+  useEffect(() => {
+    if (sessionId) {
+      navigate.push("/dashboard");
+    }
+  })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,8 +35,7 @@ export default function Home() {
 
 
   return (
-    <Container maxWidth="xs">
-      <Toolbar />
+    <>
       <Typography variant="h4" component="h2" fontWeight={600} textAlign="center">
         Masuk <Typography fontWeight={600} variant="h4" component="span" sx={{ borderBottomColor: purple[500], borderBottomWidth: 4, borderBottomStyle: "solid" }}>
           Pocket
@@ -127,6 +132,6 @@ export default function Home() {
           </Button>
         </Box>
       </Box>
-    </Container>
+    </>
   );
 }

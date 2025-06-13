@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { purple } from '@/lib/custom-color';
 
 export default function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (
     <Box sx={{ display: "flex", alignItems: "center", backgroundColor: purple[500] }}>
-      <Box component="main" sx={{
+      <Box component="div" sx={{
         flex: 1, borderTopRightRadius: {
           xs: 0,
           md: 70,
@@ -22,27 +22,35 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
           src="/images/logo.png"
           alt="Logo"
         />
-        {props.children}
+        <Container maxWidth="sm" sx={{ mt: 4 }}>
+          {props.children}
+        </Container>
       </Box>
 
       <Box
-        component="img"
-        src="/images/login-ilustration.png"
-        alt="Logo"
         sx={{
-          maxWidth: "80%",
-          maxHeight: "90vh",
-          objectFit: "contain",
+          width: "100%",
           flex: {
-            sm: 0,
-            lg: 2,
+            sm: 1,
+            xl: 2,
           },
           display: {
             xs: "none",
             md: "block",
           },
-        }}
-      />
+        }}>
+        <Box
+          component="img"
+          src="/images/login-ilustration.png"
+          alt="Logo"
+          sx={{
+            width: "100%",
+            maxHeight: "90vh",
+            objectFit: "contain",
+          }}
+        />
+
+      </Box>
     </Box>
   );
 }

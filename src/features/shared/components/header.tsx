@@ -125,7 +125,7 @@ export const Header = () => {
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h5" fontWeight="600" component="h2">
-            Pocket Saat Ini : <Typography variant="h5" color='purple' fontWeight="600" component="span">
+            Pocket Saat Ini : <Typography variant="h5" color='purple' fontWeight="medium" component="span">
               Semua Pocket
             </Typography>
           </Typography>

@@ -48,11 +48,12 @@ const authStore = create<AuthStore>()(
 		},
 
 		logout: () => {
+			set({ sessionId: null });
 			set({ token: null });
 		},
 	}), {
 		name: 'sessionId-store',
-		storage: createJSONStorage(() => sessionStorage)
+		storage: createJSONStorage(() => localStorage)
 	}),
 )
 
