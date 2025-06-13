@@ -23,6 +23,7 @@ const authStore = create<AuthStore>()(
 
 		loginWithCredential: async (phoneNumber: string, password: string) => {
 			set({ isLoading: true })
+			set({ errorMessage: null })
 			try {
 				const sessionId = await loginWithCredentialUseCase(phoneNumber, password)
 				set({ sessionId: sessionId })
@@ -31,11 +32,11 @@ const authStore = create<AuthStore>()(
 			} finally {
 				set({ isLoading: false })
 			}
-			set({ isLoading: false })
 		},
 
 		loginWithOtp: async (sessionId: string, otp: string) => {
 			set({ isLoading: true })
+			set({ errorMessage: null })
 			try {
 				const token = await loginWithOtpUseCase(sessionId, otp)
 				set({ token })
@@ -44,7 +45,6 @@ const authStore = create<AuthStore>()(
 			} finally {
 				set({ isLoading: false })
 			}
-			set({ isLoading: false })
 		},
 
 		logout: () => {

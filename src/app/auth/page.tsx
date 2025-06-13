@@ -4,20 +4,29 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { purple } from '@/lib/custom-color';
-import { Button, TextField, Toolbar } from '@mui/material';
+import { Button, InputAdornment, TextField, Toolbar } from '@mui/material';
 import { QrCodeScanner } from '@mui/icons-material';
 import authStore from '@/features/auth/stores/auth';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const { isLoading, errorMessage, loginWithCredential } = authStore();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginWithCredential(phoneNumber, password);
+    await loginWithCredential(phoneNumber, password);
+    navigate.push("/dashboard");
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D+/g, '');
+    setPhoneNumber(raw);
+  };
+
 
   return (
     <Container maxWidth="xs">
@@ -43,12 +52,22 @@ export default function Home() {
           label="Nomor HP"
           variant="outlined"
           type="tel"
+          prefix='+62'
+          autoComplete="tel"
+          inputMode="tel"
           value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          onChange={handleChange}
           slotProps={{
             htmlInput: {
-              pattern: "\\+62[0-9]{10,15}",
-              title: "Masukkan nomor HP yang benar (10–15 digit angka) diawali dengan +62",
+              pattern: "[0-9]{10,15}",
+              title: "Masukkan nomor HP yang benar (10-15 digit angka) diawali dengan +62",
+            },
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  +62
+                </InputAdornment>
+              ),
             },
           }}
         />

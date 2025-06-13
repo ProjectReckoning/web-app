@@ -12,12 +12,12 @@ export default async function RootLayout(props: Readonly<{ children: React.React
       <body>
         <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <AuthGuard>
             <ThemeProvider theme={theme}>
+            <AuthGuard>
               <CssBaseline />
               {props.children}
-            </ThemeProvider>
-          </AuthGuard>
+            </AuthGuard>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
