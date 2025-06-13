@@ -13,14 +13,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Box, Button, MenuItem } from '@mui/material';
+import { Box, Button, Icon, MenuItem } from '@mui/material';
 import { HomeOutlined, LogoutRounded, NotificationsNoneRounded, PeopleOutlineRounded, SendOutlined, SettingsOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import authStore from '@/features/auth/stores/auth';
 import { usePathname, useRouter } from 'next/navigation';
 import Select from './select';
 import { Pocket } from '../entities/pocket';
-import CustomIcon from './custom-icon';
 import { purple } from '@/lib/custom-color';
 
 const drawerWidth = 300;
@@ -245,7 +244,10 @@ export const Header = () => {
               })}
             >
               <Box display="flex" alignItems="center" gap={1}>
-                <CustomIcon sx={{ color: pocket.color }} name={pocket?.icon ?? 'wallet'} />
+                {/* <CustomIcon sx={{ color: pocket.color }} name={pocket?.icon ?? 'wallet'} /> */}
+                <Icon>
+                  money_bag
+                </Icon>
                 <Box component="span" sx={{ color: pocket.color }}>
                   {pocket.name}
                 </Box>

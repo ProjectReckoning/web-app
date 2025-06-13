@@ -10,6 +10,9 @@ export default async function RootLayout(props: Readonly<{ children: React.React
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+
+
         <InitColorSchemeScript attribute="class" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={theme}>

@@ -109,7 +109,11 @@ const theme = createTheme({
         },
       },
     },
-
+    MuiIcon: {
+      defaultProps: {
+        baseClassName: 'material-symbols-rounded',
+      },
+    },
   },
 });
 
