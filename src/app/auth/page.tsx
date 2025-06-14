@@ -110,11 +110,11 @@ export default function Home() {
           </Button>
 
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Box component="hr" flex={1} borderColor={gray[500]}></Box>
-            <Typography color={gray[500]} variant="body2" component="span">
-              Atau
+            <Box component="hr" flex={1} borderColor='border.main'></Box>
+            <Typography color={gray[400]} variant="body2" component="span">
+              atau
             </Typography>
-            <Box component="hr" flex={1} borderColor={gray[500]}></Box>
+            <Box component="hr" flex={1} borderColor='border.main'></Box>
           </Box>
 
           <Button

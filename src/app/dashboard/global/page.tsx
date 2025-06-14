@@ -54,14 +54,14 @@ export default function Page() {
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
-          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "gray.light" }} height={250} />
+          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} height={250} />
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
           <TransactionOverviewCard sx={{
             border: 1,
-            borderColor: "gray.light",
+            borderColor: "border.main",
             borderRadius: 8,
             padding: 4,
           }} />

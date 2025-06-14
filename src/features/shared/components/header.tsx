@@ -1,6 +1,6 @@
 'use client'
 
-import { styled, Theme, CSSObject } from '@mui/material/styles';
+import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Box, Button, Icon, MenuItem } from '@mui/material';
+import { Box, Button, Icon, MenuItem, useMediaQuery } from '@mui/material';
 import { HomeOutlined, LogoutRounded, NotificationsNoneRounded, PeopleOutlineRounded, SendOutlined, SettingsOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import authStore from '@/features/auth/stores/auth';
@@ -128,6 +128,8 @@ export default function Header() {
   const { logout } = authStore();
   const router = useRouter();
   const pathname = usePathname();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handlePocketChange = (
     event:
@@ -140,7 +142,7 @@ export default function Header() {
         : "";
     const selectedPocket = pockets.find((p) => p.name === value);
     setPocket(selectedPocket ?? pockets[0]);
-    
+
     switch (selectedPocket?.name) {
       case 'Pilih Pocket':
         router.replace('/dashboard');
@@ -167,10 +169,13 @@ export default function Header() {
     <>
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h5" fontWeight="600" component="h2" paddingX={2}>
-            Pocket Saat Ini : <Typography variant="h5" color='purple' fontWeight="600" component="span">
+          <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" paddingX={2}>
+            <Box sx={{ display: { xs: "none", sm: "inline" } }} fontWeight="600" component="span">
+              Pocket Saat Ini : {' '}
+            </Box>
+            <Box color='purple.main' fontWeight="600" component="span">
               Semua Pocket
-            </Typography>
+            </Box>
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton aria-label="notification" sx={{ border: "solid 1px gray" }}>
@@ -201,7 +206,7 @@ export default function Header() {
             height={48}
             sx={{ display: open ? "block" : "none" }}
           />
-          <IconButton onClick={toggleDrawerState}>
+          <IconButton onClick={toggleDrawerState} color='purple'>
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
         </DrawerHeader>
@@ -211,6 +216,7 @@ export default function Header() {
           sx={{
             marginLeft: open ? 2 : 0,
             marginRight: open ? 2 : 0,
+            marginTop: 2,
             width: 'auto',
             borderRadius: 999,
             '.MuiOutlinedInput-notchedOutline': { border: 'none' },

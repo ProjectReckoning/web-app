@@ -79,14 +79,20 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
             fontWeight: 600,
             color: 'gray',
             '& fieldset': {
-              borderColor: '#ddd',
+              borderColor: 'border.main',
             },
           },
         }}
       />
 
       {isMobile ? (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} sx={{ borderRadius: 4 }} slotProps={{
+          paper: {
+            sx: {
+              borderRadius: 4,
+            },
+          },
+        }}>
           <DialogContent sx={{ p: 0 }}>
             <DateRange
               locale={idLocale}
@@ -112,6 +118,7 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
             paper: {
               sx: {
                 maxWidth: '100vw',
+                borderRadius: 4,
               },
             },
           }}
