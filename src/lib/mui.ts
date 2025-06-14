@@ -8,6 +8,7 @@ declare module '@mui/material/styles' {
     purple: Palette['primary'];
     green: Palette['primary'];
     red: Palette['primary'];
+    orange: Palette['primary'];
   }
   interface PaletteOptions {
     tosca?: PaletteColorOptions;
@@ -16,6 +17,7 @@ declare module '@mui/material/styles' {
     purple?: PaletteColorOptions;
     green?: PaletteColorOptions;
     red?: PaletteColorOptions;
+    orange?: PaletteColorOptions;
   }
 }
 

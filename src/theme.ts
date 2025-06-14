@@ -1,7 +1,7 @@
 'use client';
 import { createTheme } from '@mui/material/styles';
 import { Poppins } from 'next/font/google';
-import { limeGreen } from './lib/custom-color';
+import { gray, limeGreen } from './lib/custom-color';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -27,16 +27,28 @@ const theme = createTheme({
       dark: '#d9f634',
       contrastText: '#000',
     },
+    green: {
+      main: '#02C694',
+      light: '#02C694',
+      dark: '#02C694',
+      contrastText: '#000',
+    },
     gray: {
-      main: '#C3C3C3',
-      light: '#C3C3C3',
-      dark: '#C3C3C3',
+      main: gray[500],
+      light: gray[50],
+      dark: gray[700],
       contrastText: '#000',
     },
     purple: {
       main: '#a471e1',
       light: '#a471e1',
       dark: '#a471e1',
+      contrastText: '#000',
+    },
+    orange: {
+      main: '#FF7F00',
+      light: '#FF7F00',
+      dark: '#FF7F00',
       contrastText: '#000',
     },
   },

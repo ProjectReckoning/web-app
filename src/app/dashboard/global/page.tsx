@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ChartWithTabs, { ChartData } from '@/features/shared/components/chart-with-tabs';
-import { gray } from '@/lib/custom-color';
+import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs';
 import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card';
+import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card';
 
 const DATA: ChartData[] = [
   {
@@ -36,7 +36,7 @@ export default function Page() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: "stretch",
         gap: 8,
       }}
     >
@@ -45,15 +45,21 @@ export default function Page() {
         <PocketOverviewCard />
         <PocketOverviewCard />
       </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, mb: 2 }}>
-        <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+
+      <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
+        <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
-          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: gray[50] }} height={250} />
+          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "gray.light" }} height={250} />
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
-          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: gray[50] }} height={250} />
+          <TransactionOverviewCard sx={{
+            border: 1,
+            borderColor: "gray.light",
+            borderRadius: 8,
+            padding: 4,
+          }} />
         </Box>
       </Box>
     </Box>
