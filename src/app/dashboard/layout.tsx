@@ -10,7 +10,10 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
       <Box
         component="main"
         sx={{
-          ml: 8,
+          ml: {
+            xs: 7,
+            sm: 8,
+          }
         }}
       >
         <Toolbar />

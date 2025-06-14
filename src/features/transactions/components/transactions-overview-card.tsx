@@ -18,7 +18,7 @@ const transactions: TransactionItem[] = [
   { type: 'qris', description: 'Qris Payment', detail: 'Amira Ferial', amount: -30000 },
 ];
 
-export default function TransactionOverviewCard({...props} : BoxProps) {
+export default function TransactionOverviewCard({ ...props }: BoxProps) {
   return (
     <Box
       {...props}
@@ -35,21 +35,23 @@ export default function TransactionOverviewCard({...props} : BoxProps) {
             <Avatar sx={{ bgcolor: 'gray.light', padding: 3 }}>
               <Icon sx={{ color: 'green.main' }}>qr_code_scanner</Icon>
             </Avatar>
-            <Box flex={1}>
-              <Typography variant="body2" fontWeight={500}>
-                {tx.description}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {tx.detail}
+            <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" rowGap={2}>
+              <Box >
+                <Typography variant="body2" fontWeight={500}>
+                  {tx.description}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {tx.detail}
+                </Typography>
+              </Box>
+              <Typography
+                variant="body2"
+                fontWeight={700}
+                color={tx.amount > 0 ? 'success.main' : 'text.primary'}
+              >
+                {tx.amount > 0 && '+'}{formatCurrency(tx.amount)}
               </Typography>
             </Box>
-            <Typography
-              variant="body2"
-              fontWeight={700}
-              color={tx.amount > 0 ? 'success.main' : 'text.primary'}
-            >
-              {tx.amount > 0 ? '+' : '-'}{formatCurrency(tx.amount)}
-            </Typography>
           </Box>
         ))}
 

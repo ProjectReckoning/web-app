@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs';
 import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card';
 import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card';
+import DateRangeSelector from '@/features/shared/components/date-range-selector';
 
 const DATA: ChartData[] = [
   {
@@ -35,7 +36,7 @@ export default function Page() {
         my: 8,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'start',
         alignItems: "stretch",
         gap: 8,
       }}
@@ -44,6 +45,10 @@ export default function Page() {
         <PocketOverviewCard />
         <PocketOverviewCard />
         <PocketOverviewCard />
+      </Box>
+
+      <Box maxWidth="md">
+        <DateRangeSelector />
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
