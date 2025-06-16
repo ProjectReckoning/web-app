@@ -1,8 +1,8 @@
 'use client';
 
-import DoughnutShape from '@/features/shared/components/doughnut-shape';
+import DoughnutShape from '@/features/shared/components/doughnut-shape.component';
 import { Box, Typography, BoxProps } from '@mui/material';
-import ScheduledTransactionItem, { ScheduledTransactionItemProps } from './scheduled-transactions-item';
+import ScheduledTransactionItem, { ScheduledTransactionItemProps } from './scheduled-transactions-item.component';
 
 interface ScheduledTransactionListProps extends BoxProps {
   title: string;

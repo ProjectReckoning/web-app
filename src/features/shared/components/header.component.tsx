@@ -16,9 +16,9 @@ import ListItemText from '@mui/material/ListItemText';
 import { Box, Button, Icon, MenuItem, useMediaQuery } from '@mui/material';
 import { HomeOutlined, LogoutRounded, NotificationsNoneRounded, PeopleOutlineRounded, SendOutlined, SettingsOutlined } from '@mui/icons-material';
 import { useState } from 'react';
-import authStore from '@/features/auth/stores/auth';
+import authStore from '@/features/auth/stores/auth.store';
 import { usePathname, useRouter } from 'next/navigation';
-import Select from './select';
+import Select from './select.component';
 import { Pocket } from '../entities/pocket';
 import { purple } from '@/lib/custom-color';
 

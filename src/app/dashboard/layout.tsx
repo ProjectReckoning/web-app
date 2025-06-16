@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Container, Toolbar } from '@mui/material';
-import Header from '@/features/shared/components/header';
+import Header from '@/features/shared/components/header.component';
 
 export default function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (

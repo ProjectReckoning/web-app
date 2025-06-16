@@ -1,4 +1,4 @@
-import authRepository from "../repositories/repository";
+import authRepository from "../repositories/auth.repository";
 
 export async function loginWithCredentialUseCase(phoneNumber: string, password: string): Promise<string> {
   if (!phoneNumber || !password) throw new Error("Email and password required");

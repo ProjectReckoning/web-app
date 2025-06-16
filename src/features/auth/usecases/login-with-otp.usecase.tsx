@@ -1,4 +1,4 @@
-import authRepository from "../repositories/repository";
+import authRepository from "../repositories/auth.repository";
 
 export async function loginWithOtpUseCase(sessionId: string, otp: string): Promise<string> {
   if (!sessionId || !otp) throw new Error("sesssionId and otp required");

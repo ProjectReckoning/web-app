@@ -8,7 +8,7 @@ import { orange } from '@/lib/custom-color';
 import { useState } from 'react';
 import formatCurrency from '@/lib/format-currency';
 import { Visibility } from '@mui/icons-material';
-import DoughnutShape from '@/features/shared/components/doughnut-shape';
+import DoughnutShape from '@/features/shared/components/doughnut-shape.component';
 
 interface PocketCardProps extends BoxProps {
   title: string;

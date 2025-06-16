@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '@/theme';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { AuthGuard } from '@/features/shared/components/auth-guard';
+import { AuthGuard } from '@/features/shared/components/auth-guard.component';
 
 export default async function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (

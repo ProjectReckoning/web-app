@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { loginWithOtpUseCase } from '../usecases/login-with-otp';
-import { loginWithCredentialUseCase } from '../usecases/login-with-credential';
+import { loginWithOtpUseCase } from '../usecases/login-with-otp.usecase';
+import { loginWithCredentialUseCase } from '../usecases/login-with-credential.usecase';
 import { AxiosError } from 'axios';
 
 type AuthStore = {

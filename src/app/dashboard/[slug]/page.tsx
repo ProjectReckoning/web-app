@@ -1,16 +1,16 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs';
-import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card';
-import DateRangeSelector from '@/features/shared/components/date-range-selector';
-import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs';
+import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
+import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card.component';
+import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
+import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
 import { Download, Tag } from '@mui/icons-material';
-import BEPInsightCard from '@/features/insight/components/bep-insight-card';
+import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Stack } from '@mui/material';
-import PocketCard from '@/features/pocket/components/pocket.card';
-import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card';
-import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list';
+import PocketCard from '@/features/pocket/components/pocket-card';
+import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
+import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
 
 const DATA: ChartData[] = [
   {

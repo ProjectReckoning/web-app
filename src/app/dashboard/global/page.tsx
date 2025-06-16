@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs';
-import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card';
-import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card';
-import DateRangeSelector from '@/features/shared/components/date-range-selector';
-import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs';
+import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
+import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card.component';
+import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card.component';
+import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
+import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
 import { Download, Tag } from '@mui/icons-material';
-import BEPInsightCard from '@/features/insight/components/bep-insight-card';
+import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Stack } from '@mui/material';
 
 const DATA: ChartData[] = [
