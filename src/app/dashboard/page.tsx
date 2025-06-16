@@ -32,12 +32,17 @@ export default function Page() {
         }}
       >
         <Typography variant="h5" fontWeight={600} component="h2">
-          <Box component="span" color="purple.main">Uh-oh!</Box>
-          <Box component="span" color="purple"> Sepertinya kamu belum pilih </Box>
-          <Box component="span" borderBottom={4} borderColor="tosca.main" borderRadius={1}>Pocket</Box>
+          <Box component="span" color="purple.main">Uh-oh! {' '}</Box>
+          <Box component="span" color="purple">Kamu belum jadi {' '}</Box>
+          <Box component="span" borderBottom={4} borderColor="tosca.main" borderRadius={1}>admin di Pocket</Box>
+          <Box component="span">{' '} manapun</Box>
         </Typography>
-        <Typography variant="h6" component="h2">
-          Pilih dulu ya untuk lihat riwayat transaksimu!
+        <Typography variant="h6" component="h2" marginTop={1}>
+          <Box component="span">Buat {' '}</Box>
+          <Box component="span" fontWeight="bold" borderBottom={4} borderColor="purple.main" borderRadius={1}>Pocket {' '}</Box>
+          <Box component="span">kamu di {' '}</Box>
+          <Box component="span" color="orange.main" borderBottom={4} borderColor="tosca.main" borderRadius={1}>wondr {' '}</Box>
+          <Box component="span">ya!</Box>
         </Typography>
 
       </Box>
