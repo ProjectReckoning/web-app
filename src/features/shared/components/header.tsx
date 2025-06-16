@@ -115,11 +115,11 @@ const menus = [
 ]
 
 const pockets: Pocket[] = [
-  { name: 'Pilih Pocket', color: purple[500], icon: 'wallet' },
-  { name: 'Semua Pocket', color: purple[500], icon: 'wallet' },
-  { name: 'Dompet Utama', color: '#4A90E2', icon: 'wallet' },
-  { name: 'Dompet Cadangan', color: '#50E3C2', icon: 'home' },
-  { name: 'Dompet Investasi', color: '#F5A623', icon: 'wallet' },
+  { id: 'pilih-pocket', name: 'Pilih Pocket', color: purple[500], icon: 'money_bag' },
+  { id: 'semua-pocket', name: 'Semua Pocket', color: purple[500], icon: 'money_bag' },
+  { id: 'dompet-utama', name: 'Dompet Utama', color: '#4A90E2', icon: 'wallet' },
+  { id: 'dompet-cadangan', name: 'Dompet Cadangan', color: '#50E3C2', icon: 'home' },
+  { id: 'dompet-investasi', name: 'Dompet Investasi', color: '#F5A623', icon: 'wallet' },
 ]
 
 export default function Header() {
@@ -140,18 +140,18 @@ export default function Header() {
       "target" in event && typeof event.target.value === "string"
         ? event.target.value
         : "";
-    const selectedPocket = pockets.find((p) => p.name === value);
+    const selectedPocket = pockets.find((p) => p.id === value);
     setPocket(selectedPocket ?? pockets[0]);
 
-    switch (selectedPocket?.name) {
-      case 'Pilih Pocket':
+    switch (selectedPocket?.id) {
+      case 'pilih-pocket':
         router.replace('/dashboard');
         break;
-      case 'Semua Pocket':
+      case 'semua-pocket':
         router.replace('/dashboard/global');
         break;
       default:
-        router.replace('/dashboard');
+        router.replace(`/dashboard/${selectedPocket?.id}`);
         break;
     }
   };
@@ -212,7 +212,7 @@ export default function Header() {
         </DrawerHeader>
 
         <Select
-          defaultValue={pocket?.name}
+          defaultValue={pocket?.id}
           sx={{
             marginLeft: open ? 2 : 0,
             marginRight: open ? 2 : 0,
@@ -249,8 +249,8 @@ export default function Header() {
         >
           {pockets.map((pocket, index) => (
             <MenuItem
-              key={pocket.name}
-              value={pocket.name}
+              key={pocket.id}
+              value={pocket.id}
               disabled={index === 0}
               sx={(theme) => ({
                 borderRadius: 999,
@@ -274,7 +274,7 @@ export default function Header() {
             >
               <Box display="flex" alignItems="center" gap={1}>
                 <Icon>
-                  money_bag
+                  {pocket.icon}
                 </Icon>
                 <Box component="span" sx={{ color: pocket.color }}>
                   {pocket.name}
