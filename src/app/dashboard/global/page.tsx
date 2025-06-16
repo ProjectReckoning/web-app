@@ -7,6 +7,8 @@ import TransactionOverviewCard from '@/features/transactions/components/transact
 import DateRangeSelector from '@/features/shared/components/date-range-selector';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs';
 import { Download, Tag } from '@mui/icons-material';
+import BEPInsightCard from '@/features/insight/components/bep-insight-card';
+import { Stack } from '@mui/material';
 
 const DATA: ChartData[] = [
   {
@@ -117,10 +119,20 @@ export default function Page() {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-        <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
-        <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
-      </Box>
+      <Stack spacing={2}>
+        <Typography variant='h6'>Rekap Keuanganmu</Typography>
+        <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
+          <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
+          <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
+            border: 1,
+            borderColor: 'border.main',
+            borderRadius: 10,
+            backgroundColor: 'white',
+            padding: 4,
+            textAlign: 'center',
+          }} />
+        </Box>
+      </Stack>
     </Box>
   );
 }

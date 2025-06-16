@@ -1,13 +1,14 @@
-"use client";
-
 export default function formatCurrency(
   value: number,
-  locale = "id-ID",
-  currency = "IDR"
+  {
+    locale = "id-ID",
+    currency = "IDR",
+    maximumFractionDigits = 2,
+  } = {}
 ) {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: maximumFractionDigits,
   }).format(value);
 }

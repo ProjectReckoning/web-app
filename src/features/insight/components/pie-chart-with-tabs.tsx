@@ -61,7 +61,7 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
               textTransform: 'none',
               fontWeight: 'bold',
               '&.Mui-selected': {
-                backgroundColor: '#d4ff00',
+                backgroundColor: 'limeGreen.main',
                 color: 'black',
                 borderRadius: 999,
               },
