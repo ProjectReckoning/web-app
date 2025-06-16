@@ -2,13 +2,15 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs';
-import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card';
 import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card';
 import DateRangeSelector from '@/features/shared/components/date-range-selector';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs';
 import { Download, Tag } from '@mui/icons-material';
 import BEPInsightCard from '@/features/insight/components/bep-insight-card';
 import { Stack } from '@mui/material';
+import PocketCard from '@/features/pocket/components/pocket.card';
+import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card';
+import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list';
 
 const DATA: ChartData[] = [
   {
@@ -92,10 +94,71 @@ export default function Page() {
         gap: 8,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', width: '100%' }}>
-        <PocketOverviewCard />
-        <PocketOverviewCard />
-        <PocketOverviewCard />
+      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
+        <Box sx={{
+          position: {
+            xs: 'static',
+            lg: 'relative',
+          },
+          display: {
+            xs: 'flex',
+            lg: 'block',
+          },
+          flexDirection: {
+            xs: 'column',
+            md: 'row',
+          },
+          gap: 2,
+          flex: 1,
+        }}>
+          <PocketCard
+            title="Donat Bahagia"
+            accountNumber="02389280392"
+            balance={1000000}
+            sx={{
+              backgroundColor: 'orange.main',
+              borderRadius: 4,
+              padding: 3,
+              paddingRight: {
+                xs: 8,
+                lg: 16,
+              },
+              marginRight: {
+                xs: 0,
+                lg: 24,
+              }
+            }}
+            minWidth={300}
+            flex={1}
+          />
+          <IncomeOutcomeCard
+            top="10%"
+            bottom="10%"
+            right={0}
+            income={1100000}
+            expense={100000}
+            sx={{
+              backgroundColor: 'white',
+              position: {
+                xs: 'static',
+                lg: 'absolute',
+              },
+            }}
+            minWidth={240}
+            flex={1}
+          />
+        </Box>
+        <ScheduledTransactionList
+          title="Transaksi terjadwalmu"
+          transactions={[
+            { day: 'Sabtu', date: 21, title: 'PLN - 1234567806', amount: 100000 },
+            { day: 'Sabtu', date: 21, title: 'PLN - 1234567806', amount: 100000 },
+            { day: 'Sabtu', date: 21, title: 'PLN - 1234567806', amount: 100000 },
+          ]}
+          flex={1}
+          minWidth={300}
+        />
+
       </Box>
 
       <Box maxWidth="md">

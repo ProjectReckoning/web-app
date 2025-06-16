@@ -1,9 +1,14 @@
 'use client';
 
-import { Box, Typography, BoxProps } from '@mui/material';
+import { Box, Typography, BoxProps, IconButton } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import { orange } from '@/lib/custom-color';
+import { useState } from 'react';
+import formatCurrency from '@/lib/format-currency';
+import { Visibility } from '@mui/icons-material';
+import DoughnutShape from '@/features/shared/components/doughnut-shape';
 
 interface PocketCardProps extends BoxProps {
   title: string;
@@ -18,58 +23,83 @@ export default function PocketCard({
   accountNumber,
   balance,
   icon = <RestaurantIcon fontSize="large" sx={{ color: 'white' }} />,
-  showBalance = true,
   ...props
 }: PocketCardProps) {
+  const [showBalanceState, setShowBalanceState] = useState(false);
+
   return (
     <Box
-      sx={{
-        borderRadius: 4,
-        background: 'linear-gradient(135deg, #FF8C00 30%, #FFA500 90%)',
-        color: 'white',
-        p: 3,
-        position: 'relative',
-        overflow: 'hidden',
-        minWidth: 300,
-      }}
+      position="relative"
+      overflow="hidden"
+      color="white"
       {...props}
     >
-      <Box display="flex" alignItems="center" gap={2}>
+      <DoughnutShape
+        width={600}
+        height={600}
+        innerRatio={0.5}
+        innerColor='orange.main'
+        sx={{
+          backgroundColor: orange[400],
+          position: 'absolute',
+          top: -300,
+          left: -420,
+        }}
+      />
+
+      <Box display="flex" position="relative" alignItems="center" gap={2} zIndex={3}>
         <Box
           sx={{
-            bgcolor: 'white',
+            bgcolor: 'orange.main',
             width: 50,
             height: 50,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: 5,
           }}
         >
           {icon}
         </Box>
+
         <Box flex={1}>
-          <Typography fontWeight="bold" color="black">
+          <Typography color="black">
             {title}
           </Typography>
+
           <Box display="flex" alignItems="center" gap={1}>
             <Typography fontWeight="bold" color="black">
               {accountNumber}
             </Typography>
-            <ContentCopyIcon sx={{ fontSize: 16, color: 'black' }} />
+            <IconButton
+              onClick={() => navigator.clipboard.writeText(accountNumber)}
+              sx={{ padding: 0, color: 'black' }}
+              aria-label="Copy account number"
+            >
+              <ContentCopyIcon sx={{ fontSize: 16, color: 'black' }} />
+            </IconButton>
           </Box>
         </Box>
       </Box>
 
-      <Box mt={3}>
+      <Box position="relative" mt={3}>
         <Typography fontSize={14} color="black">
           Saldo
         </Typography>
+
         <Box display="flex" alignItems="center" gap={1}>
           <Typography variant="h5" fontWeight="bold" color="black">
-            {showBalance ? `Rp${balance.toLocaleString()}` : '•••••••'}
+            {showBalanceState ? formatCurrency(balance) : '******'}
           </Typography>
-          <VisibilityOffIcon sx={{ color: 'black' }} />
+
+          <IconButton onClick={() => setShowBalanceState(!showBalanceState)}>
+            {showBalanceState ? (
+              <VisibilityOffIcon sx={{ fontSize: 24, color: 'black' }} />
+            ) : (
+              <Visibility sx={{ fontSize: 24, color: 'black' }} />
+            )}
+          </IconButton>
         </Box>
       </Box>
     </Box>
