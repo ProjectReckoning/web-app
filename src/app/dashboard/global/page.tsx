@@ -5,6 +5,8 @@ import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-wi
 import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card';
 import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card';
 import DateRangeSelector from '@/features/shared/components/date-range-selector';
+import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs';
+import { Download, Tag } from '@mui/icons-material';
 
 const DATA: ChartData[] = [
   {
@@ -28,6 +30,53 @@ const DATA: ChartData[] = [
   },
 ];
 
+export const sampleData: PieChartTabData[] = [
+  {
+    label: 'Pemasukan',
+    data: [
+      {
+        label: 'Penjualan',
+        value: 770000,
+        color: '#B57BFF',
+        icon: <Tag sx={{ color: 'white' }} />,
+        transactionCount: 8,
+      },
+      {
+        label: 'Top up',
+        value: 330000,
+        color: '#48DDE0',
+        icon: <Download sx={{ color: 'white' }} />,
+        transactionCount: 2,
+      },
+    ],
+  },
+  {
+    label: 'Pengeluaran',
+    data: [
+      {
+        label: 'Salary',
+        value: 40000,
+        color: '#FFD700',
+        icon: <Download sx={{ color: 'white' }} />,
+        transactionCount: 1,
+      },
+      {
+        label: 'Withdraw',
+        value: 20000,
+        color: '#FFB6FF',
+        icon: <Download sx={{ color: 'white' }} />,
+        transactionCount: 1,
+      },
+      {
+        label: 'Other',
+        value: 30000,
+        color: '#B0B0B0',
+        icon: <Download sx={{ color: 'white' }} />,
+        transactionCount: 1,
+      },
+    ],
+  },
+];
 
 export default function Page() {
   return (
@@ -66,6 +115,11 @@ export default function Page() {
             padding: 4,
           }} />
         </Box>
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
+        <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
+        <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
       </Box>
     </Box>
   );
