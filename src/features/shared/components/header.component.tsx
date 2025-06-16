@@ -15,7 +15,7 @@ import { purple } from '@/lib/custom-color';
 
 const menus: DrawerMenuItem[] = [
   { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: '/dashboard' },
-  { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: '/dashboard/global' },
+  { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: '#' },
   { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: '#' },
   { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: '#' },
 ];
@@ -69,9 +69,13 @@ export default function Header() {
     if (availablePocketsMenus.length === 0 || availablePocketsMenus[0].id === '') {
       fetchAndSetPockets();
     }
-  }, [getAllPockets, availablePocketsMenus]);
+  }, [getAllPockets, availablePocketsMenus.length]);
 
   useEffect(() => {
+    if (availablePocketsMenus.length === 0 || availablePocketsMenus[0].id === '') {
+      return;
+    }
+
     const pocketIdFromUrl = pathname.split('/')[2];
     const foundPocket = availablePocketsMenus.find(p => p.id === pocketIdFromUrl);
 
@@ -81,30 +85,36 @@ export default function Header() {
         selectPocket(foundPocket.id);
       }
     } else {
-      const fallbackId = pockets[0]?.id ?? '';
+      const fallbackId = availablePocketsMenus[0]?.id ?? '';
       if (fallbackId !== selectedPocketId) {
         setSelectedPocketId(fallbackId);
         selectPocket(fallbackId);
       }
     }
-  }, [pathname, pockets, availablePocketsMenus]);
+  }, [pathname, availablePocketsMenus.length]);
+
+  useEffect(() => {
+    if (selectedPocketId === '') {
+      return;
+    }
+
+    switch (selectedPocketId) {
+      case '':
+        router.push('/dashboard');
+        break;
+      case 'global':
+        router.push('/dashboard/global');
+        break;
+      default:
+        router.push(`/dashboard/${selectedPocketId}`);
+        break;
+    }
+  }, [selectedPocketId, router]);
 
   const handlePocketChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value;
     setSelectedPocketId(value);
     selectPocket(value);
-
-    switch (value) {
-      case '':
-        router.replace('/dashboard');
-        break;
-      case 'global':
-        router.replace('/dashboard/global');
-        break;
-      default:
-        router.replace(`/dashboard/${value}`);
-        break;
-    }
   };
 
   const toggleDrawerState = () => {

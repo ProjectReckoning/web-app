@@ -13,6 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { Box, SelectChangeEvent } from '@mui/material';
 import PocketSelect, { PocketMenuItem } from './pocket-select.component';
 import { Icon } from '@iconify/react';
+import { orange } from '@/lib/custom-color';
 
 export interface DrawerMenuItem {
   name: string;
@@ -116,10 +117,24 @@ export default function Drawer({
 
       <List sx={{ marginTop: 2 }}>
         {menus.map((menu) => (
-          <ListItem key={menu.name} disablePadding sx={{ display: 'block', paddingX: isOpen ? 2 : 0, paddingY: 0.5 }}>
+          <ListItem
+            key={menu.name}
+            disablePadding
+            sx={{
+              display: 'block',
+              paddingX: isOpen ? 2 : 0,
+              paddingY: 0.5,
+              '& .Mui-selected': {
+                backgroundColor: `${orange[500]} !important`,
+                color: 'white',
+              },
+              '.Mui-selected .MuiListItemIcon-root': {
+                color: 'white',
+              },
+            }}>
             <ListItemButton
               onClick={() => onNavigate(menu.href)}
-              selected={pathname === menu.href}
+              selected={pathname.includes(menu.href)}
               sx={[
                 {
                   minHeight: 48,

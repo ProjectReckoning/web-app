@@ -34,7 +34,7 @@ const DATA: ChartData[] = [
   },
 ];
 
-export const sampleData: PieChartTabData[] = [
+const sampleData: PieChartTabData[] = [
   {
     label: 'Pemasukan',
     data: [

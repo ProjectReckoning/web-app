@@ -4,10 +4,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { gray, purple } from '@/lib/custom-color';
 import { Button, InputAdornment, TextField } from '@mui/material';
-import { QrCodeScanner } from '@mui/icons-material';
 import authStore from '@/features/auth/stores/auth.store';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react';
 
 export default function Home() {
   // TODO: change sessionId to token
@@ -119,7 +119,7 @@ export default function Home() {
 
           <Button
             disabled={isLoading}
-            endIcon={<QrCodeScanner />}
+            endIcon={<Icon icon="mdi:qrcode-scan" fontSize={24} />}
             aria-label="Masuk dengan QR"
             color='limeGreen'
             variant='contained'
