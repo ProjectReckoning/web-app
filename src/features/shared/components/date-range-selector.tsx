@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Typography, TextField, Popover, Icon, useTheme, useMediaQuery, Dialog, DialogContent, BoxProps } from '@mui/material';
+import { Box, TextField, Popover, Icon, useTheme, useMediaQuery, Dialog, DialogContent, BoxProps } from '@mui/material';
 import { DateRange, RangeKeyDict } from 'react-date-range';
 import { format, differenceInDays } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
@@ -57,10 +57,6 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
 
   return (
     <Box {...props}>
-      <Typography fontWeight={600} mb={1}>
-        Pilih Periode
-      </Typography>
-
       <TextField
         fullWidth
         onClick={handleOpen}
@@ -69,7 +65,7 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
         slotProps={{
           input: {
             readOnly: true,
-            endAdornment: <Icon sx={{ color: 'orange.main' }}>calendar_month</Icon>,
+            endAdornment: <Icon sx={{ ml: 2, color: 'orange.main' }}>calendar_month</Icon>,
           }
         }}
         sx={{
