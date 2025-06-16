@@ -8,9 +8,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { Box, Button, useMediaQuery } from '@mui/material';
-import { LogoutRounded, NotificationsNoneRounded } from '@mui/icons-material';
 import { purple } from '@/lib/custom-color';
 import { Pocket } from '@/features/pocket/entities/pocket.entites';
+import { Icon } from '@iconify/react';
 
 const drawerWidth = 300;
 
@@ -65,17 +65,17 @@ const Appbar: React.FC<AppbarComponentProps> = ({ isOpen, selectedPocketId, pock
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <IconButton aria-label="notification" sx={{ border: "solid 1px gray" }}>
-            <NotificationsNoneRounded />
+            <Icon icon="eva:bell-outline" style={{ color: 'black' }} />
           </IconButton>
 
           <Button
-            startIcon={<LogoutRounded />}
+            startIcon={<Icon icon="eva:log-out-fill" style={{ color: 'black' }} />}
             aria-label="Keluar"
             variant="text"
             onClick={onLogout}
             sx={{ color: "MenuText", border: "solid 1px gray" }}
           >
-            <Typography variant="body2" component="span">
+            <Typography variant="body2" sx={{ mt: 0.25}}>
               Keluar
             </Typography>
           </Button>

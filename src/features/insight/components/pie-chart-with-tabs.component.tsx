@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { Box, Tabs, Tab, Typography, Stack, BoxProps } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 import formatCurrency from '@/lib/format-currency';
-import { ChevronRightRounded } from '@mui/icons-material';
 import { gray } from '@/lib/custom-color';
+import { Icon } from '@iconify/react';
 
 export interface PieChartItem {
   label: string;
@@ -115,11 +115,11 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
               </Box>
               
               <Typography fontWeight="bold">{((item.value / total) * 100).toFixed(0)}%</Typography>
-              <ChevronRightRounded
-                sx={{
+              <Icon
+                icon="mdi:chevron-right"
+                style={{
                   color: 'text.secondary',
                   cursor: 'pointer',
-                  '&:hover': { color: 'primary.main' },
                 }}
                 onClick={() => console.log(`Navigate to details for ${item.label}`)}
               />

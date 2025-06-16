@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, TextField, Popover, Icon, useTheme, useMediaQuery, Dialog, DialogContent, BoxProps } from '@mui/material';
+import { Box, TextField, Popover, useTheme, useMediaQuery, Dialog, DialogContent, BoxProps } from '@mui/material';
 import { DateRange, RangeKeyDict } from 'react-date-range';
 import { format, differenceInDays } from 'date-fns';
 import idLocale from 'date-fns/locale/id';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { orange } from '@/lib/custom-color';
+import { Icon } from '@iconify/react';
 
 type CustomRange = { startDate: Date; endDate: Date };
 
@@ -65,7 +66,7 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
         slotProps={{
           input: {
             readOnly: true,
-            endAdornment: <Icon sx={{ ml: 2, color: 'orange.main' }}>calendar_month</Icon>,
+            endAdornment: <Icon icon="mdi:calendar-month" style={{ marginLeft: 8, fontSize: 32, color: orange[500] }} />,
           }
         }}
         sx={{

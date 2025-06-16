@@ -5,12 +5,12 @@ import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-wi
 import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
-import { Download, Tag } from '@mui/icons-material';
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Stack } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
+import { Icon } from '@iconify/react';
 
 const DATA: ChartData[] = [
   {
@@ -42,14 +42,14 @@ export const sampleData: PieChartTabData[] = [
         label: 'Penjualan',
         value: 770000,
         color: '#B57BFF',
-        icon: <Tag sx={{ color: 'white' }} />,
+        icon:  <Icon icon="mdi:upload" style={{ color: 'white' }} />,
         transactionCount: 8,
       },
       {
         label: 'Top up',
         value: 330000,
         color: '#48DDE0',
-        icon: <Download sx={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
         transactionCount: 2,
       },
     ],
@@ -61,21 +61,21 @@ export const sampleData: PieChartTabData[] = [
         label: 'Salary',
         value: 40000,
         color: '#FFD700',
-        icon: <Download sx={{ color: 'white' }} />,
+        icon:  <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
       {
         label: 'Withdraw',
         value: 20000,
         color: '#FFB6FF',
-        icon: <Download sx={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
       {
         label: 'Other',
         value: 30000,
         color: '#B0B0B0',
-        icon: <Download sx={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
     ],
@@ -115,6 +115,7 @@ export default function Page() {
             title="Donat Bahagia"
             accountNumber="02389280392"
             balance={1000000}
+            icon="material-symbols:money-bag-outline"
             sx={{
               backgroundColor: 'orange.main',
               borderRadius: 4,

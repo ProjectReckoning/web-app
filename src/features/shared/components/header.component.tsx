@@ -14,10 +14,10 @@ import { Pocket } from '@/features/pocket/entities/pocket.entites';
 import { purple } from '@/lib/custom-color';
 
 const menus: DrawerMenuItem[] = [
-  { name: 'Beranda', icon: <Icon fontSize={24} icon="material-symbols:home-outline-rounded" />, href: '/dashboard' },
-  { name: 'Transaksi', icon: <Icon fontSize={24} icon="mdi:send" />, href: '/dashboard/global' },
-  { name: 'Anggota', icon: <Icon fontSize={24} icon="mdi:people" />, href: '#' },
-  { name: 'Pengaturan', icon: <Icon fontSize={24} icon="mdi:settings" />, href: '#' },
+  { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: '/dashboard' },
+  { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: '/dashboard/global' },
+  { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: '#' },
+  { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: '#' },
 ];
 
 function getAvailablePocketsMenu(pockets: Pocket[]): PocketMenuItem[] {
@@ -34,7 +34,7 @@ function getAvailablePocketsMenu(pockets: Pocket[]): PocketMenuItem[] {
     pocketMenu.unshift({
       id: 'global',
       name: 'Semua Pocket',
-      icon: "money_bag",
+      icon: "material-symbols:money-bag-outline",
       color: purple[500],
     });
   }
@@ -43,7 +43,7 @@ function getAvailablePocketsMenu(pockets: Pocket[]): PocketMenuItem[] {
     pocketMenu.push({
       id: '',
       name: 'Pilih Pocket',
-      icon: "money_bag",
+      icon: "material-symbols:money-bag-outline",
       color: purple[500],
     });
   }
@@ -69,7 +69,7 @@ export default function Header() {
     if (availablePocketsMenus.length === 0 || availablePocketsMenus[0].id === '') {
       fetchAndSetPockets();
     }
-  }, [getAllPockets, availablePocketsMenus.length]);
+  }, [getAllPockets, availablePocketsMenus]);
 
   useEffect(() => {
     const pocketIdFromUrl = pathname.split('/')[2];
@@ -87,7 +87,7 @@ export default function Header() {
         selectPocket(fallbackId);
       }
     }
-  }, [pathname, pockets, availablePocketsMenus.length]);
+  }, [pathname, pockets, availablePocketsMenus]);
 
   const handlePocketChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value;
@@ -132,7 +132,7 @@ export default function Header() {
         onPocketChange={handlePocketChange}
         menus={menus}
         pathname={pathname}
-        onNavigate={router.push}
+        onNavigate={(href: string) => router.push(href)}
       />
     </>
   );

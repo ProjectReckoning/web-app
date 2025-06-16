@@ -1,9 +1,8 @@
 'use client';
 
 import { Box, Typography, BoxProps } from '@mui/material';
-import SouthWestIcon from '@mui/icons-material/SouthWest';
-import NorthEastIcon from '@mui/icons-material/NorthEast';
 import formatCurrency from '@/lib/format-currency';
+import { Icon } from '@iconify/react';
 
 interface IncomeOutcomeCardProps extends BoxProps {
   income: number;
@@ -20,7 +19,7 @@ export default function IncomeOutcomeCard({ income, expense, ...props }: IncomeO
       {...props}
     >
       <Box display="flex" alignItems="center" gap={1}>
-        <SouthWestIcon sx={{ color: 'black', fontSize: 20 }} />
+        <Icon icon="lets-icons:in" style={{ fontSize: 20, color: 'black' }} />
         <Typography fontWeight="bold">Pemasukan</Typography>
       </Box>
 
@@ -31,7 +30,7 @@ export default function IncomeOutcomeCard({ income, expense, ...props }: IncomeO
       <Box my={1} sx={{ borderBottom: '1px solid #ccc' }} />
 
       <Box display="flex" alignItems="center" gap={1}>
-        <NorthEastIcon sx={{ color: 'black', fontSize: 20 }} />
+        <Icon icon="lets-icons:out" style={{ fontSize: 20, color: 'black' }} />
         <Typography fontWeight="bold">Pengeluaran</Typography>
       </Box>
 

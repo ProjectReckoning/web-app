@@ -5,8 +5,6 @@ import React from 'react';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -14,6 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Box, SelectChangeEvent } from '@mui/material';
 import PocketSelect, { PocketMenuItem } from './pocket-select.component';
+import { Icon } from '@iconify/react';
 
 export interface DrawerMenuItem {
   name: string;
@@ -101,7 +100,10 @@ export default function Drawer({
           sx={{ display: isOpen ? "block" : "none" }}
         />
         <IconButton onClick={onToggleDrawer} color='purple'>
-          {isOpen ? <ChevronLeftIcon /> : <MenuIcon />}
+          {isOpen
+            ? <Icon icon="mdi:chevron-left" style={{ fontSize: 24 }} />
+            : <Icon icon="mdi:menu" style={{ fontSize: 24 }} />
+          }
         </IconButton>
       </DrawerHeader>
 
@@ -114,8 +116,9 @@ export default function Drawer({
 
       <List sx={{ marginTop: 2 }}>
         {menus.map((menu) => (
-          <ListItem key={menu.name} disablePadding sx={{ display: 'block', paddingX: isOpen ? 2 : 0 }}>
+          <ListItem key={menu.name} disablePadding sx={{ display: 'block', paddingX: isOpen ? 2 : 0, paddingY: 0.5 }}>
             <ListItemButton
+              onClick={() => onNavigate(menu.href)}
               selected={pathname === menu.href}
               sx={[
                 {
@@ -151,7 +154,6 @@ export default function Drawer({
               </ListItemIcon>
               <ListItemText
                 primary={menu.name}
-                onClick={() => onNavigate(menu.href)}
                 sx={[
                   isOpen
                     ? {

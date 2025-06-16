@@ -1,20 +1,17 @@
 'use client';
 
 import { Box, Typography, BoxProps, IconButton } from '@mui/material';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { orange } from '@/lib/custom-color';
 import { useState } from 'react';
 import formatCurrency from '@/lib/format-currency';
-import { Visibility } from '@mui/icons-material';
 import DoughnutShape from '@/features/shared/components/doughnut-shape.component';
+import { Icon } from '@iconify/react';
 
 interface PocketCardProps extends BoxProps {
   title: string;
   accountNumber: string;
   balance: number;
-  icon?: React.ReactNode;
+  icon: string;
   showBalance?: boolean;
 }
 
@@ -22,7 +19,7 @@ export default function PocketCard({
   title,
   accountNumber,
   balance,
-  icon = <RestaurantIcon fontSize="large" sx={{ color: 'white' }} />,
+  icon,
   ...props
 }: PocketCardProps) {
   const [showBalanceState, setShowBalanceState] = useState(false);
@@ -51,16 +48,15 @@ export default function PocketCard({
         <Box
           sx={{
             bgcolor: 'orange.main',
-            width: 50,
-            height: 50,
+            width: 64,
+            height: 64,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 5,
           }}
         >
-          {icon}
+          <Icon icon={icon} style={{ fontSize: 32, color: 'white' }} />
         </Box>
 
         <Box flex={1}>
@@ -77,7 +73,7 @@ export default function PocketCard({
               sx={{ padding: 0, color: 'black' }}
               aria-label="Copy account number"
             >
-              <ContentCopyIcon sx={{ fontSize: 16, color: 'black' }} />
+              <Icon icon="iconamoon:copy" style={{ fontSize: 16, color: 'black' }} />
             </IconButton>
           </Box>
         </Box>
@@ -95,9 +91,9 @@ export default function PocketCard({
 
           <IconButton onClick={() => setShowBalanceState(!showBalanceState)}>
             {showBalanceState ? (
-              <VisibilityOffIcon sx={{ fontSize: 24, color: 'black' }} />
+              <Icon icon="ion:eye-off-outline" style={{ fontSize: 24, color: 'black' }} />
             ) : (
-              <Visibility sx={{ fontSize: 24, color: 'black' }} />
+              <Icon icon="ion:eye-outline" style={{ fontSize: 24, color: 'black' }} />
             )}
           </IconButton>
         </Box>

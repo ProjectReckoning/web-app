@@ -10,10 +10,6 @@ export default async function RootLayout(props: Readonly<{ children: React.React
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded&display=optional"
-          rel="stylesheet"
-        />
       </head>
       <body style={{ overflowX: 'hidden' }}>
         <InitColorSchemeScript attribute="class" />

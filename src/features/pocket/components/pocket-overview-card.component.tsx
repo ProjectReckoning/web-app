@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Icon } from '@mui/material';
+import { Icon } from '@iconify/react';
 
 export default function PocketOverviewCard() {
   return (
@@ -11,9 +11,7 @@ export default function PocketOverviewCard() {
       <CardContent sx={{ padding: 0}}>
         <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: 'purple.light'}}>
           <Box padding={1} sx={{ padding: 2, backgroundColor: 'purple.main', color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon style={{ fontSize: 36, }}>
-              money_bag
-            </Icon>
+            <Icon icon="material-symbols:money-bag-outline" style={{ fontSize: 32, color: "white" }} />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, marginTop: 2 }}>
             <Typography variant="body1" fontWeight={600} component="p">
@@ -33,9 +31,7 @@ export default function PocketOverviewCard() {
         <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', px: 2 }}>
           <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 0.5 }} color="green.main">
             <Typography variant="body2">
-              <Icon style={{ fontSize: "inherit", verticalAlign: 'middle', marginRight: 2 }}>
-                edit
-              </Icon>
+              <Icon icon="lets-icons:in" style={{ fontSize: 16, verticalAlign: 'middle', marginRight: 2 }} />
               Pemasukan
             </Typography>
 
@@ -46,9 +42,7 @@ export default function PocketOverviewCard() {
 
           <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 0.5 }} color="red.main">
             <Typography variant="body2">
-              <Icon style={{ fontSize: "inherit", verticalAlign: 'middle', marginRight: 2 }}>
-                edit
-              </Icon>
+              <Icon icon="lets-icons:out" style={{ fontSize: 16, verticalAlign: 'middle', marginRight: 2 }} />
               Pengeluaran
             </Typography>
 

@@ -1,7 +1,9 @@
 'use client';
 
-import { Box, Typography, Avatar, Link, Icon, BoxProps } from '@mui/material';
+import { Box, Typography, Avatar, Link, BoxProps, } from '@mui/material';
 import formatCurrency from '@/lib/format-currency';
+import { Icon } from '@iconify/react';
+import { gray, green } from '@/lib/custom-color';
 
 interface TransactionItem {
   type: 'transfer' | 'qris';
@@ -32,8 +34,20 @@ export default function TransactionOverviewCard({ ...props }: BoxProps) {
       <Box display="flex" flexDirection="column" gap={2}>
         {transactions.map((tx, idx) => (
           <Box key={idx} display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: 'gray.light', padding: 3 }}>
-              <Icon sx={{ color: 'green.main' }}>qr_code_scanner</Icon>
+            <Avatar
+              sx={{
+                bgcolor: gray[50],
+                color: green[500],
+                width: 48,
+                height: 48,
+                borderRadius: '50%',
+              }}
+              variant="rounded"
+            >
+              <Icon
+                icon="mdi:qrcode-scan"
+                fontSize={24}
+              />
             </Avatar>
             <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" rowGap={2}>
               <Box >

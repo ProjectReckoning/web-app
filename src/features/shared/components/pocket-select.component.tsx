@@ -3,7 +3,6 @@
 import React from 'react';
 import {
   Box,
-  Icon,
   MenuItem,
   Select as MuiSelect,
   SelectChangeEvent,
@@ -11,6 +10,7 @@ import {
   Theme,
 } from '@mui/material';
 import { purple } from '@/lib/custom-color';
+import { Icon } from '@iconify/react';
 
 export interface PocketMenuItem {
   id: string;
@@ -57,8 +57,17 @@ export default function PocketSelect({
         '& .MuiBox-root span': {
           display: isOpen ? 'flex' : 'none',
         },
+        '& .MuiInputBase-root': {
+          paddingRight: '0 !important',
+        },
+        '& .MuiSelect-select': {
+          paddingRight: '0 !important',
+        },
         '& .MuiSvgIcon-root': {
-          color: isOpen ? 'white' : 'inherit',
+          color: isOpen ? 'white' : currentSelectedPocket?.color,
+          '@media (max-width: 600px)': {
+            display: 'none',
+          },
         },
         ...sx,
       }}
@@ -76,11 +85,11 @@ export default function PocketSelect({
 
       renderValue={(selected) => {
         const pocketToDisplay = pockets.find(p => p.id === selected)
-        
+
         if (!pocketToDisplay) {
           return (
             <Box display="flex" alignItems="center" gap={1}>
-              <Icon sx={{ color: purple[500] }}>error</Icon>
+              <Icon icon="mdi:error" style={{ color: purple[500] }} />
               {isOpen && <Box component="span" sx={{ color: purple[500] }}>Pocket not found</Box>}
             </Box>
           );
@@ -88,7 +97,7 @@ export default function PocketSelect({
 
         return (
           <Box display="flex" alignItems="center" gap={1}>
-            <Icon sx={{ color: isOpen ? 'white' : pocketToDisplay.color }}>{pocketToDisplay.icon}</Icon>
+            <Icon icon={pocketToDisplay.icon} style={{ color: isOpen ? 'white' : pocketToDisplay.color, fontSize: 24 }} />
             {isOpen && (
               <Box component="span" sx={{ color: isOpen ? 'white' : pocketToDisplay.color }}>
                 {pocketToDisplay.name}
@@ -107,10 +116,21 @@ export default function PocketSelect({
             marginY: theme.spacing(0.5),
             transition: 'background-color 0.2s, color 0.2s',
             fontWeight: 'bold',
+            color: pocket.color,
+
+            '& .icon': {
+              color: pocket.color,
+              transition: 'color 0.2s',
+            },
+            '& span': {
+              color: pocket.color,
+              transition: 'color 0.2s',
+            },
+
             '&:hover': {
               backgroundColor: `${pocket.color}!important`,
               color: 'white',
-              '& .MuiSvgIcon-root': {
+              '& .icon': {
                 color: 'white',
               },
               '& span': {
@@ -120,12 +140,11 @@ export default function PocketSelect({
           })}
         >
           <Box display="flex" alignItems="center" gap={1}>
-            <Icon sx={{ color: pocket.color }}>{pocket.icon}</Icon>
-            <Box component="span" sx={{ color: pocket.color }}>
-              {pocket.name}
-            </Box>
+            <Icon icon={pocket.icon} className="icon" style={{ fontSize: 24 }} />
+            <Box component="span">{pocket.name}</Box>
           </Box>
         </MenuItem>
+
       ))}
     </MuiSelect>
   );
