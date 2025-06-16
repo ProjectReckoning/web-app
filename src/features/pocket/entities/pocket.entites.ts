@@ -9,14 +9,15 @@ export enum PocketStatus {
 }
 
 export type Pocket = {
-  pocket_id: number;
+  id: string;
   name: string;
   type: PocketType;
   target_nominal: number;
   current_balance: number;
   deadline: Date | null;
   status: PocketStatus;
-  icon_name: string;
-  color_hex: string;
+  icon: string;
+  color: string;
   account_number: string;
+  user_role: string;
 };

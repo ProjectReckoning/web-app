@@ -8,7 +8,7 @@ import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components
 import { Download, Tag } from '@mui/icons-material';
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Stack } from '@mui/material';
-import PocketCard from '@/features/pocket/components/pocket-card';
+import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
 

@@ -15,7 +15,7 @@ export default function Select({
 }: Omit<SelectProps, 'value' | 'onChange'> & {
   onChange?: (event: SelectChangeEvent) => void;
   defaultValue?: string;
-  }) {
+}) {
   const [value, setValue] = useState(defaultValue)
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value);
