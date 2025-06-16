@@ -43,7 +43,7 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
             sx: {
               width: 'fit-content',
               mx: 'auto',
-              backgroundColor: '#f5f5f5',
+              backgroundColor: gray[50],
               borderRadius: 999,
               mb: 4,
             },
@@ -77,8 +77,6 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
               id: index,
               value: item.value,
               color: item.color,
-              label: item.label,
-              icon: item.icon,
             })),
             innerRadius: 50,
             outerRadius: 100,
@@ -86,7 +84,7 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
             cy: '50%',
           },
         ]}
-        width={300}
+        width={200}
         height={200}
       />
 
@@ -105,16 +103,17 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
             >
               {item.icon}
             </Box>
-            <Box flex={1} sx={{ borderBottom: `2px solid ${gray[100]}`, paddingBottom: 2, display: "flex", alignItems: "center", justifyContent: "space-between" }} >
+            <Box flex={1} sx={{ borderBottom: `2px solid ${gray[100]}`, paddingBottom: 2, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }} >
               <Box display="flex" flexDirection="column" gap={0.5} flex={1}>
-                <Typography fontWeight="bold">{item.label}</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography fontWeight="bold" sx={{ whiteSpace: 'nowrap' }}>{item.label}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
                   {formatCurrency(item.value)}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
                   Dari <Box component="span" fontWeight="bold">{item.transactionCount}</Box> Transaksi
                 </Typography>
               </Box>
+              
               <Typography fontWeight="bold">{((item.value / total) * 100).toFixed(0)}%</Typography>
               <ChevronRightRounded
                 sx={{
