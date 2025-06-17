@@ -24,6 +24,8 @@ class PocketRepository {
       color: data.color_hex,
       account_number: data.account_number,
       user_role: data.user_role as Pocket['user_role'],
+      income: data.income,
+      outcome: data.outcome,
     })
   }
 }

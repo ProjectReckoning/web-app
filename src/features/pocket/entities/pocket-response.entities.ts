@@ -16,6 +16,8 @@ export type PocketResponseItem = {
   color_hex: string;
   account_number: string;
   user_role: PocketUserRole;
+  income: number;
+  outcome: number;
 };
 
 /**

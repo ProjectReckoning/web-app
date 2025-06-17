@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -9,6 +11,7 @@ import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Stack } from '@mui/material';
 import { Icon } from '@iconify/react';
+import pocketStore from '@/features/pocket/stores/pocket.store';
 
 const DATA: ChartData[] = [
   {
@@ -81,6 +84,8 @@ const sampleData: PieChartTabData[] = [
 ];
 
 export default function Page() {
+  const { pockets } = pocketStore()
+ 
   return (
     <Box
       sx={{
@@ -92,10 +97,10 @@ export default function Page() {
         gap: 8,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', width: '100%' }}>
-        <PocketOverviewCard />
-        <PocketOverviewCard />
-        <PocketOverviewCard />
+      <Box sx={{ display: 'flex', gap: 3, overflowX: 'auto', width: '100%' }}>
+        {pockets.map((pocket) => (
+          <PocketOverviewCard key={pocket.id} {...pocket} />
+        ))}
       </Box>
 
       <Stack spacing={2}>

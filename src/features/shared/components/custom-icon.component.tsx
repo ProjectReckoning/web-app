@@ -1,6 +1,6 @@
-import { Icon, IconifyIconProps } from '@iconify/react';
+import { Icon, IconProps } from '@iconify/react';
 
-export default function CustomIcon({ name, ...props }: Omit<IconifyIconProps, 'name' | 'icon'> & { name: string }) {
+export default function CustomIcon({ name, ...props }: Omit<IconProps, 'icon'> & { name: string }) {
   const icons: Record<string, string> = {
     wallet: 'material-symbols:wallet',
     bank: 'material-symbols:bank',
@@ -12,6 +12,14 @@ export default function CustomIcon({ name, ...props }: Omit<IconifyIconProps, 'n
     payment: 'material-symbols:money',
     exchange: 'material-symbols:currency-exchange',
     category: 'material-symbols:category',
+    
+    // Icons for specific pockets
+    pocket: 'material-symbols:money-bag-outline',
+    laptop: 'material-symbols:laptop',
+    diamond: 'material-symbols:diamond',
+    airplane: 'material-symbols:airplane-ticket',
+    moonstar: 'material-symbols:star',
+    group: 'material-symbols:group',
   };
 
   const iconName = icons[name.toLowerCase()] || 'material-symbols:help-outline';

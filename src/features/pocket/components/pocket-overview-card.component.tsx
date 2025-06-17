@@ -4,18 +4,21 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Icon } from '@iconify/react';
+import { Pocket } from '../entities/pocket.entites';
+import formatCurrency from '@/lib/format-currency';
+import CustomIcon from '@/features/shared/components/custom-icon.component';
 
-export default function PocketOverviewCard() {
+export default function PocketOverviewCard(pocket: Pocket) {
   return (
     <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined'>
       <CardContent sx={{ padding: 0}}>
         <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: 'purple.light'}}>
-          <Box padding={1} sx={{ padding: 2, backgroundColor: 'purple.main', color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon icon="material-symbols:money-bag-outline" style={{ fontSize: 32, color: "white" }} />
+          <Box padding={1} sx={{ padding: 2, backgroundColor: pocket.color, color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <CustomIcon name={pocket.icon} style={{ fontSize: 24, color: 'white' }} />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, marginTop: 2 }}>
             <Typography variant="body1" fontWeight={600} component="p">
-              Donat Bahagia
+              {pocket.name}
             </Typography>
 
             <Typography variant="body1" component="p">
@@ -23,7 +26,7 @@ export default function PocketOverviewCard() {
             </Typography>
 
             <Typography variant="body1" fontWeight={600} component="p">
-              Rp1.000.000
+              {formatCurrency(pocket.current_balance)}
             </Typography>
           </Box>
         </Box>
@@ -36,7 +39,7 @@ export default function PocketOverviewCard() {
             </Typography>
 
             <Typography variant="body1" fontWeight={600} component="p">
-              Rp1.000.000
+              {formatCurrency(pocket.income)}
             </Typography>
           </Box>
 
@@ -47,7 +50,7 @@ export default function PocketOverviewCard() {
             </Typography>
 
             <Typography variant="body1" fontWeight={600} component="p">
-              Rp1.000.000
+              {formatCurrency(pocket.outcome)}
             </Typography>
           </Box>
         </Box>

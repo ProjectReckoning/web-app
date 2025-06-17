@@ -22,6 +22,8 @@ type Pocket = {
   color_hex: string;
   account_number: string;
   user_role: string;
+  income: number;
+  outcome: number;
 };
 
 const pockets: Pocket[] = [
@@ -33,10 +35,12 @@ const pockets: Pocket[] = [
     current_balance: 3500000,
     deadline: new Date("2025-08-15T00:00:00.000Z"),
     status: PocketStatus.Active,
-    icon_name: "material-symbols:money-bag-outline",
+    icon_name: "Airplane",
     color_hex: "#FF5722",
     account_number: "123456789",
     user_role: "user",
+    income: 0,
+    outcome: 0
   },
   {
     pocket_id: 2,
@@ -46,10 +50,12 @@ const pockets: Pocket[] = [
     current_balance: 7000000,
     deadline: null,
     status: PocketStatus.Active,
-    icon_name: "material-symbols:money-bag-outline",
+    icon_name: "Pocket",
     color_hex: "#4CAF50",
     account_number: "987654321",
     user_role: "user",
+    income: 0,
+    outcome: 0
   },
   {
     pocket_id: 3,
@@ -59,10 +65,12 @@ const pockets: Pocket[] = [
     current_balance: 200000,
     deadline: new Date("2025-06-10T00:00:00.000Z"),
     status: PocketStatus.Completed,
-    icon_name: "material-symbols:money-bag-outline",
+    icon_name: "Pocket",
     color_hex: "#2196F3",
     account_number: "112233445",
     user_role: "user",
+    income: 0,
+    outcome: 0
   },
   {
     pocket_id: 6,
@@ -72,10 +80,12 @@ const pockets: Pocket[] = [
     current_balance: 1000000,
     deadline: new Date("2025-12-31T00:00:00.000Z"),
     status: PocketStatus.Active,
-    icon_name: "material-symbols:money-bag-outline",
+    icon_name: "Pocket",
     color_hex: "#00BCD4",
     account_number: "950859915",
-    user_role: "owner"
+    user_role: "owner",
+    income: 0,
+    outcome: 0
   },
 ];
 
@@ -176,6 +186,8 @@ export async function POST(req: Request): Promise<Response> {
     color_hex,
     account_number,
     user_role,
+    income: 0,
+    outcome: 0
   };
 
   pockets.push(newPocket);

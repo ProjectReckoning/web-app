@@ -20,4 +20,6 @@ export type Pocket = {
   color: string;
   account_number: string;
   user_role: string;
+  income: number;
+  outcome: number;
 };
