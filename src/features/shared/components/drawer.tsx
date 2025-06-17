@@ -134,7 +134,7 @@ export default function Drawer({
             }}>
             <ListItemButton
               onClick={() => onNavigate(menu.href)}
-              selected={pathname.includes(menu.href)}
+              selected={pathname === menu.href}
               sx={[
                 {
                   minHeight: 48,

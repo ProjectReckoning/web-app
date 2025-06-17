@@ -1,10 +1,10 @@
 import { create } from 'zustand'
-import { getAllPockets } from '../use-cases/get-all-pockets.usecase';
-import { Pocket } from '../entities/pocket.entites';
+import { getAllPocketsUsecase } from '../use-cases/get-all-pockets.usecase';
+import { PocketEntity } from '../entities/pocket.entites';
 
 type PocketStore = {
-  pockets: Pocket[];
-  selectedPocket: Pocket | null;
+  pockets: PocketEntity[];
+  selectedPocket: PocketEntity | null;
   isLoading: boolean;
   errorMessage: string | null;
   getAllPockets: () => Promise<void>;
@@ -21,7 +21,7 @@ const pocketStore = create<PocketStore>((set, get) => ({
     set({ isLoading: true })
     set({ errorMessage: null })
     try {
-      const pockets = await getAllPockets()
+      const pockets = await getAllPocketsUsecase()
       set({ pockets })
     } catch (error) {
       console.error(error)
@@ -42,7 +42,7 @@ const pocketStore = create<PocketStore>((set, get) => ({
     if (selectedPocket) {
       set({ selectedPocket })
     }
-  }
+  },
 }))
 
 export default pocketStore

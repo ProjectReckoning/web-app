@@ -17,7 +17,6 @@ export default function Page() {
     }
   }, [phoneNumberStore]);
 
-  console.log(phoneNumber)
   return (
     <>
       <Typography variant="h4" component="h2" fontWeight={600} textAlign="center">

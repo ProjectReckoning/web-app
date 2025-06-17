@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { Box, Button, useMediaQuery } from '@mui/material';
 import { purple } from '@/lib/custom-color';
-import { Pocket } from '@/features/pocket/entities/pocket.entites';
+import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import { Icon } from '@iconify/react';
 
 const drawerWidth = 300;
@@ -41,7 +41,7 @@ const StyledAppBar = styled(MuiAppBar, {
 interface AppbarComponentProps {
   isOpen: boolean;
   selectedPocketId: string;
-  pockets: Pocket[];
+  pockets: PocketEntity[];
   onLogout: () => void;
 }
 

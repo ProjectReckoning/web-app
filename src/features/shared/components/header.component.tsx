@@ -10,17 +10,11 @@ import Appbar from './app-bar.component';
 import Drawer, { DrawerMenuItem } from './drawer';
 import { Icon } from '@iconify/react';
 import { PocketMenuItem } from '../entities/pocket-menu-item';
-import { Pocket } from '@/features/pocket/entities/pocket.entites';
+import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import { purple } from '@/lib/custom-color';
 
-const menus: DrawerMenuItem[] = [
-  { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: '/dashboard' },
-  { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: '#' },
-  { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: '#' },
-  { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: '#' },
-];
 
-function getAvailablePocketsMenu(pockets: Pocket[]): PocketMenuItem[] {
+function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
   const isAdminOrOwner = pockets.some((p) => p.user_role === 'admin' || p.user_role === 'owner');
 
   const pocketMenu = pockets.map((pocket) => ({
@@ -34,7 +28,7 @@ function getAvailablePocketsMenu(pockets: Pocket[]): PocketMenuItem[] {
     pocketMenu.unshift({
       id: 'global',
       name: 'Semua Pocket',
-      icon: "material-symbols:money-bag-outline",
+      icon: "pocket",
       color: purple[500],
     });
   }
@@ -43,7 +37,7 @@ function getAvailablePocketsMenu(pockets: Pocket[]): PocketMenuItem[] {
     pocketMenu.push({
       id: '',
       name: 'Pilih Pocket',
-      icon: "material-symbols:money-bag-outline",
+      icon: "error",
       color: purple[500],
     });
   }
@@ -60,6 +54,13 @@ export default function Header() {
 
   const router = useRouter();
   const pathname = usePathname();
+
+  const menus: DrawerMenuItem[] = [
+    { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: `/dashboard/${selectedPocketId}` },
+    { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: `/dashboard/${selectedPocketId}/transactions` },
+    { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: `/dashboard/${selectedPocketId}/members` },
+    { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: `/dashboard/${selectedPocketId}/settings` },
+  ];
 
   useEffect(() => {
     const fetchAndSetPockets = async () => {

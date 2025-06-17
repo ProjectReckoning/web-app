@@ -8,7 +8,7 @@ export enum PocketStatus {
   INACTIVE = 'inactive',
 }
 
-export type Pocket = {
+export type PocketEntity = {
   id: string;
   name: string;
   type: PocketType;

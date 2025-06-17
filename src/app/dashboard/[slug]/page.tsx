@@ -42,7 +42,7 @@ const sampleData: PieChartTabData[] = [
         label: 'Penjualan',
         value: 770000,
         color: '#B57BFF',
-        icon:  <Icon icon="mdi:upload" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:upload" style={{ color: 'white' }} />,
         transactionCount: 8,
       },
       {
@@ -61,7 +61,7 @@ const sampleData: PieChartTabData[] = [
         label: 'Salary',
         value: 40000,
         color: '#FFD700',
-        icon:  <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
       {
@@ -159,7 +159,6 @@ export default function Page() {
           flex={1}
           minWidth={300}
         />
-
       </Box>
 
       <Stack spacing={2}>

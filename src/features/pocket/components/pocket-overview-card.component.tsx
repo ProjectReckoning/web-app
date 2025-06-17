@@ -4,11 +4,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Icon } from '@iconify/react';
-import { Pocket } from '../entities/pocket.entites';
+import { PocketEntity } from '../entities/pocket.entites';
 import formatCurrency from '@/lib/format-currency';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 
-export default function PocketOverviewCard(pocket: Pocket) {
+export default function PocketOverviewCard(pocket: PocketEntity) {
   return (
     <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined'>
       <CardContent sx={{ padding: 0}}>

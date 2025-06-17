@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { purple } from '@/lib/custom-color';
 import { Icon } from '@iconify/react';
+import CustomIcon from './custom-icon.component';
 
 export interface PocketMenuItem {
   id: string;
@@ -97,7 +98,7 @@ export default function PocketSelect({
 
         return (
           <Box display="flex" alignItems="center" gap={1}>
-            <Icon icon={pocketToDisplay.icon} style={{ color: isOpen ? 'white' : pocketToDisplay.color, fontSize: 24 }} />
+            <CustomIcon name={pocketToDisplay.icon} style={{ color: isOpen ? 'white' : pocketToDisplay.color, fontSize: 24 }} />
             {isOpen && (
               <Box component="span" sx={{ color: isOpen ? 'white' : pocketToDisplay.color }}>
                 {pocketToDisplay.name}
@@ -140,7 +141,7 @@ export default function PocketSelect({
           })}
         >
           <Box display="flex" alignItems="center" gap={1}>
-            <Icon icon={pocket.icon} className="icon" style={{ fontSize: 24 }} />
+            <CustomIcon name={pocket.icon} style={{ fontSize: 24 }} />
             <Box component="span">{pocket.name}</Box>
           </Box>
         </MenuItem>

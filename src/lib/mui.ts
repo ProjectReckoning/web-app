@@ -10,6 +10,7 @@ declare module '@mui/material/styles' {
     red: Palette['primary'];
     orange: Palette['primary'];
     border: Palette['primary'];
+    yellow: Palette['primary'];
   }
   interface PaletteOptions {
     tosca?: PaletteColorOptions;
@@ -20,6 +21,7 @@ declare module '@mui/material/styles' {
     red?: PaletteColorOptions;
     orange?: PaletteColorOptions;
     border?: PaletteColorOptions;
+    yellow?: PaletteColorOptions;
   }
 }
 
@@ -34,5 +36,6 @@ declare module '@mui/material/Button' {
 declare module '@mui/material/IconButton' {
   interface IconButtonPropsColorOverrides {
     purple: true;
+    gray: true;
   }
 }

@@ -1,33 +1,95 @@
 import api from "@/lib/api";
-import { PocketResponse, PocketResponseItem } from "../entities/pocket-response.entities";
-import { Pocket } from "../entities/pocket.entites";
+import { PocketEntity } from "../entities/pocket.entites";
+import { PocketResponse, PocketResponseItem } from "../entities/get-pocket-response.entities";
+import { DetailPocketEntity, PocketMemberRole } from "../entities/detail-pocket.entities";
+import { GetPocketDetailResponse, PocketDetailResponseItem as PocketDetailResponseItem } from "../entities/get-pocket-detail-response";
 
 class PocketRepository {
-  async getAllPocket(): Promise<Pocket[]> {
+  async getAllPocket(): Promise<PocketEntity[]> {
     const response = await api.get('/pocket')
     const responseData = response.data as PocketResponse
     const data = responseData.data
-  
+
     return data.map((item: PocketResponseItem) => this.mapApiPocketToEntity(item))
   }
 
-  private mapApiPocketToEntity(data: PocketResponseItem): Pocket {
+  async getDetailPocket(pocketId: string): Promise<DetailPocketEntity> {
+    const response = await api.get(`/pocket/${pocketId}`)
+    const responseData = response.data as GetPocketDetailResponse
+    const data = responseData.data
+
+    return this.mapApiPocketDetailToEntity(data)
+  }
+
+  private mapApiPocketToEntity(data: PocketResponseItem): PocketEntity {
     return ({
       id: data.pocket_id.toString(),
       name: data.name,
-      type: data.type as Pocket['type'],
+      type: data.type as PocketEntity['type'],
       target_nominal: parseFloat(data.target_nominal),
       current_balance: parseFloat(data.current_balance),
       deadline: data.deadline ? new Date(data.deadline) : null,
-      status: data.status as Pocket['status'],
+      status: data.status as PocketEntity['status'],
       icon: data.icon_name,
       color: data.color_hex,
       account_number: data.account_number,
-      user_role: data.user_role as Pocket['user_role'],
+      user_role: data.user_role as PocketEntity['user_role'],
       income: data.income,
       outcome: data.outcome,
     })
   }
+
+  private mapApiPocketDetailToEntity(data: PocketDetailResponseItem): DetailPocketEntity {
+    return {
+      id: data.id.toString(),
+      name: data.name,
+      type: data.type,
+      targetNominal: data.target_nominal,
+      balance: data.current_balance,
+      deadline: data.deadline ? new Date(data.deadline) : null,
+      status: data.status,
+      icon: data.icon_name,
+      color: data.color_hex,
+      accountNumber: data.account_number,
+      ownerUserId: data.owner_user_id,
+      owner: {
+        id: data.owner.id,
+        name: data.owner.name,
+        phoneNumber: data.owner.phone_number,
+      },
+      members: data.members.map(member => ({
+        id: member.id,
+        name: member.name,
+        phoneNumber: member.phone_number,
+        metadata: {
+          id: member.PocketMember.id,
+          userId: member.PocketMember.user_id,
+          pocketId: member.PocketMember.pocket_id,
+          role: this.mapApiPocketMemberRole(member.PocketMember.role),
+          contributionAmount: member.PocketMember.contribution_amount,
+          joinedAt: member.PocketMember.joined_at ?? null,
+          isActive: member.PocketMember.is_active ?? null,
+          createdAt: member.PocketMember.createdAt,
+          updatedAt: member.PocketMember.updatedAt,
+        }
+      })),
+      userRole: data.user_role ? this.mapApiPocketMemberRole(data.user_role) : PocketMemberRole.Member,
+    };
+  }
+
+  private mapApiPocketMemberRole(role: string): PocketMemberRole {
+    switch (role) {
+      case "owner":
+        return PocketMemberRole.Owner
+      case "admin":
+        return PocketMemberRole.Admin
+      case "viewer":
+        return PocketMemberRole.Member
+      default:
+        throw new Error(`Unknown role: ${role}`);
+    }
+  }
+
 }
 
 const pocketRepository = new PocketRepository()
