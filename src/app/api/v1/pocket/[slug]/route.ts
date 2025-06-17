@@ -125,12 +125,14 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
   },
 };
 
-export async function GET(_: Request, { params }: { params: { slug: string } }): Promise<Response> {
+export async function GET(req: Request): Promise<Response> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const pocketId = parseInt(params.slug);
-  const pocketDetail = mockDetails[pocketId];
+  const url = new URL(req.url);
+  const slug = url.pathname.split("/").pop();
+  const pocketId = parseInt(slug ?? "");
 
+  const pocketDetail = mockDetails[pocketId];
 
   const response: GetPocketDetailResponse = {
     ok: true,
