@@ -56,4 +56,6 @@ export interface DetailPocketEntity {
   owner: PocketOwner;
   members: PocketMember[];
   userRole: PocketMemberRole;
+  income: number;
+  outcome: number;
 }

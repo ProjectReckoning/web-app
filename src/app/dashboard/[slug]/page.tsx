@@ -87,9 +87,9 @@ const sampleData: PieChartTabData[] = [
 ];
 
 export default function Page() {
-  const { isLoading } = detailPocketStore();
+  const { isLoading, pocket } = detailPocketStore();
 
-  if (isLoading) {
+  if (isLoading || !pocket) {
     return (
       <Box
         sx={{
@@ -135,12 +135,13 @@ export default function Page() {
           flex: 1,
         }}>
           <PocketCard
-            title="Donat Bahagia"
-            accountNumber="02389280392"
-            balance={1000000}
+            title={pocket.name}
+            accountNumber={pocket.accountNumber}
+            balance={pocket.balance}
+            color={pocket.color}
             icon="material-symbols:money-bag-outline"
             sx={{
-              backgroundColor: 'orange.main',
+              backgroundColor: pocket.color,
               borderRadius: 4,
               padding: 3,
               paddingRight: {
@@ -159,8 +160,8 @@ export default function Page() {
             top="10%"
             bottom="10%"
             right={0}
-            income={1100000}
-            expense={100000}
+            income={pocket.income}
+            expense={pocket.outcome}
             sx={{
               backgroundColor: 'white',
               position: {

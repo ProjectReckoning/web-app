@@ -52,6 +52,8 @@ class PocketRepository {
       color: data.color_hex,
       accountNumber: data.account_number,
       ownerUserId: data.owner_user_id,
+      income: data.income,
+      outcome: data.outcome,
       owner: {
         id: data.owner.id,
         name: data.owner.name,

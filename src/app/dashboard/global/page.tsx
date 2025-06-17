@@ -115,7 +115,7 @@ export default function Page() {
         gap: 8,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 3, overflowX: 'auto', width: '100%' }}>
+      <Box sx={{ display: 'flex', gap: 3, overflowX: 'auto', width: '100%', py: 2 }}>
         {pockets.map((pocket) => (
           <PocketOverviewCard key={pocket.id} {...pocket} />
         ))}
