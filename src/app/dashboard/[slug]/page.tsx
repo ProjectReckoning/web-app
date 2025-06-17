@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -11,6 +13,8 @@ import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
 import { Icon } from '@iconify/react';
+import Loading from '@/features/shared/components/loading.component';
+import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 
 const DATA: ChartData[] = [
   {
@@ -83,6 +87,25 @@ const sampleData: PieChartTabData[] = [
 ];
 
 export default function Page() {
+  const { isLoading } = detailPocketStore();
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          my: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '80vh',
+        }}
+      >
+        <Loading />
+      </Box>
+    );
+  }
+  
   return (
     <Box
       sx={{

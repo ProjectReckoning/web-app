@@ -12,6 +12,7 @@ import BEPInsightCard from '@/features/insight/components/bep-insight-card.compo
 import { Stack } from '@mui/material';
 import { Icon } from '@iconify/react';
 import pocketStore from '@/features/pocket/stores/pocket.store';
+import Loading from '@/features/shared/components/loading.component';
 
 const DATA: ChartData[] = [
   {
@@ -84,8 +85,25 @@ const sampleData: PieChartTabData[] = [
 ];
 
 export default function Page() {
-  const { pockets } = pocketStore()
- 
+  const { pockets, isLoading } = pocketStore()
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          my: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '80vh',
+        }}
+      >
+        <Loading />
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{

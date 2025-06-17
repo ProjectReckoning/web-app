@@ -31,7 +31,7 @@ export default function PocketMembersTable({
   const filteredData = data.filter(item => item.fullName.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <Box padding={2} {...props}>
+    <Box {...props}>
       <Box
         sx={{
           backgroundColor: color,
