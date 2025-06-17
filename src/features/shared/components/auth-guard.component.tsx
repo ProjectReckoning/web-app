@@ -4,27 +4,26 @@ import { usePathname, useRouter } from 'next/navigation';
 import authStore from '@/features/auth/stores/auth.store';
 
 export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>) {
-  // TODO: should use token rather than sessionId
-  const { sessionId } = authStore();
+  const { token } = authStore();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (sessionId === undefined || sessionId === null || sessionId === '') {
+    if (token === undefined || token === null || token === '') {
       router.replace('/auth');
       return;
     }
 
-    if (pathname === '/auth' && sessionId) {
+    if (pathname === '/auth' && token) {
       router.replace('/dashboard');
       return;
     }
 
-    if (pathname === '/' && sessionId) {
+    if (pathname === '/' && token) {
       router.replace('/dashboard');
       return;
     }
-  }, [pathname, sessionId, router]);
+  }, [pathname, token, router]);
 
   return <>{children}</>;
 }

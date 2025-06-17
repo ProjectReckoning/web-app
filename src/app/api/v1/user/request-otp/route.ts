@@ -30,6 +30,7 @@ export async function POST(req: Request) {
   const response = {
     message: "success",
     data: {
+      phone_number: phone_number,
       sessionId: "session-id"
     }
   }
