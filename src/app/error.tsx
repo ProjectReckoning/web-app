@@ -15,7 +15,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <Container maxWidth="sm" sx={{ textAlign: 'center', py: 10 }}>
+    <Container maxWidth="sm" sx={{ textAlign: 'center', py: "25vh" }}>
       <Stack spacing={4} alignItems="center">
         <Icon icon="material-symbols:error-outline-rounded" width={80} height={80} color="red" />
 
@@ -24,13 +24,13 @@ export default function Error({ error, reset }: ErrorPageProps) {
         </Typography>
 
         <Typography variant="body1" color="text.secondary">
-          Maaf, terjadi kesalahan saat memuat halaman. Coba lagi atau kembali ke halaman sebelumnya.
+          Maaf, terjadi kesalahan saat memuat halaman. Hubungi tim dukungan kami jika masalah ini terus berlanjut.
         </Typography>
 
         <Stack direction="row" spacing={2} justifyContent="center">
           <Button
             variant="contained"
-            color="primary"
+            color="orange"
             onClick={() => reset()}
           >
             Coba Lagi
@@ -38,6 +38,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
 
           <Button
             variant="outlined"
+            color="black"
             onClick={() => window.location.href = '/'}
           >
             Kembali ke Beranda

@@ -31,6 +31,7 @@ declare module '@mui/material/Button' {
     limeGreen: true;
     gray: true;
     black: true;
+    orange: true;
   }
 }
 

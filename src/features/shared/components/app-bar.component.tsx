@@ -53,7 +53,7 @@ const Appbar: React.FC<AppbarComponentProps> = ({ isOpen, selectedPocketId, pock
   const displayPocketColor = currentPocket?.color || purple[500];
 
   return (
-    <StyledAppBar position="fixed" open={isOpen}>
+    <StyledAppBar position="fixed" open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" paddingX={2}>
           <Box sx={{ display: { xs: "none", sm: "inline" } }} fontWeight="600" component="span">
