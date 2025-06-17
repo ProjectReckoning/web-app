@@ -10,16 +10,19 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
   const pathname = usePathname();
 
   useEffect(() => {
-    if (sessionId === undefined || sessionId === '') {
+    if (sessionId === undefined || sessionId === null || sessionId === '') {
       router.replace('/auth');
+      return;
     }
 
     if (pathname === '/auth' && sessionId) {
-        router.replace('/dashboard');
+      router.replace('/dashboard');
+      return;
     }
 
     if (pathname === '/' && sessionId) {
       router.replace('/dashboard');
+      return;
     }
   }, [pathname, sessionId, router]);
 
