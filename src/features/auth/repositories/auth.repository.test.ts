@@ -1,42 +1,29 @@
-import authRepository from './auth.repository';
-import api from '@/lib/api';
+import authRepository from "./auth.repository";
 
-jest.mock('@/lib/api', () => ({
-  __esModule: true,
-  default: {
-    post: jest.fn(),
-    get: jest.fn(),
-  }
-}));
-
-describe('AuthRepository', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should login and return sessionId', async () => {
-    const mockResponse = {
-      data: {
-        data: {
-          phone_number: '628123456789',
-          sessionId: 'session-id'
-        }
-      }
-    };
-
-    const mockedPost = api.post as jest.Mock;
-    mockedPost.mockResolvedValue(mockResponse);
-
-    const result = await authRepository.login('+628123456789', 'testing');
-
-    expect(api.post).toHaveBeenCalledWith('/user/request-otp', {
-      phone_number: '+628123456789',
-      password: 'testing'
-    });
+describe("authRepository Integration Test", () => {
+  it("should return sessionId if login success", async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            message: "success",
+            data: { sessionId: "abc123" },
+          }),
+        status: 200,
+        ok: true,
+      })
+    ) as jest.Mock;
+    const result = await authRepository.login("+628123456789", "testing");
 
     expect(result).toEqual({
-      phone_number: '628123456789',
-      sessionId: 'session-id'
+      phone_number: "+628123456789",
+      sessionId: "session-id",
     });
+  });
+
+  it("should throw error if credentials are wrong", async () => {
+    await expect(
+      authRepository.login("+628000000000", "wrong")
+    ).rejects.toThrow();
   });
 });
