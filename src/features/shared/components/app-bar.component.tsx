@@ -1,4 +1,3 @@
-// @/components/Appbar.tsx
 'use client';
 
 import React from 'react';
@@ -9,8 +8,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { Box, Button, useMediaQuery } from '@mui/material';
 import { purple } from '@/lib/custom-color';
-import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import { Icon } from '@iconify/react';
+import { PocketMenuItem } from '../entities/pocket-menu-item';
 
 const drawerWidth = 300;
 
@@ -41,7 +40,7 @@ const StyledAppBar = styled(MuiAppBar, {
 interface AppbarComponentProps {
   isOpen: boolean;
   selectedPocketId: string;
-  pockets: PocketEntity[];
+  pockets: PocketMenuItem[];
   onLogout: () => void;
 }
 

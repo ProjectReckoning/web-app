@@ -13,38 +13,6 @@ import { PocketMenuItem } from '../entities/pocket-menu-item';
 import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import { purple } from '@/lib/custom-color';
 
-
-function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
-  const isAdminOrOwner = pockets.some((p) => p.user_role === 'admin' || p.user_role === 'owner');
-
-  const pocketMenu = pockets.map((pocket) => ({
-    id: pocket.id,
-    name: pocket.name,
-    icon: pocket.icon,
-    color: pocket.color,
-  }));
-
-  if (isAdminOrOwner) {
-    pocketMenu.unshift({
-      id: 'global',
-      name: 'Semua Pocket',
-      icon: "pocket",
-      color: purple[500],
-    });
-  }
-
-  if (pocketMenu.length === 0) {
-    pocketMenu.push({
-      id: '',
-      name: 'Pilih Pocket',
-      icon: "error",
-      color: purple[500],
-    });
-  }
-
-  return pocketMenu;
-}
-
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { logout } = authStore();
@@ -125,7 +93,7 @@ export default function Header() {
       <Appbar
         isOpen={open}
         selectedPocketId={selectedPocketId}
-        pockets={pockets}
+        pockets={availablePocketsMenus}
         onLogout={handleLogout}
       />
       <Drawer
@@ -140,4 +108,35 @@ export default function Header() {
       />
     </>
   );
+}
+
+function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
+  const isAdminOrOwner = pockets.some((p) => p.user_role === 'admin' || p.user_role === 'owner');
+
+  const pocketMenu = pockets.map((pocket) => ({
+    id: pocket.id,
+    name: pocket.name,
+    icon: pocket.icon,
+    color: pocket.color,
+  }));
+
+  if (isAdminOrOwner) {
+    pocketMenu.unshift({
+      id: 'global',
+      name: 'Semua Pocket',
+      icon: "pocket",
+      color: purple[500],
+    });
+  }
+
+  if (pocketMenu.length === 0) {
+    pocketMenu.push({
+      id: '',
+      name: 'Pilih Pocket',
+      icon: "error",
+      color: purple[500],
+    });
+  }
+
+  return pocketMenu;
 }
