@@ -16,8 +16,7 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
   pocket: null,
 
   getDetailPocket: async (pocketId: string) => {
-    set({ isLoading: true })
-    set({ errorMessage: null })
+    set({ isLoading: true, errorMessage: null })
 
     try {
       const pocket = await getDetailPocketUsecase(pocketId)

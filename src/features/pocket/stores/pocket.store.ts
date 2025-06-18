@@ -18,9 +18,8 @@ const pocketStore = create<PocketStore>((set, get) => ({
   selectedPocket: null,
 
   getAllPockets: async () => {
-    set({ isLoading: true })
-    set({ errorMessage: null })
     try {
+      set({ isLoading: true, errorMessage: null })
       const pockets = await getAllPocketsUsecase()
       set({ pockets })
     } catch (error) {
@@ -32,7 +31,7 @@ const pocketStore = create<PocketStore>((set, get) => ({
 
   selectPocket: (pocketId?: string) => {
     const pockets = get().pockets;
-  
+
     if (!pocketId) {
       set({ selectedPocket: pockets[0] })
       return

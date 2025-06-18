@@ -3,29 +3,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
-import pocketStore from '@/features/pocket/stores/pocket.store';
-import Loading from '@/features/shared/components/loading.component';
 
 export default function Page() {
-  const { isLoading } = pocketStore();
-
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '80vh',
-        }}
-      >
-        <Loading />
-      </Box>
-    );
-  }
-
   return (
     <Box
       sx={{

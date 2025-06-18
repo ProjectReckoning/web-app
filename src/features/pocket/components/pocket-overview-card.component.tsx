@@ -16,9 +16,8 @@ export default function PocketOverviewCard({
   pocket: PocketEntity;
 } & CardProps) {
   const pocketColorShades = generateShades(pocket.color);
-  
-  return (
 
+  return (
     <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined' {...props}>
       <CardContent sx={{ padding: 0 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: pocketColorShades[100] }}>

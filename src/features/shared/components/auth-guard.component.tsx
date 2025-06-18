@@ -13,6 +13,17 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
     setHydrated(true);
   }, []);
 
+  // Simulate identity checking
+  // TODO: Replace with actual identity check logic
+  useEffect(() => {
+    authStore.setState({ isLoading: true });
+
+    const timeout = setTimeout(() => {
+      authStore.setState({ isLoading: false });
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     if (!hydrated) {

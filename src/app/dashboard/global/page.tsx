@@ -4,7 +4,6 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
-import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card.component';
 import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
@@ -12,7 +11,8 @@ import BEPInsightCard from '@/features/insight/components/bep-insight-card.compo
 import { Stack } from '@mui/material';
 import { Icon } from '@iconify/react';
 import pocketStore from '@/features/pocket/stores/pocket.store';
-import Loading from '@/features/shared/components/loading.component';
+import { useEffect } from 'react';
+import PocketOverviewList from '@/features/pocket/components/pocket-overview-list.component';
 
 const DATA: ChartData[] = [
   {
@@ -85,24 +85,11 @@ const sampleData: PieChartTabData[] = [
 ];
 
 export default function Page() {
-  const { pockets, isLoading } = pocketStore()
+  const { pockets, isLoading, getAllPockets } = pocketStore()
 
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '80vh',
-        }}
-      >
-        <Loading />
-      </Box>
-    );
-  }
+  useEffect(() => {
+    getAllPockets();
+  }, []);
 
   return (
     <Box
@@ -114,11 +101,11 @@ export default function Page() {
         gap: 8,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 3, overflowX: 'auto', width: '100%', py: 2 }}>
-        {pockets.map((pocket) => (
-          <PocketOverviewCard key={pocket.id} pocket={pocket} />
-        ))}
-      </Box>
+      <PocketOverviewList
+        isLoading={isLoading}
+        pockets={pockets}
+        sx={{ gap: 3, overflowX: 'auto', width: '100%', py: 2 }}
+      />
 
       <Stack spacing={2}>
         <Typography variant='h5'>

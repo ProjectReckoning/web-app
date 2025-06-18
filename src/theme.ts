@@ -151,6 +151,13 @@ const theme = createTheme({
         baseClassName: 'material-symbols-rounded',
       },
     },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 999,
+        },
+      },
+    },
   },
 });
 

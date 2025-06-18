@@ -48,7 +48,7 @@ function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { logout } = authStore();
-  const { pockets, getAllPockets, selectPocket } = pocketStore();
+  const { pockets, selectPocket } = pocketStore();
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
   const availablePocketsMenus = getAvailablePocketsMenu(pockets);
 
@@ -64,17 +64,6 @@ export default function Header() {
       { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: `/dashboard/${selectedPocketId}/members` },
       { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: `/dashboard/${selectedPocketId}/settings` },
     ]
-
-
-  useEffect(() => {
-    const fetchAndSetPockets = async () => {
-      await getAllPockets();
-    };
-
-    if (availablePocketsMenus.length === 0 || availablePocketsMenus[0].id === '') {
-      fetchAndSetPockets();
-    }
-  }, [getAllPockets, availablePocketsMenus.length]);
 
   useEffect(() => {
     if (availablePocketsMenus.length === 0 || availablePocketsMenus[0].id === '') {

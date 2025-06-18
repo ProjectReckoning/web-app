@@ -113,7 +113,7 @@ export interface AddPocketResponse {
 }
 
 export async function GET(): Promise<Response> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const response: GetPocketsResponse = {
     message: "success",
@@ -192,7 +192,7 @@ export async function POST(req: Request): Promise<Response> {
 
   pockets.push(newPocket);
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const response: AddPocketResponse = {
     message: "Pocket added successfully",

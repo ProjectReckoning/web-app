@@ -7,11 +7,12 @@ import { useEffect } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { pocket, getDetailPocket } = detailPocketStore();
-  const { selectedPocket } = pocketStore();
+  const { selectedPocket, getAllPockets } = pocketStore();
   const pathname = usePathname();
 
   useEffect(() => {
     if (!selectedPocket) {
+      getAllPockets();
       return;
     }
     
