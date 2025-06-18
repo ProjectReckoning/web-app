@@ -8,11 +8,13 @@ import { modalStore } from "@/features/shared/store/modal.store";
 import { limeGreen, orange, tosca } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 
 export default function Page() {
   const { pocket, getAllMembers } = detailPocketStore();
 
   const { openModal } = modalStore();
+  const [editableKey, setEditableKey] = useState<string | null>(null);
 
   const onRemoveMemberClicked = () => {
     openModal(<RemoveMemberConfirmationModalContent />);
@@ -25,23 +27,57 @@ export default function Page() {
   const admins = getAllMembers(PocketMemberRole.Admin);
   const members = getAllMembers(PocketMemberRole.Member);
 
-  const adminData: PocketMembersTableRow[] = [...admins, ...owners].map(member => {
+  const editEditableKey = (key: string) => {
+      if (editableKey === key) {
+        setEditableKey(null);
+        return;
+      }
+
+      setEditableKey(key);
+    }
+
+  const ownerData: PocketMembersTableRow[] = owners.map(member => {
     const data: PocketMembersTableRow = {
+      key: member.id.toString(),
       fullName: member.name,
-      role: member.metadata?.role ?? PocketMemberRole.Member,
+      role: member.metadata?.role ?? PocketMemberRole.Owner,
+      color: orange[300],
+      iconName: "mdi:crown",
+    }
+
+    if (!isCurrentUser(member.id) && (pocket?.userRole === PocketMemberRole.Owner || pocket?.userRole === PocketMemberRole.Admin)) {
+      data.actions = <>
+        <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="bi:trash" onClick={onRemoveMemberClicked} /></IconButton>
+        <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={() => editEditableKey(member.id.toString())}><Icon icon="ph:pencil-simple-bold" /></IconButton>
+      </>;
+    }
+
+    if (isCurrentUser(member.id)) {
+      data.actions = <>
+        <Button color="gray" startIcon={<Icon icon="material-symbols:door-open-outline" />} size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={onLeavePocketClicked}>Keluar dari pocket ini</Button>
+      </>;
+    }
+
+    return data;
+  })
+
+  const adminData: PocketMembersTableRow[] = admins.map(member => {
+    const data: PocketMembersTableRow = {
+      key: member.id.toString(),
+      fullName: member.name,
+      role: member.metadata?.role ?? PocketMemberRole.Owner,
       color: member.metadata?.role === PocketMemberRole.Owner ? orange[300] : tosca[300],
       iconName: "mdi:crown",
     }
 
-    if (pocket?.userRole === PocketMemberRole.Owner) {
+    if (!isCurrentUser(member.id) && (pocket?.userRole === PocketMemberRole.Owner)) {
       data.actions = <>
         <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="bi:trash" onClick={onRemoveMemberClicked} /></IconButton>
-        <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="ph:pencil-simple-bold" /></IconButton>
+        <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={() => editEditableKey(member.id.toString())}><Icon icon="ph:pencil-simple-bold" /></IconButton>
       </>;
     }
 
-    // TODO: Compare member.id with current user id
-    if (pocket?.userRole !== PocketMemberRole.Owner && member.id === 3) {
+    if (isCurrentUser(member.id)) {
       data.actions = <>
         <Button color="gray" startIcon={<Icon icon="material-symbols:door-open-outline" />} size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={onLeavePocketClicked}>Keluar dari pocket ini</Button>
       </>;
@@ -52,6 +88,7 @@ export default function Page() {
 
   const memberData: PocketMembersTableRow[] = members.map(member => {
     const data: PocketMembersTableRow = {
+      key: member.id.toString(),
       fullName: member.name,
       role: member.metadata?.role ?? PocketMemberRole.Member,
       color: limeGreen[300],
@@ -61,12 +98,12 @@ export default function Page() {
     if (pocket?.userRole === PocketMemberRole.Owner || pocket?.userRole === PocketMemberRole.Admin) {
       data.actions = <>
         <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="bi:trash" onClick={onRemoveMemberClicked} /></IconButton>
-        <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="ph:pencil-simple-bold" /></IconButton>
+        <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={() => editEditableKey(member.id.toString())}><Icon icon="ph:pencil-simple-bold" /></IconButton>
       </>;
     }
 
     // TODO: Compare member.id with current user id
-    if (member.id === 3) {
+    if (isCurrentUser(member.id)) {
       data.actions = <>
         <Button color="gray" startIcon={<Icon icon="material-symbols:door-open-outline" />} size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={onLeavePocketClicked}>Keluar dari pocket ini</Button>
       </>;
@@ -74,6 +111,11 @@ export default function Page() {
 
     return data;
   });
+
+  const onRoleEdited = (key: string, newRole: PocketMemberRole) => {
+    console.log(`Role for member with key ${key} changed to ${newRole}`);
+    setEditableKey(null);
+  }
 
   return (
     <>
@@ -88,9 +130,11 @@ export default function Page() {
         </Typography>
 
         <PocketMembersTable
-          data={adminData}
+          data={[...ownerData, ...adminData]}
           title="Admin"
           color="tosca.light"
+          editableKey={editableKey}
+          onRoleEdited={onRoleEdited}
         />
 
         <PocketMembersTable
@@ -99,6 +143,8 @@ export default function Page() {
           color="limeGreen.light"
           paddingTop={4}
           useSearch
+          editableKey={editableKey}
+          onRoleEdited={onRoleEdited}
         />
       </Stack>
       <Modal />
@@ -185,4 +231,9 @@ function LeavePocketConfirmationModalContent() {
       </Box>
     </Stack>
   );
+}
+
+function isCurrentUser(memberId: number): boolean {
+  // TODO: change this to use the current user's ID from the auth store
+  return memberId === 1;
 }
