@@ -119,7 +119,7 @@ export default function Page() {
 
   return (
     <>
-      <Typography variant='h5' fontWeight="bold">
+      <Typography variant='h5'>
         Atur Anggota Kamu
       </Typography>
 

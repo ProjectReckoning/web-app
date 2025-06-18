@@ -115,7 +115,7 @@ export default function Page() {
         />
       </Box>
 
-      <Typography variant='h5' fontWeight="bold" mt={8}>
+      <Typography variant='h5' mt={8}>
         Rekap Keuanganmu
       </Typography>
 

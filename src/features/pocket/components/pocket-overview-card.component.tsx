@@ -1,20 +1,29 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
+import Card, { CardProps } from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Icon } from '@iconify/react';
 import { PocketEntity } from '../entities/pocket.entites';
 import formatCurrency from '@/lib/format-currency';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
+import generateShades from '@/lib/generate-shades';
 
-export default function PocketOverviewCard(pocket: PocketEntity) {
+export default function PocketOverviewCard({
+  pocket,
+  ...props
+}: {
+  pocket: PocketEntity;
+} & CardProps) {
+  const pocketColorShades = generateShades(pocket.color);
+  
   return (
-    <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined'>
-      <CardContent sx={{ padding: 0}}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: 'purple.light'}}>
-          <Box padding={1} sx={{ padding: 2, backgroundColor: pocket.color, color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <CustomIcon name={pocket.icon} style={{ fontSize: 24, color: 'white' }} />
+
+    <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined' {...props}>
+      <CardContent sx={{ padding: 0 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: pocketColorShades[100] }}>
+          <Box padding={1.5} sx={{ backgroundColor: pocket.color, color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <CustomIcon name={pocket.icon} style={{ fontSize: 36, color: 'white' }} />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, marginTop: 2 }}>
             <Typography variant="body1" fontWeight={600} component="p">
@@ -32,7 +41,7 @@ export default function PocketOverviewCard(pocket: PocketEntity) {
         </Box>
 
         <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', px: 2 }}>
-          <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 0.5 }} color="green.main">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }} color="green.main">
             <Typography variant="body2">
               <Icon icon="lets-icons:in" style={{ fontSize: 16, verticalAlign: 'middle', marginRight: 2 }} />
               Pemasukan
@@ -43,7 +52,7 @@ export default function PocketOverviewCard(pocket: PocketEntity) {
             </Typography>
           </Box>
 
-          <Box sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 0.5 }} color="red.main">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }} color="red.main">
             <Typography variant="body2">
               <Icon icon="lets-icons:out" style={{ fontSize: 16, verticalAlign: 'middle', marginRight: 2 }} />
               Pengeluaran

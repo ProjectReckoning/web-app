@@ -116,12 +116,12 @@ export default function Page() {
     >
       <Box sx={{ display: 'flex', gap: 3, overflowX: 'auto', width: '100%', py: 2 }}>
         {pockets.map((pocket) => (
-          <PocketOverviewCard key={pocket.id} {...pocket} />
+          <PocketOverviewCard key={pocket.id} pocket={pocket} />
         ))}
       </Box>
 
       <Stack spacing={2}>
-        <Typography variant='h6'>
+        <Typography variant='h5'>
           Pilih Periode
         </Typography>
         <Box width="fit-content">
@@ -131,12 +131,12 @@ export default function Page() {
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Typography variant='h6'>Grafik Keuanganmu</Typography>
+          <Typography variant='h5'>Grafik Keuanganmu</Typography>
           <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} height={250} />
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Typography variant='h6'>Transaksi terakhir</Typography>
+          <Typography variant='h5'>Transaksi terakhir</Typography>
           <TransactionOverviewCard sx={{
             border: 1,
             borderColor: "border.main",
@@ -147,7 +147,7 @@ export default function Page() {
       </Box>
 
       <Stack spacing={2}>
-        <Typography variant='h6'>Rekap Keuanganmu</Typography>
+        <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
           <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
           <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
