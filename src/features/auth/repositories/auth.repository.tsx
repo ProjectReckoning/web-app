@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { UserEntity } from "../entities/user.entities";
 
 class AuthRepository {
   async login(phoneNumber: string, password: string): Promise<{ phone_number: string, sessionId: string }> {
@@ -26,6 +27,12 @@ class AuthRepository {
     })
 
     return response.data?.data
+  }
+
+  async me(): Promise<UserEntity> {
+    const response = await api.get('/user/me');
+
+    return response.data?.data;
   }
 }
 
