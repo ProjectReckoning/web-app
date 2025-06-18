@@ -29,7 +29,6 @@ export default function Page() {
   return (
     <Box
       sx={{
-        my: 4,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

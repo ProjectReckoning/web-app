@@ -131,6 +131,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          borderRadius: 999,
+        },
+      },
+    },
     MuiMenuItem: {
       styleOverrides: {
         root: {

@@ -107,7 +107,6 @@ export default function Page() {
   return (
     <Box
       sx={{
-        my: 8,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'start',

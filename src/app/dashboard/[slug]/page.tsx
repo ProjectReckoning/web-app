@@ -93,7 +93,6 @@ export default function Page() {
     return (
       <Box
         sx={{
-          my: 4,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -109,7 +108,6 @@ export default function Page() {
   return (
     <Box
       sx={{
-        my: 8,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'start',
@@ -117,7 +115,7 @@ export default function Page() {
         gap: 8,
       }}
     >
-      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
+      <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={2}>
         <Box sx={{
           position: {
             xs: 'static',
@@ -133,7 +131,8 @@ export default function Page() {
           },
           gap: 2,
           flex: 1,
-        }}>
+        }}
+        >
           <PocketCard
             title={pocket.name}
             accountNumber={pocket.accountNumber}
@@ -154,6 +153,7 @@ export default function Page() {
               }
             }}
             minWidth={300}
+            height="100%"
             flex={1}
           />
           <IncomeOutcomeCard
