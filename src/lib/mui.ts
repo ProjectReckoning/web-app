@@ -30,6 +30,8 @@ declare module '@mui/material/Button' {
     tosca: true;
     limeGreen: true;
     gray: true;
+    black: true;
+    orange: true;
   }
 }
 

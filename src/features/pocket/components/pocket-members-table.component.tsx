@@ -1,10 +1,15 @@
 'use client';
 
 import React from 'react';
-import { Box, Typography, Avatar, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, BoxProps, TextField } from '@mui/material';
+import { Box, Typography, Avatar, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, BoxProps, TextField, MenuItem } from '@mui/material';
 import { Icon } from '@iconify/react';
+import Select from '@/features/shared/components/select.component';
+import { limeGreen, tosca } from '@/lib/custom-color';
+import generateShades from '@/lib/generate-shades';
+import { PocketMemberRole } from '../entities/detail-pocket.entities';
 
 export interface PocketMembersTableRow {
+  key: string;
   fullName: string;
   role: string;
   color: string;
@@ -17,21 +22,31 @@ export interface PocketMembersTableProps {
   title: string;
   color?: string;
   useSearch?: boolean;
+  editableKey?: string | null;
+  onRoleEdited: (key: string, newRole: PocketMemberRole) => void;
 }
+
+const roleColors: Record<string, string> = {
+  admin: tosca[300],
+  member: limeGreen[300],
+};
 
 export default function PocketMembersTable({
   title,
   data,
   color = 'tosca.main',
   useSearch,
+  editableKey,
+  onRoleEdited,
   ...props
 }: BoxProps & PocketMembersTableProps) {
   const [query, setQuery] = React.useState('');
 
   const filteredData = data.filter(item => item.fullName.toLowerCase().includes(query.toLowerCase()));
+  const isHaveActions = data.some((it) => it.actions);
 
   return (
-    <Box padding={2} {...props}>
+    <Box {...props}>
       <Box
         sx={{
           backgroundColor: color,
@@ -73,7 +88,7 @@ export default function PocketMembersTable({
             <TableRow sx={{ backgroundColor: color }}>
               <TableCell><Typography fontWeight={700}>Nama</Typography></TableCell>
               <TableCell><Typography fontWeight={700}>Role</Typography></TableCell>
-              {data[0]?.actions && <TableCell></TableCell>}
+              {isHaveActions && <TableCell></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -88,6 +103,8 @@ export default function PocketMembersTable({
             )}
 
             {filteredData.map((item, index) => {
+              const isEditing = item.key === editableKey;
+
               return (
                 <TableRow key={index}>
                   <TableCell>
@@ -99,24 +116,32 @@ export default function PocketMembersTable({
                     </Box>
                   </TableCell>
                   <TableCell>
-                    <Chip
-                      label={item.role}
-                      sx={{
-                        fontWeight: 700,
-                        color: 'black',
-                        bgcolor: item.color,
-                        borderRadius: '999px',
-                        px: 2,
-                        py: 1,
-                        fontSize: 14,
-                      }}
-                    />
+                    {isEditing ? (
+                      <SelectRole defaultValue={item.role} onRoleEdited={(newRole: PocketMemberRole) => onRoleEdited(item.key, newRole)} />
+                    ) : (
+                      <Chip
+                        clickable={false}
+                        label={item.role}
+                        sx={{
+                          pointerEvents: 'none',
+                          fontWeight: 700,
+                          color: 'black',
+                          bgcolor: item.color,
+                          borderRadius: '999px',
+                          px: 2,
+                          py: 1,
+                          fontSize: 14,
+                        }}
+                      />
+                    )}
                   </TableCell>
-                  {item.actions && (
+                  {isHaveActions && (
                     <TableCell>
-                      <Box display="flex" justifyContent="flex-end" gap={1}>
-                        {item.actions}
-                      </Box>
+                      {item.actions && (
+                        <Box display="flex" justifyContent="flex-end" gap={1}>
+                          {item.actions}
+                        </Box>
+                      )}
                     </TableCell>
                   )}
                 </TableRow>
@@ -128,3 +153,89 @@ export default function PocketMembersTable({
     </Box>
   );
 };
+
+function SelectRole({
+  defaultValue = 'member',
+  onRoleEdited
+}: {
+  defaultValue?: string,
+  onRoleEdited: (newRole: PocketMemberRole) => void
+}) {
+  const [value, setValue] = React.useState(defaultValue);
+
+  const roleMap: Record<string, PocketMemberRole> = {
+    admin: PocketMemberRole.Admin,
+    member: PocketMemberRole.Member,
+  };
+
+  return (
+    <Select
+      defaultValue={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+        onRoleEdited(roleMap[e.target.value as string]);
+      }}
+      variant="outlined"
+      displayEmpty
+      renderValue={(selected) => (
+        <Chip
+          label={selected as string}
+          clickable={false}
+          sx={{
+            bgcolor: "transparent",
+            pointerEvents: 'none',
+            fontWeight: 700,
+            color: 'black',
+            borderRadius: '999px',
+            fontSize: 14,
+          }}
+        />
+      )}
+      sx={{
+        bgcolor: roleColors[value],
+        borderRadius: '999px',
+        px: 1.5,
+        py: 0.25,
+        height: 'auto',
+        '.MuiSelect-select': {
+          display: 'flex',
+          alignItems: 'center',
+          p: 0,
+        },
+        '& fieldset': {
+          border: 'none',
+        },
+        '& .MuiSelect-select': {
+          paddingRight: '8px !important',
+        },
+      }}
+      MenuProps={{
+        PaperProps: {
+          sx: {
+            paddingX: 1,
+            borderRadius: 4,
+          },
+        },
+      }}
+    >
+      {['admin', 'member',].map((role) => (
+        <MenuItem key={role} value={role} sx={{ padding: 0, my: 1 }}>
+          <Chip
+            label={role.charAt(0).toUpperCase() + role.slice(1)}
+            sx={{
+              bgcolor: roleColors[role],
+              pointerEvents: 'none',
+              width: '100%',
+              color: 'black',
+              fontWeight: 'bold',
+              borderRadius: '999px',
+              "&:hover": {
+                bgcolor: generateShades(roleColors[role])[800],
+              },
+            }}
+          />
+        </MenuItem>
+      ))}
+    </Select>
+  )
+}

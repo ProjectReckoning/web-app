@@ -38,7 +38,7 @@ const pockets: Pocket[] = [
     icon_name: "Airplane",
     color_hex: "#FF5722",
     account_number: "123456789",
-    user_role: "user",
+    user_role: "viewer",
     income: 0,
     outcome: 0
   },
@@ -53,7 +53,7 @@ const pockets: Pocket[] = [
     icon_name: "Pocket",
     color_hex: "#4CAF50",
     account_number: "987654321",
-    user_role: "user",
+    user_role: "viewer",
     income: 0,
     outcome: 0
   },
@@ -68,12 +68,12 @@ const pockets: Pocket[] = [
     icon_name: "Pocket",
     color_hex: "#2196F3",
     account_number: "112233445",
-    user_role: "user",
+    user_role: "viewer",
     income: 0,
     outcome: 0
   },
   {
-    pocket_id: 6,
+    pocket_id: 4,
     name: "Liburan Bismillahhhhh",
     type: PocketType.Spending,
     target_nominal: 1000000,

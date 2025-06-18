@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -11,6 +13,8 @@ import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
 import { Icon } from '@iconify/react';
+import Loading from '@/features/shared/components/loading.component';
+import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 
 const DATA: ChartData[] = [
   {
@@ -83,6 +87,25 @@ const sampleData: PieChartTabData[] = [
 ];
 
 export default function Page() {
+  const { isLoading, pocket } = detailPocketStore();
+
+  if (isLoading || !pocket) {
+    return (
+      <Box
+        sx={{
+          my: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '80vh',
+        }}
+      >
+        <Loading />
+      </Box>
+    );
+  }
+  
   return (
     <Box
       sx={{
@@ -112,12 +135,13 @@ export default function Page() {
           flex: 1,
         }}>
           <PocketCard
-            title="Donat Bahagia"
-            accountNumber="02389280392"
-            balance={1000000}
+            title={pocket.name}
+            accountNumber={pocket.accountNumber}
+            balance={pocket.balance}
+            color={pocket.color}
             icon="material-symbols:money-bag-outline"
             sx={{
-              backgroundColor: 'orange.main',
+              backgroundColor: pocket.color,
               borderRadius: 4,
               padding: 3,
               paddingRight: {
@@ -136,8 +160,8 @@ export default function Page() {
             top="10%"
             bottom="10%"
             right={0}
-            income={1100000}
-            expense={100000}
+            income={pocket.income}
+            expense={pocket.outcome}
             sx={{
               backgroundColor: 'white',
               position: {

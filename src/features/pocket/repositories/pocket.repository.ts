@@ -6,11 +6,16 @@ import { GetPocketDetailResponse, PocketDetailResponseItem as PocketDetailRespon
 
 class PocketRepository {
   async getAllPocket(): Promise<PocketEntity[]> {
-    const response = await api.get('/pocket')
-    const responseData = response.data as PocketResponse
-    const data = responseData.data
-
-    return data.map((item: PocketResponseItem) => this.mapApiPocketToEntity(item))
+    try {
+      const response = await api.get('/pocket')
+      const responseData = response.data as PocketResponse
+      const data = responseData.data
+  
+      return data.map((item: PocketResponseItem) => this.mapApiPocketToEntity(item))
+    } catch (error) {
+      console.error("Error fetching pockets:", error)
+      throw new Error("Failed to fetch pockets")
+    }
   }
 
   async getDetailPocket(pocketId: string): Promise<DetailPocketEntity> {
@@ -52,6 +57,8 @@ class PocketRepository {
       color: data.color_hex,
       accountNumber: data.account_number,
       ownerUserId: data.owner_user_id,
+      income: data.income,
+      outcome: data.outcome,
       owner: {
         id: data.owner.id,
         name: data.owner.name,

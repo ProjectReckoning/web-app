@@ -1,11 +1,12 @@
 'use client';
 
 import { Box, Typography, BoxProps, IconButton } from '@mui/material';
-import { orange } from '@/lib/custom-color';
 import { useState } from 'react';
 import formatCurrency from '@/lib/format-currency';
 import DoughnutShape from '@/features/shared/components/doughnut-shape.component';
 import { Icon } from '@iconify/react';
+import generateShades from '@/lib/generate-shades';
+import { orange } from '@/lib/custom-color';
 
 interface PocketCardProps extends BoxProps {
   title: string;
@@ -20,9 +21,11 @@ export default function PocketCard({
   accountNumber,
   balance,
   icon,
+  color = orange[500],
   ...props
-}: PocketCardProps) {
+}: Omit<PocketCardProps, 'color'> & { color?: string }) {
   const [showBalanceState, setShowBalanceState] = useState(false);
+  const colorShades = generateShades(color);
 
   return (
     <Box
@@ -35,9 +38,9 @@ export default function PocketCard({
         width={600}
         height={600}
         innerRatio={0.5}
-        innerColor='orange.main'
+        innerColor={colorShades[500]}
         sx={{
-          backgroundColor: orange[400],
+          backgroundColor: colorShades[300],
           position: 'absolute',
           top: -300,
           left: -420,
@@ -47,7 +50,7 @@ export default function PocketCard({
       <Box display="flex" position="relative" alignItems="center" gap={2} zIndex={3}>
         <Box
           sx={{
-            bgcolor: 'orange.main',
+            bgcolor: colorShades[500],
             width: 64,
             height: 64,
             borderRadius: '50%',

@@ -46,6 +46,8 @@ export interface PocketDetailResponseItem {
   account_number: string;
   owner_user_id: number;
   owner: PocketOwner;
+  income: number;
+  outcome: number;
   members: PocketMember[];
   user_role: string;
 }

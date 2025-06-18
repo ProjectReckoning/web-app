@@ -24,7 +24,7 @@ const pocketStore = create<PocketStore>((set, get) => ({
       const pockets = await getAllPocketsUsecase()
       set({ pockets })
     } catch (error) {
-      console.error(error)
+      set({ errorMessage: error instanceof Error ? error.message : String(error) })
     } finally {
       set({ isLoading: false })
     }

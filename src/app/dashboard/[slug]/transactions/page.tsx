@@ -4,15 +4,17 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
-import PocketOverviewCard from '@/features/pocket/components/pocket-overview-card.component';
 import TransactionOverviewCard from '@/features/transactions/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Stack } from '@mui/material';
+import PocketCard from '@/features/pocket/components/pocket-card.component';
+import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
 import { Icon } from '@iconify/react';
-import pocketStore from '@/features/pocket/stores/pocket.store';
 import Loading from '@/features/shared/components/loading.component';
+import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
+import TopContributorsCard from '@/features/pocket/components/top-contributor-card.component';
 
 const DATA: ChartData[] = [
   {
@@ -63,31 +65,37 @@ const sampleData: PieChartTabData[] = [
         label: 'Salary',
         value: 40000,
         color: '#FFD700',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
       {
         label: 'Withdraw',
         value: 20000,
         color: '#FFB6FF',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
       {
         label: 'Other',
         value: 30000,
         color: '#B0B0B0',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
         transactionCount: 1,
       },
     ],
   },
 ];
 
-export default function Page() {
-  const { pockets, isLoading } = pocketStore()
+const contributors = [
+  { name: 'Ivanka Larasati', percentage: '50%', amount: 'Rp10.000.000' },
+  { name: 'Amira Ferial', percentage: '50%', amount: 'Rp10.000.000' },
+  { name: 'Farrel Brian Rafi', percentage: '50%', amount: 'Rp10.000.000' },
+];
 
-  if (isLoading) {
+export default function Page() {
+  const { isLoading, pocket } = detailPocketStore();
+
+  if (isLoading || !pocket) {
     return (
       <Box
         sx={{
@@ -115,10 +123,67 @@ export default function Page() {
         gap: 8,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 3, overflowX: 'auto', width: '100%', py: 2 }}>
-        {pockets.map((pocket) => (
-          <PocketOverviewCard key={pocket.id} {...pocket} />
-        ))}
+      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
+        <Box sx={{
+          position: {
+            xs: 'static',
+            lg: 'relative',
+          },
+          display: {
+            xs: 'flex',
+            lg: 'block',
+          },
+          flexDirection: {
+            xs: 'column',
+            md: 'row',
+          },
+          gap: 2,
+          flex: 1,
+        }}>
+          <PocketCard
+            title={pocket.name}
+            accountNumber={pocket.accountNumber}
+            balance={pocket.balance}
+            color={pocket.color}
+            icon="material-symbols:money-bag-outline"
+            sx={{
+              backgroundColor: pocket.color,
+              borderRadius: 4,
+              padding: 3,
+              paddingRight: {
+                xs: 8,
+                lg: 16,
+              },
+              marginRight: {
+                xs: 0,
+                lg: 24,
+              }
+            }}
+            minWidth={300}
+            flex={1}
+          />
+          <IncomeOutcomeCard
+            top="10%"
+            bottom="10%"
+            right={0}
+            income={pocket.income}
+            expense={pocket.outcome}
+            sx={{
+              backgroundColor: 'white',
+              position: {
+                xs: 'static',
+                lg: 'absolute',
+              },
+            }}
+            minWidth={240}
+            flex={1}
+          />
+        </Box>
+        <TopContributorsCard
+          flex={1}
+          contributors={contributors}
+          onSeeAll={() => console.log('Lihat semua diklik')}
+        />
       </Box>
 
       <Stack spacing={2}>
