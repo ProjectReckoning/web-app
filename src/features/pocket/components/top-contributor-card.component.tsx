@@ -25,14 +25,13 @@ export default function TopContributorsCard({
 }: TopContributorsCardProps & BoxProps) {
   return (
     <Box
+      borderRadius={4}
+      boxShadow={1}
+      overflow="hidden"
+      position="relative"
+      padding={3}
       sx={{
-        borderRadius: 4,
         bgcolor: 'white',
-        p: 3,
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: 1,
-        minWidth: 240,
       }}
       {...props}
     >

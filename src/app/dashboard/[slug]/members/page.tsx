@@ -28,13 +28,13 @@ export default function Page() {
   const members = getAllMembers(PocketMemberRole.Member);
 
   const editEditableKey = (key: string) => {
-      if (editableKey === key) {
-        setEditableKey(null);
-        return;
-      }
-
-      setEditableKey(key);
+    if (editableKey === key) {
+      setEditableKey(null);
+      return;
     }
+
+    setEditableKey(key);
+  }
 
   const ownerData: PocketMembersTableRow[] = owners.map(member => {
     const data: PocketMembersTableRow = {
@@ -119,34 +119,27 @@ export default function Page() {
 
   return (
     <>
-      <Stack
-        sx={{
-          my: 8,
-        }}
-        spacing={4}
-      >
-        <Typography variant='h5' fontWeight="bold">
-          Atur Anggota Kamu
-        </Typography>
+      <Typography variant='h5' fontWeight="bold">
+        Atur Anggota Kamu
+      </Typography>
 
-        <PocketMembersTable
-          data={[...ownerData, ...adminData]}
-          title="Admin"
-          color="tosca.light"
-          editableKey={editableKey}
-          onRoleEdited={onRoleEdited}
-        />
+      <PocketMembersTable
+        data={[...ownerData, ...adminData]}
+        title="Admin"
+        color="tosca.light"
+        editableKey={editableKey}
+        onRoleEdited={onRoleEdited}
+      />
 
-        <PocketMembersTable
-          data={memberData}
-          title="Member"
-          color="limeGreen.light"
-          paddingTop={4}
-          useSearch
-          editableKey={editableKey}
-          onRoleEdited={onRoleEdited}
-        />
-      </Stack>
+      <PocketMembersTable
+        data={memberData}
+        title="Member"
+        color="limeGreen.light"
+        paddingTop={4}
+        useSearch
+        editableKey={editableKey}
+        onRoleEdited={onRoleEdited}
+      />
       <Modal />
     </>
   );

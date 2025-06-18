@@ -17,7 +17,7 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
         }}
       >
         <Toolbar />
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{ my: 8 }}>
           {props.children}
         </Container>
       </Box>
