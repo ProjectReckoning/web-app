@@ -22,4 +22,19 @@ describe("authRepository Integration Test", () => {
       authRepository.login("+628000000000", "wrong")
     ).rejects.toThrow();
   });
+
+
+  it("should return user data if me is called", async ()=> {
+    const authRepository = (await import("./auth.repository")).default;
+
+    const result = await authRepository.me();
+
+    
+
+    expect(result).toEqual({
+      id: "123",
+      name: "Marcelino Sibarani Santozo",
+      phone_number: "628123456789"
+    })
+  });
 });

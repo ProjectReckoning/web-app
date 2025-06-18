@@ -30,7 +30,7 @@ export async function GET(req: Request){
   const userData = {
     name: "Marcelino Sibarani Santozo",
     id: "123",
-    phone_number: "08123456789",
+    phone_number: "628123456789",
   };
 
   return new Response(
