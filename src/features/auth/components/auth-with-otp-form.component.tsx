@@ -7,10 +7,10 @@ import authStore from "../stores/auth.store";
 import { useRouter } from "next/navigation";
 
 export default function AuthWIthOtpForm({ phoneNumber }: { phoneNumber: string }) {
-  const { sessionId, sessionExpiresAt, logout, loginWithOtp, errorMessage, token } = authStore();
-  const [timer, setTimer] = useState(180);
+  const { sessionId, sessionExpiresAt, logout, loginWithOtp, errorMessage, token, isLoading } = authStore();
+  const [timer, setTimer] = useState(0);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const route =  useRouter();
+  const route = useRouter();
 
   useEffect(() => {
     if (sessionExpiresAt) {
@@ -122,9 +122,15 @@ export default function AuthWIthOtpForm({ phoneNumber }: { phoneNumber: string }
         ))}
       </Box>
 
-      <Typography variant="body2" component="span" color='red' textAlign="center" mt={2} mb={4} sx={{ display: errorMessage ? "block" : "none" }}>
-        {errorMessage}
-      </Typography>
+      {isLoading ? (
+        <Typography variant="body2" color="textSecondary" textAlign="center" mb={2}>
+          Memverifikasi kode...
+        </Typography>
+      ) : (
+        <Typography variant="body2" component="span" color='red' textAlign="center" mt={2} mb={4} sx={{ display: errorMessage ? "block" : "none" }}>
+          {errorMessage}
+        </Typography>
+      )}
 
       <Typography>
         Tidak menerima kode?{' '}
