@@ -5,11 +5,11 @@ import { styled, Theme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { Box, Button, useMediaQuery } from '@mui/material';
 import { purple } from '@/lib/custom-color';
 import { Icon } from '@iconify/react';
 import { PocketMenuItem } from '../entities/pocket-menu-item';
+import NotificationButton from '@/features/notification/components/notification-button.component';
 
 const drawerWidth = 300;
 
@@ -63,16 +63,14 @@ const Appbar: React.FC<AppbarComponentProps> = ({ isOpen, selectedPocketId, pock
           </Box>
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <IconButton aria-label="notification" sx={{ border: "solid 1px gray" }}>
-            <Icon icon="eva:bell-outline" style={{ color: 'black' }} />
-          </IconButton>
+          <NotificationButton />
 
           <Button
             startIcon={<Icon icon="eva:log-out-fill" style={{ color: 'black' }} />}
             aria-label="Keluar"
             variant="text"
             onClick={onLogout}
-            sx={{ color: "MenuText", border: "solid 1px gray" }}
+            sx={{ color: "MenuText", border: 1, borderColor: "border.main" }}
           >
             <Typography variant="body2" sx={{ mt: 0.25}}>
               Keluar
