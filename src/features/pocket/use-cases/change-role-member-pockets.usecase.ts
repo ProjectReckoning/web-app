@@ -1,6 +1,4 @@
-import { UserEntity } from "@/features/auth/entities/user.entities";
 import pocketRepository from "../repositories/pocket.repository";
-import { PocketEntity } from "../entities/pocket.entites";
 import { PocketMemberRole } from "../entities/detail-pocket.entities";
 
 export async function changePocketMemberRoleUseCase(

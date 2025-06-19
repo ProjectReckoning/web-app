@@ -40,6 +40,18 @@ export async function PATCH(req: NextRequest): Promise<Response> {
       );
     }
 
+    // Validasi pocketId dan userId
+    if (isNaN(pocketId) || isNaN(userId)) {
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          message: "Invalid pocket ID or user ID",
+          code: 400,
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     // Simulasi update response
     const updatedMember = {
       user_id: userId,
@@ -64,7 +76,7 @@ export async function PATCH(req: NextRequest): Promise<Response> {
     return new Response(
       JSON.stringify({
         ok: false,
-        message: "An error occurred while updating the member role",
+        message: `An error occurred while updating the member role : ${error instanceof Error ? error.message : "Unknown error"}`,
         code: 500,
       }),
       { status: 500, headers: { "Content-Type": "application/json" } }
