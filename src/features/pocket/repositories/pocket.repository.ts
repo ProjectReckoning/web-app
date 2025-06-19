@@ -28,7 +28,7 @@ class PocketRepository {
 
   async changePocketMemberRole(pocketId: string, userId: string, role: string): Promise<{ message: string}>{
     const response = await api.patch(`/pocket/${pocketId}/members/${userId}/role`, {
-      'role':role
+      role
     })
     const responseData = response.data as { message: string }
     

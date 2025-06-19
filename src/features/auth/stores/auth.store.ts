@@ -72,7 +72,7 @@ const authStore = create<AuthStore>()(
 		},
 
 		getUser: async () => {
-			set({ isLoading: true });
+			set({ isLoading: true, errorMessage: null });
 			try {
 			  const user = await getMeUseCase();
 			  set({ user });
