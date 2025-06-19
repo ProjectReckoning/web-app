@@ -15,6 +15,6 @@ export async function loginWithOtpUseCase({
     sessionId,
     otp,
     phoneNumber,
-  })
+  });
   return result.token;
 }
