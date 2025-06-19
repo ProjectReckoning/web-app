@@ -54,6 +54,12 @@ export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber }: 
             ),
           },
         }}
+        sx={{
+          ".MuiOutlinedInput-input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0 999px background inset !important",
+            WebkitTextFillColor: "inherit !important",
+          },
+        }}
       />
 
       <TextField
@@ -64,6 +70,12 @@ export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber }: 
         autoComplete="current-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        sx={{
+          ".MuiOutlinedInput-input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0 999px background inset !important",
+            WebkitTextFillColor: "inherit !important",
+          },
+        }}
       />
 
       <Typography variant="body2" component="span" color='red' textAlign="center" sx={{ display: errorMessage ? "block" : "none" }}>
