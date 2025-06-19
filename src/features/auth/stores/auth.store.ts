@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { loginWithOtpUseCase } from '../usecases/login-with-otp.usecase';
 import { loginWithCredentialUseCase } from '../usecases/login-with-credential.usecase';
 import { AxiosError } from 'axios';
+import { UserEntity } from '../entities/user.entities';
+import { getMeUseCase } from '../usecases/get-me.usecase';
 
 type AuthStore = {
 	token: string | null;
@@ -11,10 +13,12 @@ type AuthStore = {
 	phoneNumber: string | null;
 	isLoading: boolean;
 	errorMessage: string | null;
+	user: UserEntity | null;
 
 	loginWithCredential: (phoneNumber: string, password: string) => Promise<void>;
 	loginWithOtp: ({ sessionId, otp, phoneNumber }: { sessionId: string; otp: string; phoneNumber: string; }) => Promise<void>;
 	logout: () => void;
+	getUser:() => void;
 };
 
 const authStore = create<AuthStore>()(
@@ -25,6 +29,7 @@ const authStore = create<AuthStore>()(
 		phoneNumber: null,
 		token: null,
 		sessionId: null,
+		user: null,
 
 		loginWithCredential: async (phoneNumber: string, password: string) => {
 			set({ isLoading: true })
@@ -65,6 +70,21 @@ const authStore = create<AuthStore>()(
 				set({ isLoading: false })
 			}
 		},
+
+		getUser: async () => {
+			set({ isLoading: true, errorMessage: null });
+			try {
+			  const user = await getMeUseCase();
+			  set({ user });
+			} catch (error) {
+			  set({
+				errorMessage: error instanceof AxiosError ? error.response?.data.message : String(error),
+			  });
+			} finally {
+			  set({ isLoading: false });
+			}
+		  },
+		  
 
 		logout: () => {
 			set({
