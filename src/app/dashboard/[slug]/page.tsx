@@ -15,6 +15,7 @@ import ScheduledTransactionList from '@/features/schedule-transaction/components
 import { Icon } from '@iconify/react';
 import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
+import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
 
 const DATA: ChartData[] = [
   {
@@ -89,6 +90,11 @@ const sampleData: PieChartTabData[] = [
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
 
+  // TODO: Implement the logic to handle BEP input changes
+  const onChangeBEPModalInput = (value: number) => {
+    console.log('BEP input changed:', value);
+  };
+
   if (isLoading || !pocket) {
     return (
       <Box
@@ -104,7 +110,7 @@ export default function Page() {
       </Box>
     );
   }
-  
+
   return (
     <Box
       sx={{
@@ -214,15 +220,22 @@ export default function Page() {
       <Stack spacing={2}>
         <Typography variant='h6'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-          <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
-          <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
-            border: 1,
-            borderColor: 'border.main',
-            borderRadius: 10,
-            backgroundColor: 'white',
-            padding: 4,
-            textAlign: 'center',
-          }} />
+          <Box display="flex" flexDirection="column" gap={2} flex={1}>
+            <DateRangeSelector />
+            <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
+          </Box>
+
+          <Box display="flex" flexDirection="column" gap={2} flex={1}>
+            <BEPModalInput defaultValue={pocket.targetNominal} onChange={onChangeBEPModalInput} />
+            <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
+              border: 1,
+              borderColor: 'border.main',
+              borderRadius: 10,
+              backgroundColor: 'white',
+              padding: 4,
+              textAlign: 'center',
+            }} />
+          </Box>
         </Box>
       </Stack>
     </Box>
