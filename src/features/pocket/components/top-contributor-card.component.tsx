@@ -26,7 +26,8 @@ export default function TopContributorsCard({
   return (
     <Box
       borderRadius={4}
-      boxShadow={1}
+      border={1}
+      borderColor={"border.main"}
       overflow="hidden"
       position="relative"
       padding={3}

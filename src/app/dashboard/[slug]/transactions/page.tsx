@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
@@ -10,6 +9,10 @@ import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import TopContributorsCard from '@/features/pocket/components/top-contributor-card.component';
 import FinanceSummaryCard, { FinanceSummaryItem } from '@/features/insight/components/finance-summary-card.component';
 import TransactionTable from '@/features/insight/components/transactions-table.component';
+import transactionHistoryStore from '@/features/transactions/stores/transaction-history.store';
+import React, { useEffect, useMemo } from 'react';
+import { GetTransactionDurationOption } from '@/features/transactions/constants/req/get-transaction-history-duration-option.enum';
+import formatCurrency from '@/lib/format-currency';
 
 const contributors = [
   { name: 'Ivanka Larasati', percentage: '50%', amount: 'Rp10.000.000' },
@@ -25,9 +28,40 @@ const summaryItems: FinanceSummaryItem[] = [
 ];
 
 
-
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
+  const { transactions, getAllTransactions, isLoading: isTransactionStoreLoading } = transactionHistoryStore()
+
+  const mappedData = useMemo(() => {
+    return transactions.map(row => ({
+      waktu: <Box key={row.createdAt} sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='body1'>
+          {new Date(row.createdAt).toLocaleDateString('id-ID', {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </Typography>
+        <Typography variant='body2' sx={{ color: 'gray.main' }}>
+          {new Date(row.createdAt).toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })} WIB
+        </Typography>
+      </Box>,
+      transaksi: row.initiatorUser,
+      tipe: row.type,
+      jumlah: formatCurrency(row.amount),
+      kategori: row.transactionType,
+    }));
+  }, [transactions]);
+
+  useEffect(() => {
+    if (pocket) {
+      getAllTransactions(pocket.id, GetTransactionDurationOption.LAST_30_DAYS);
+    }
+  }, [pocket, getAllTransactions]);
 
   if (isLoading || !pocket) {
     return (
@@ -121,7 +155,43 @@ export default function Page() {
 
       <FinanceSummaryCard items={summaryItems} backgroundColor='limeGreen.main' borderRadius={4} mt={2} />
 
-      <TransactionTable mt={6} />
+      <TransactionTable
+        data={mappedData}
+        isLoading={isTransactionStoreLoading}
+        filters={[
+          {
+            label: 'Kategori',
+            startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
+            options: ['Semua', ...mappedData.length > 0 ? Array.from(new Set(mappedData.map(row => row.kategori))) : []],
+            onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected
+          },
+          {
+            label: 'Durasi',
+            startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Durasi:</Typography>,
+            options: ['30 hari terakhir', '3 bulan terakhir', '6 bulan terakhir', '1 tahun terakhir'],
+            onFilter: () => true,
+            onChange: async (selected) => {
+              getAllTransactions(pocket.id, mapDurationStringToOption(selected));
+            }
+          }
+        ]}
+        mt={6}
+      />
     </>
   );
+}
+
+function mapDurationStringToOption(duration: string): GetTransactionDurationOption {
+  switch (duration) {
+    case '30 hari terakhir':
+      return GetTransactionDurationOption.LAST_30_DAYS;
+    case '3 bulan terakhir':
+      return GetTransactionDurationOption.LAST_3_MONTHS;
+    case '6 bulan terakhir':
+      return GetTransactionDurationOption.LAST_6_MONTHS;
+    case '1 tahun terakhir':
+      return GetTransactionDurationOption.LAST_1_YEAR;
+    default:
+      return GetTransactionDurationOption.LAST_30_DAYS;
+  }
 }
