@@ -2,8 +2,7 @@ import { UserEntity } from "../entities/user.entities";
 import authRepository from "../repositories/auth.repository";
 
 export const getMeUseCase = async (): Promise<UserEntity> => {
-  const response = await authRepository.me(); // dari repository yang sudah kamu buat
-
+  const response = await authRepository.me();
   return {
     id: response.id,
     name: response.name,

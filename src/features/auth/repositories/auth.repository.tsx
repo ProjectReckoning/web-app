@@ -30,11 +30,7 @@ class AuthRepository {
   }
 
   async me(): Promise<UserEntity> {
-    const response = await api.get('/user/me', {
-      headers: {
-        Authorization: 'Bearer test-token', 
-      },
-    });
+    const response = await api.get('/user/me');
   
     return response.data?.data;
   }

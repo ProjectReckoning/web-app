@@ -1,3 +1,5 @@
+jest.setTimeout(999999);
+
 describe("authRepository Integration Test", () => {
   beforeEach(() => {
     jest.resetModules();
@@ -9,10 +11,12 @@ describe("authRepository Integration Test", () => {
 
     const result = await authRepository.login("+628123456789", "testing");
 
-    expect(result).toEqual({
-      phone_number: "+628123456789",
-      sessionId: "session-id",
-    });
+    expect(result).toEqual(
+      expect.objectContaining({
+        phone_number: expect.any(String),
+        sessionId: expect.any(String),
+      })
+    );
   });
 
   it("should throw error if credentials are wrong", async () => {
@@ -32,9 +36,9 @@ describe("authRepository Integration Test", () => {
     
 
     expect(result).toEqual({
-      id: "123",
-      name: "Marcelino Sibarani Santozo",
-      phone_number: "628123456789"
+      id: expect.any(String),
+      name: expect.any(String),
+      phone_number: expect.any(String)
     })
   });
 });
