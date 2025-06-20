@@ -10,7 +10,7 @@ interface EditPocketInput {
 export async function editPocketUsecase(
     pocketId: string,
     data: EditPocketInput
-): Promise<DetailPocketEntity> {
+): Promise<{name: string; color: string; icon: string}> {
     const result = await pocketRepository.editPocket(pocketId, data);
     return result;
 }

@@ -41,7 +41,7 @@ export interface PocketMember {
   phoneNumber: string;
   metadata?: PocketMemberMetadata;
 }
-
+  
 export interface DetailPocketEntity {
   id: string;
   name: string;
