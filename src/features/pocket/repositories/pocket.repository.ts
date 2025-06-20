@@ -30,6 +30,17 @@ class PocketRepository {
     return this.mapApiPocketDetailToEntity(data)
   }
 
+  async editPocket(pocketId: string, data:{
+    name?: string;
+    color?: string;
+    icon?: string;
+  }): Promise<DetailPocketEntity> {
+    const response = await api.patch(`/pocket/${pocketId}`, data)
+    const responseData = response.data as { message: string , data: PocketDetailResponseItem }
+
+    return this.mapApiPocketDetailToEntity(responseData.data)
+  }
+
   async changePocketMemberRole(pocketId: string, userId: string, role: string): Promise<{ message: string}>{
     const response = await api.patch(`/pocket/${pocketId}/members/${userId}/role`, {
       role

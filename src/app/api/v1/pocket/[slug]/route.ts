@@ -1,4 +1,9 @@
-import { GetPocketDetailResponse, PocketDetailResponseItem, PocketStatus, PocketType } from "@/features/pocket/entities/get-pocket-detail-response";
+import {
+  GetPocketDetailResponse,
+  PocketDetailResponseItem,
+  PocketStatus,
+  PocketType,
+} from "@/features/pocket/entities/get-pocket-detail-response";
 
 const mockDetails: Record<number, PocketDetailResponseItem> = {
   1: {
@@ -9,7 +14,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 3500000,
     deadline: "2025-08-15T00:00:00.000Z",
     status: "active" as PocketStatus,
-    icon_name: "Airplane",
+    icon_name: "mdi:airplane-takeoff",
     color_hex: "#FF5722",
     account_number: "123456789",
     owner_user_id: 1,
@@ -75,7 +80,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 7000000,
     deadline: null,
     status: "active" as PocketStatus,
-    icon_name: "Pocket",
+    icon_name: "material-symbols:money-bag-outline",
     color_hex: "#4CAF50",
     account_number: "987654321",
     owner_user_id: 1,
@@ -108,7 +113,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 200000,
     deadline: "2025-06-10T00:00:00.000Z",
     status: "completed" as PocketStatus,
-    icon_name: "Pocket",
+    icon_name: "material-symbols:money-bag-outline",
     color_hex: "#2196F3",
     account_number: "112233445",
     owner_user_id: 1,
@@ -141,7 +146,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 1000000,
     deadline: "2025-12-31T00:00:00.000Z",
     status: "active" as PocketStatus,
-    icon_name: "Pocket",
+    icon_name: "material-symbols:money-bag-outline",
     color_hex: "#00BCD4",
     account_number: "950859915",
     owner_user_id: 1,
