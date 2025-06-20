@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import authStore from '@/features/auth/stores/auth.store';
 
 export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { token } = authStore();
+  const { token, user, getUser } = authStore();
   const router = useRouter();
   const pathname = usePathname();
   const [hydrated, setHydrated] = useState(false);
@@ -13,21 +13,13 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
     setHydrated(true);
   }, []);
 
-  // Simulate identity checking
-  // TODO: Replace with actual identity check logic
-  useEffect(() => {
-    authStore.setState({ isLoading: true });
-
-    const timeout = setTimeout(() => {
-      authStore.setState({ isLoading: false });
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
   useEffect(() => {
     if (!hydrated) {
       return;
+    }
+
+    if (!user) {
+      getUser()
     }
 
     if (token === undefined || token === null || token === '') {

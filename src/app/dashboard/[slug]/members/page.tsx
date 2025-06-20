@@ -1,5 +1,6 @@
 'use client';
 
+import authStore from "@/features/auth/stores/auth.store";
 import PocketMembersTable, { PocketMembersTableRow } from "@/features/pocket/components/pocket-members-table.component";
 import { PocketMemberRole } from "@/features/pocket/entities/detail-pocket.entities";
 import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
@@ -12,6 +13,7 @@ import { useState } from "react";
 
 export default function Page() {
   const { pocket, getAllMembers } = detailPocketStore();
+  const { user } = authStore();
 
   const { openModal } = modalStore();
   const [editableKey, setEditableKey] = useState<string | null>(null);
@@ -45,17 +47,15 @@ export default function Page() {
       iconName: "mdi:crown",
     }
 
-    if (!isCurrentUser(member.id) && (pocket?.userRole === PocketMemberRole.Owner || pocket?.userRole === PocketMemberRole.Admin)) {
+    if (pocket?.userRole === PocketMemberRole.Owner || pocket?.userRole === PocketMemberRole.Admin) {
       data.actions = <>
         <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="bi:trash" onClick={onRemoveMemberClicked} /></IconButton>
         <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={() => editEditableKey(member.id.toString())}><Icon icon="ph:pencil-simple-bold" /></IconButton>
       </>;
     }
 
-    if (isCurrentUser(member.id)) {
-      data.actions = <>
-        <Button color="gray" startIcon={<Icon icon="material-symbols:door-open-outline" />} size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={onLeavePocketClicked}>Keluar dari pocket ini</Button>
-      </>;
+    if (member.id.toString() === user?.id) {
+      data.actions = <></>;
     }
 
     return data;
@@ -70,14 +70,14 @@ export default function Page() {
       iconName: "mdi:crown",
     }
 
-    if (!isCurrentUser(member.id) && (pocket?.userRole === PocketMemberRole.Owner)) {
+    if ((member.id.toString() === user?.id) && (pocket?.userRole === PocketMemberRole.Owner)) {
       data.actions = <>
         <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }}><Icon icon="bi:trash" onClick={onRemoveMemberClicked} /></IconButton>
         <IconButton color="gray" size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={() => editEditableKey(member.id.toString())}><Icon icon="ph:pencil-simple-bold" /></IconButton>
       </>;
     }
 
-    if (isCurrentUser(member.id)) {
+    if (member.id.toString() === user?.id) {
       data.actions = <>
         <Button color="gray" startIcon={<Icon icon="material-symbols:door-open-outline" />} size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={onLeavePocketClicked}>Keluar dari pocket ini</Button>
       </>;
@@ -102,8 +102,7 @@ export default function Page() {
       </>;
     }
 
-    // TODO: Compare member.id with current user id
-    if (isCurrentUser(member.id)) {
+    if (member.id.toString() === user?.id) {
       data.actions = <>
         <Button color="gray" startIcon={<Icon icon="material-symbols:door-open-outline" />} size="small" sx={{ textTransform: 'none', border: 2, borderColor: 'border.main', borderRadius: 2 }} onClick={onLeavePocketClicked}>Keluar dari pocket ini</Button>
       </>;
@@ -224,9 +223,4 @@ function LeavePocketConfirmationModalContent() {
       </Box>
     </Stack>
   );
-}
-
-function isCurrentUser(memberId: number): boolean {
-  // TODO: change this to use the current user's ID from the auth store
-  return memberId === 1;
 }
