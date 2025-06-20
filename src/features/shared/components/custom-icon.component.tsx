@@ -29,6 +29,9 @@ export default function CustomIcon({
     group: "material-symbols:group",
   };
 
+  if (!icons[name.toLowerCase()]) {
+    console.error("Cannot find icon with name: ", name)
+  }
   const iconName = icons[name.toLowerCase()] || "material-symbols:help-outline";
 
   const filteredProps = Object.fromEntries(

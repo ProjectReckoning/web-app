@@ -155,7 +155,7 @@ export default function Page() {
             accountNumber={pocket.accountNumber}
             balance={pocket.balance}
             color={pocket.color}
-            icon="material-symbols:money-bag-outline"
+            icon={pocket.icon}
             sx={{
               backgroundColor: pocket.color,
               borderRadius: 4,
