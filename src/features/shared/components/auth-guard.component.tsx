@@ -18,13 +18,13 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
       return;
     }
 
-    if (!user) {
-      getUser()
-    }
-
     if (token === undefined || token === null || token === '') {
       router.replace('/auth');
       return;
+    }
+
+    if (!user) {
+      getUser();
     }
 
     if (pathname === '/auth' && token) {
@@ -36,7 +36,7 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
       router.replace('/dashboard');
       return;
     }
-  }, [pathname, token, router]);
+  }, [pathname, token, router, hydrated]);
 
   return <>{children}</>;
 }
