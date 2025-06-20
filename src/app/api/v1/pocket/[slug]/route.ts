@@ -152,7 +152,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     owner_user_id: 1,
     income: 1000000,
     outcome: 0,
-    owners: {
+    owner: {
       id: 1,
       name: "Fernando",
       phone_number: "081234567890",
@@ -230,8 +230,6 @@ export async function PATCH(req: Request): Promise<Response> {
 
   
   const requestBody = await req.json();
-
-  const now = new Date().toISOString();
 
   const updatedPocket = {
     ...mockDetails[pocketId],

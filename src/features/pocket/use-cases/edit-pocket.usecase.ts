@@ -1,5 +1,4 @@
 import pocketRepository from "../repositories/pocket.repository";
-import { DetailPocketEntity } from "../entities/detail-pocket.entities";
 
 interface EditPocketInput {
     name?: string;
