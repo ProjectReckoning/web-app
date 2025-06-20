@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { POCKET_COLOR_OPTIONS } from "../constants/pocket-color-option.constant";
 import { POCKET_ICON_OPTIONS } from "../constants/pocket-icon-option.constant";
+import CustomIcon from "@/features/shared/components/custom-icon.component";
 
 interface FormEditPocketProps {
   defaultTitle: string;
@@ -83,13 +84,14 @@ export default function FormEditPocket({
         <Box
           display="flex"
           sx={{
-            gap: 5,
+            // gap: { xs: 1, sm: 2, md: 3 },
             alignItems: "center",
             border: "1px solid #ccc",
             borderRadius: 5,
-            padding: 5,
+            padding: { xs: 2, sm: 3, md: 5 },
             width: "100%",
-            minWidth: 500,
+            minWidth: 300,
+            justifyContent: "space-around",
           }}
         >
           {/* Mapp the box with the color */}
@@ -97,8 +99,8 @@ export default function FormEditPocket({
             <Box
               key={option.value}
               sx={{
-                width: 48,
-                height: 48,
+                width: { xs: 30, sm: 40, md: 48 },
+                height: { xs: 30, sm: 40, md: 48 },
                 borderRadius: "50%",
                 bgcolor: option.value,
                 cursor: "pointer",
@@ -111,6 +113,7 @@ export default function FormEditPocket({
                   border: "1px solid black",
                   boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.2)",
                 },
+                
               }}
               onClick={() => {
                 setColor(option.value);
@@ -134,25 +137,25 @@ export default function FormEditPocket({
         <Box
           display="flex"
           sx={{
-            gap: 5,
             alignItems: "center",
             border: "1px solid #ccc",
             borderRadius: 5,
-            padding: 5,
+            padding: { xs: 2, sm: 3, md: 5 },
             width: "100%",
-            minWidth: 500,
+            flexWrap: "wrap",
+            justifyContent: "space-around",
           }}
         >
           {POCKET_ICON_OPTIONS.map((option) => (
             <Box
-              key={option.value}
+              key={option}
               onClick={() => {
-                setIcon(option.value);
-                onChange?.({ title, color, icon: option.value });
+                setIcon(option);
+                onChange?.({ title, color, icon: option });
               }}
               sx={{
-                width: 48,
-                height: 48,
+                width: { xs: 30, sm: 40, md: 48 },
+                height: { xs: 30, sm: 40, md: 48 },
                 borderRadius: "50%",
                 bgcolor: color,
                 display: "flex",
@@ -162,18 +165,16 @@ export default function FormEditPocket({
                 transition: "all 0.2s ease-in-out",
                 color: "white",
                 border:
-                  icon === option.value
-                    ? "1px solid black"
-                    : "1px solid transparent",
+                  icon === option ? "1px solid black" : "1px solid transparent",
                 boxShadow:
-                  icon === option.value ? "0 0 0 2px rgba(0,0,0,0.3)" : "none",
+                  icon === option ? "0 0 0 2px rgba(0,0,0,0.3)" : "none",
                 "&:hover": {
                   boxShadow: "0 0 0 1px rgba(0,0,0,0.2)",
                   border: "1px solid black",
                 },
               }}
             >
-              <Icon icon={option.value} width={24} height={24} />
+              <CustomIcon name={option} width={24} height={24} />
             </Box>
           ))}
         </Box>

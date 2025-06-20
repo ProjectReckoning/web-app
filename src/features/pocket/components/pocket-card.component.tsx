@@ -7,6 +7,7 @@ import DoughnutShape from "@/features/shared/components/doughnut-shape.component
 import { Icon } from "@iconify/react";
 import generateShades from "@/lib/generate-shades";
 import { purple } from "@/lib/custom-color";
+import CustomIcon from "@/features/shared/components/custom-icon.component";
 
 interface PocketCardProps extends BoxProps {
   title: string | undefined;
@@ -61,7 +62,7 @@ export default function PocketCard({
             justifyContent: "center",
           }}
         >
-          <Icon icon={icon} style={{ fontSize: 32, color: "white" }} />
+          <CustomIcon name={icon} style={{ fontSize: 32, color: "white" }} />
         </Box>
 
         {showBalance && (
