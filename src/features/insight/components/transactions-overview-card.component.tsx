@@ -4,29 +4,56 @@ import { Box, Typography, Avatar, Link, BoxProps, } from '@mui/material';
 import formatCurrency from '@/lib/format-currency';
 import { Icon } from '@iconify/react';
 import { gray, green } from '@/lib/custom-color';
+import { TransactionSummaryEntity } from '../entities/transaction-summary.entities';
+import Skeleton from '@/features/shared/components/skeleton';
+import { TransactionCategory } from '../constants/transaction-category.enum';
+import getIconFromTransactionType from '@/lib/get-icon-from-transaction-type';
+import { usePathname } from 'next/navigation';
 
-interface TransactionItem {
-  type: 'transfer' | 'qris';
-  description: string;
-  detail: string;
-  amount: number;
-}
+const DEFAULT_COUNT = 5;
 
-const transactions: TransactionItem[] = [
-  { type: 'transfer', description: 'Transfer', detail: 'BNI - Ivanka', amount: -30000 },
-  { type: 'transfer', description: 'Transfer', detail: 'BNI - Ivanka', amount: 30000 },
-  { type: 'transfer', description: 'Transfer', detail: 'BNI - Ivanka', amount: -30000 },
-  { type: 'qris', description: 'Qris Payment', detail: 'Sembako', amount: 30000 },
-  { type: 'qris', description: 'Qris Payment', detail: 'Amira Ferial', amount: -30000 },
-];
+export default function TransactionOverviewCard({
+  transactions,
+  isLoading = false,
+  ...props
+}: Omit<BoxProps, 'children'> & {
+  isLoading?: boolean,
+  transactions: TransactionSummaryEntity[]
+}) {
+  const pathname = usePathname();
 
-export default function TransactionOverviewCard({ ...props }: BoxProps) {
+  if (isLoading) {
+    return (
+      <Box {...props}>
+        <Box display="flex" justifyContent="end" alignItems="center" mb={2}>
+          <Skeleton variant="text" width={80} height={20} />
+        </Box>
+
+        <Box display="flex" flexDirection="column" gap={2}>
+          {Array.from({ length: DEFAULT_COUNT }).map((_, idx) => (
+            <Box key={idx} display="flex" alignItems="center" gap={2}>
+              <Skeleton variant="circular" width={48} height={48} />
+
+              <Box flex={1} display="flex" flexWrap="wrap" justifyContent="space-between" alignItems="center" rowGap={2}>
+                <Box>
+                  <Skeleton variant="text" width={120} height={20} />
+                  <Skeleton variant="text" width={100} height={16} />
+                </Box>
+                <Skeleton variant="text" width={60} height={20} />
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    )
+  }
+
   return (
     <Box
       {...props}
     >
       <Box display="flex" justifyContent="end" alignItems="center" mb={2}>
-        <Link href="#" underline="always" color="orange.main">
+        <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
           Lihat semua
         </Link>
       </Box>
@@ -45,22 +72,24 @@ export default function TransactionOverviewCard({ ...props }: BoxProps) {
               variant="rounded"
             >
               <Icon
-                icon="mdi:qrcode-scan"
+                icon={getIconFromTransactionType(tx.type as TransactionCategory)}
                 fontSize={24}
               />
             </Avatar>
             <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" rowGap={2}>
-              <Box >
-                <Typography variant="body2" fontWeight={500}>
-                  {tx.description}
+              <Box flex={1} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+                <Typography variant="body2" fontWeight={500} whiteSpace="nowrap">
+                  {tx.type}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {tx.detail}
+                <Typography variant="caption" color="text.secondary" whiteSpace="nowrap">
+                  {tx.description}
                 </Typography>
               </Box>
               <Typography
+                flex={1}
                 variant="body2"
                 fontWeight={700}
+                textAlign="right"
                 color={tx.amount > 0 ? 'success.main' : 'text.primary'}
               >
                 {tx.amount > 0 && '+'}{formatCurrency(tx.amount)}

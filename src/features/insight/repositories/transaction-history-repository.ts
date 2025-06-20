@@ -6,6 +6,7 @@ import { GetTransactionDurationOption } from "../constants/get-transaction-histo
 import { TransactionSummaryEntity } from "@/features/insight/entities/transaction-summary.entities";
 import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/request/get-all-transaction";
 import { TransactionOverviewEntity } from "../entities/transaction-overview";
+import { getTransactionCateogryFromString } from "../constants/transaction-category.enum";
 
 class TransactionHistoryRepository {
   async getLast5Transaction(pocketId?: string): Promise<TransactionSummaryEntity[]> {
@@ -54,7 +55,7 @@ class TransactionHistoryRepository {
 
   private mapTransactionSummaryToEntity(data: GetLast5TransactionResponseItem): TransactionSummaryEntity {
     return {
-      type: data.type as TransactionSummaryEntity['type'],
+      type: getTransactionCateogryFromString(data.type),
       amount: data.amount,
       description: data.description,
       transactionType: data.transaction_type === 0 ? TransactionType.OUTCOME : TransactionType.INCOME,

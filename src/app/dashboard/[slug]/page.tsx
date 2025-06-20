@@ -16,6 +16,8 @@ import { Icon } from '@iconify/react';
 import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
+import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
+import { useEffect } from 'react';
 
 const DATA: ChartData[] = [
   {
@@ -89,6 +91,13 @@ const sampleData: PieChartTabData[] = [
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
+  const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions } = transactionHistoryStore();
+
+  useEffect(() => {
+    if (pocket && last5Transactions.length === 0) {
+      getLast5Transactions(pocket.id);
+    }
+  }, [pocket, getLast5Transactions]);
 
   // TODO: Implement the logic to handle BEP input changes
   const onChangeBEPModalInput = (value: number) => {
@@ -208,12 +217,16 @@ export default function Page() {
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
-          <TransactionOverviewCard sx={{
-            border: 1,
-            borderColor: "border.main",
-            borderRadius: 8,
-            padding: 4,
-          }} />
+          <TransactionOverviewCard
+            isLoading={isTransactionLoading}
+            transactions={last5Transactions}
+            sx={{
+              border: 1,
+              borderColor: "border.main",
+              borderRadius: 8,
+              padding: 4,
+            }}
+          />
         </Box>
       </Box>
 

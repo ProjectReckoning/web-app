@@ -13,6 +13,7 @@ import { Icon } from '@iconify/react';
 import pocketStore from '@/features/pocket/stores/pocket.store';
 import { useEffect } from 'react';
 import PocketOverviewList from '@/features/pocket/components/pocket-overview-list.component';
+import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 
 const DATA: ChartData[] = [
   {
@@ -86,8 +87,10 @@ const sampleData: PieChartTabData[] = [
 
 export default function Page() {
   const { pockets, isLoading, getAllPockets } = pocketStore()
+  const { last5Transactions, getLast5Transactions, isLoading: isTransactionLoading } = transactionHistoryStore();
 
   useEffect(() => {
+    getLast5Transactions();
     getAllPockets();
   }, []);
 
@@ -124,12 +127,15 @@ export default function Page() {
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h5'>Transaksi terakhir</Typography>
-          <TransactionOverviewCard sx={{
-            border: 1,
-            borderColor: "border.main",
-            borderRadius: 8,
-            padding: 4,
-          }} />
+          <TransactionOverviewCard
+            transactions={last5Transactions}
+            isLoading={isTransactionLoading}
+            sx={{
+              border: 1,
+              borderColor: "border.main",
+              borderRadius: 8,
+              padding: 4,
+            }} />
         </Box>
       </Box>
 
