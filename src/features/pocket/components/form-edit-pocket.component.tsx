@@ -11,6 +11,7 @@ interface FormEditPocketProps {
   defaultTitle: string;
   defaultColor: string;
   defaultIcon: string;
+  onSave?: () => void;
   onChange?: ({
     title,
     color,
@@ -27,11 +28,34 @@ export default function FormEditPocket({
   defaultColor,
   defaultIcon,
   onChange,
+  onSave,
   ...props
 }: Omit<BoxProps, "onChange"> & FormEditPocketProps) {
   const [title, setTitle] = useState(defaultTitle);
   const [color, setColor] = useState(defaultColor);
   const [icon, setIcon] = useState(defaultIcon);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  // If the user clicks the edit button, set the edit mode to true
+  const handleEditClick = () => {
+    setIsEditMode(true);
+  };
+
+  // If the user cancels the edit, reset all the state to the default values
+  const handleCancelEdit = () => {
+    setTitle(defaultTitle);
+    setColor(defaultColor);
+    setIcon(defaultIcon);
+    setIsEditMode(false);
+    onChange?.({ title: defaultTitle, color: defaultColor, icon: defaultIcon });
+  };
+
+  // If the user saves the edit, call the onChange callback with the new values
+  const handleSaveEdit = () => {
+    onSave?.();
+    onChange?.({ title, color, icon });
+    setIsEditMode(false);
+  };
 
   return (
     <Box
@@ -58,16 +82,16 @@ export default function FormEditPocket({
         </Typography>
         <TextField
           required
-          // label="Nama Pocket"
-          // variant="outlined"
           type="tel"
           inputMode="tel"
           value={title}
+          disabled={!isEditMode}
           onChange={(e) => {
             const newTitle = e.target.value;
             setTitle(newTitle);
             onChange?.({ title: newTitle, color, icon });
           }}
+          placeholder="Masukkan nama pocket"
         />
       </Box>
       <Box
@@ -84,7 +108,6 @@ export default function FormEditPocket({
         <Box
           display="flex"
           sx={{
-            // gap: { xs: 1, sm: 2, md: 3 },
             alignItems: "center",
             border: "1px solid #ccc",
             borderRadius: 5,
@@ -98,26 +121,31 @@ export default function FormEditPocket({
           {POCKET_COLOR_OPTIONS.map((option) => (
             <Box
               key={option.value}
+              onClick={() => {
+                if (!isEditMode) return;
+                setColor(option.value);
+                onChange?.({ title, color: option.value, icon });
+              }}
               sx={{
                 width: { xs: 30, sm: 40, md: 48 },
                 height: { xs: 30, sm: 40, md: 48 },
                 borderRadius: "50%",
                 bgcolor: option.value,
-                cursor: "pointer",
+                cursor: isEditMode ? "pointer" : "default",
+                opacity: isEditMode ? 1 : 0.5,
+                pointerEvents: isEditMode ? "auto" : "none",
                 border:
                   color === option.value
                     ? "1px solid black"
                     : "1px solid transparent",
                 transition: "all 0.2s ease-in-out",
                 "&:hover": {
-                  border: "1px solid black",
-                  boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.2)",
+                  border: isEditMode ? "1px solid black" : undefined,
+                  boxShadow: isEditMode
+                    ? "0 0 0 1px rgba(0, 0, 0, 0.2)"
+                    : undefined,
+                  transform: isEditMode ? "scale(1.2)" : undefined,
                 },
-                
-              }}
-              onClick={() => {
-                setColor(option.value);
-                onChange?.({ title, color: option.value, icon });
               }}
             />
           ))}
@@ -144,12 +172,15 @@ export default function FormEditPocket({
             width: "100%",
             flexWrap: "wrap",
             justifyContent: "space-around",
+            // Make sure when the icons being hovered and bigger, the box is not changing size
+            overflow: "hidden",
           }}
         >
           {POCKET_ICON_OPTIONS.map((option) => (
             <Box
               key={option}
               onClick={() => {
+                if (!isEditMode) return;
                 setIcon(option);
                 onChange?.({ title, color, icon: option });
               }}
@@ -161,17 +192,22 @@ export default function FormEditPocket({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                cursor: "pointer",
+                cursor: isEditMode ? "pointer" : "default",
                 transition: "all 0.2s ease-in-out",
                 color: "white",
+                opacity: isEditMode ? 1 : 0.5,
+                pointerEvents: isEditMode ? "auto" : "none",
                 border:
                   icon === option ? "1px solid black" : "1px solid transparent",
                 boxShadow:
                   icon === option ? "0 0 0 2px rgba(0,0,0,0.3)" : "none",
-                "&:hover": {
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.2)",
-                  border: "1px solid black",
-                },
+                "&:hover": isEditMode
+                  ? {
+                      boxShadow: "0 0 0 1px rgba(0,0,0,0.2)",
+                      border: "1px solid black",
+                      transform: "scale(1.2)",
+                    }
+                  : {},
               }}
             >
               <CustomIcon name={option} width={24} height={24} />
@@ -179,25 +215,70 @@ export default function FormEditPocket({
           ))}
         </Box>
       </Box>
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<Icon icon="ph:pencil-simple-bold" color="gray" />}
-        onClick={() => console.log("Edit Pocket")}
-        color="inherit"
-        sx={{
-          color: "#848688",
-          borderRadius: "12px",
-          textTransform: "none",
-          fontWeight: 400,
-          px: 1.5,
-          py: 0.5,
-          fontSize: 18,
-          minWidth: 0,
-        }}
-      >
-        Edit
-      </Button>
+
+      {isEditMode ? (
+        <>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<Icon icon="lucide:save" color="gray" />}
+            onClick={() => handleSaveEdit()}
+            color="inherit"
+            sx={{
+              color: "#848688",
+              borderRadius: "12px",
+              textTransform: "none",
+              fontWeight: 400,
+              px: 1.5,
+              py: 0.5,
+              fontSize: 18,
+              minWidth: 0,
+            }}
+          >
+            Simpan
+          </Button>
+
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<Icon icon="icons8:trash" color="gray" />}
+            onClick={() => handleCancelEdit()}
+            color="inherit"
+            sx={{
+              color: "#848688",
+              borderRadius: "12px",
+              textTransform: "none",
+              fontWeight: 400,
+              px: 1.5,
+              py: 0.5,
+              fontSize: 18,
+              minWidth: 0,
+            }}
+          >
+            Cancel
+          </Button>
+        </>
+      ) : (
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<Icon icon="ph:pencil-simple-bold" color="gray" />}
+          onClick={() => handleEditClick()}
+          color="inherit"
+          sx={{
+            color: "#848688",
+            borderRadius: "12px",
+            textTransform: "none",
+            fontWeight: 400,
+            px: 1.5,
+            py: 0.5,
+            fontSize: 18,
+            minWidth: 0,
+          }}
+        >
+          Edit
+        </Button>
+      )}
     </Box>
   );
 }

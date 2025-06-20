@@ -211,3 +211,55 @@ export async function GET(req: Request): Promise<Response> {
     headers: { "Content-Type": "application/json" },
   });
 }
+
+export async function PATCH(req: Request): Promise<Response> {
+  const url = new URL(req.url);
+  const slug = url.pathname.split("/").pop();
+  const pocketId = parseInt(slug ?? "");
+
+  if (!mockDetails[pocketId]) {
+    return new Response(JSON.stringify({
+      ok: false,
+      message: "Pocket not found",
+      code: 404,
+    }), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  
+  const requestBody = await req.json();
+
+  const updatedPocket = {
+    ...mockDetails[pocketId],
+    ...requestBody,
+  };
+
+
+  mockDetails[pocketId] = updatedPocket;
+
+  return new Response(JSON.stringify({
+    ok: true,
+    data: {
+      id: updatedPocket.id,
+      name: updatedPocket.name,
+      type: updatedPocket.type,
+      target_nominal: updatedPocket.target_nominal,
+      current_balance: updatedPocket.current_balance,
+      deadline: updatedPocket.deadline,
+      status: updatedPocket.status,
+      owner_user_id: updatedPocket.owner_user_id,
+      icon_name: updatedPocket.icon_name,
+      color_hex: updatedPocket.color_hex,
+      account_number: updatedPocket.account_number,
+      createdAt: updatedPocket.createdAt,
+      updatedAt: updatedPocket.updatedAt,
+    },
+    message: "Pocket updated successfully",
+    code: 200,
+  }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}

@@ -27,6 +27,17 @@ export default function Page() {
     }
   }, [pocket]);
 
+  const handlePocketUpdate = () => {
+    if (!formData.title || !formData.color || !formData.icon) {
+      return;
+    }
+    detailPocketStore.getState().updatePocket({
+      name: formData.title,
+      color: formData.color,
+      icon: formData.icon,
+    });
+  }
+
   const handlePocketChange = (data: {
     title: string;
     color: string;
@@ -111,6 +122,7 @@ export default function Page() {
           defaultColor={pocket.color}
           defaultIcon={pocket.icon}
           onChange={handlePocketChange}
+          onSave={handlePocketUpdate}
           sx={{
             flex: 1,
             minWidth: 300,
