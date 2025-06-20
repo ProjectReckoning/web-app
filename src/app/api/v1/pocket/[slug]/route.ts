@@ -1,4 +1,9 @@
-import { GetPocketDetailResponse, PocketDetailResponseItem, PocketStatus, PocketType } from "@/features/pocket/entities/get-pocket-detail-response";
+import {
+  GetPocketDetailResponse,
+  PocketDetailResponseItem,
+  PocketStatus,
+  PocketType,
+} from "@/features/pocket/entities/get-pocket-detail-response";
 
 const mockDetails: Record<number, PocketDetailResponseItem> = {
   1: {
@@ -9,7 +14,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 3500000,
     deadline: "2025-08-15T00:00:00.000Z",
     status: "active" as PocketStatus,
-    icon_name: "Airplane",
+    icon_name: "mdi:airplane-takeoff",
     color_hex: "#FF5722",
     account_number: "123456789",
     owner_user_id: 1,
@@ -59,12 +64,12 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
   2: {
     id: 2,
     name: "Dana Darurat",
-    type: "saving" as  PocketType,
+    type: "saving" as PocketType,
     target_nominal: 10000000,
     current_balance: 7000000,
     deadline: null,
     status: "active" as PocketStatus,
-    icon_name: "Pocket",
+    icon_name: "material-symbols:money-bag-outline",
     color_hex: "#4CAF50",
     account_number: "987654321",
     owner_user_id: 1,
@@ -85,8 +90,8 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     target_nominal: 200000,
     current_balance: 200000,
     deadline: "2025-06-10T00:00:00.000Z",
-    status: "completed"  as PocketStatus,
-    icon_name: "Pocket",
+    status: "completed" as PocketStatus,
+    icon_name: "material-symbols:money-bag-outline",
     color_hex: "#2196F3",
     account_number: "112233445",
     owner_user_id: 1,
@@ -108,7 +113,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 1000000,
     deadline: "2025-12-31T00:00:00.000Z",
     status: "active" as PocketStatus,
-    icon_name: "Pocket",
+    icon_name: "material-symbols:money-bag-outline",
     color_hex: "#00BCD4",
     account_number: "950859915",
     owner_user_id: 1,
@@ -155,6 +160,66 @@ export async function GET(req: Request): Promise<Response> {
     message: "Pocket detail fetched successfully",
     code: 200,
     data: pocketDetail,
+  };
+
+  return new Response(JSON.stringify(response), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+export async function PATCH(req: Request): Promise<Response> {
+  await new Promise((resolve) => setTimeout(resolve, 500)); 
+
+  const url = new URL(req.url);
+  const slug = url.pathname.split("/").pop();
+  const pocketId = parseInt(slug ?? "");
+
+  const updateData = await req.json();
+
+  const pocket = mockDetails[pocketId];
+
+  if (!pocket) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        message: "Pocket not found",
+        code: 404,
+      }),
+      { status: 404 }
+    );
+  }
+
+  const allowedFields = ["name", "color", "icon"];
+  const updatedPocket = {
+    ...pocket,
+    ...(allowedFields.includes("name") && updateData.name && { name: updateData.name }),
+    ...(allowedFields.includes("color") && updateData.color && { color_hex: updateData.color }),
+    ...(allowedFields.includes("icon") && updateData.icon && { icon_name: updateData.icon }),
+    updatedAt: new Date().toISOString(),
+  };
+
+  mockDetails[pocketId] = updatedPocket;
+
+  const response = {
+    ok: true,
+    data: {
+      id: updatedPocket.id,
+      name: updatedPocket.name,
+      type: updatedPocket.type,
+      target_nominal: updatedPocket.target_nominal,
+      current_balance: updatedPocket.current_balance,
+      deadline: updatedPocket.deadline,
+      status: updatedPocket.status,
+      owner_user_id: updatedPocket.owner_user_id,
+      icon_name: updatedPocket.icon_name,
+      color_hex: updatedPocket.color_hex,
+      account_number: updatedPocket.account_number,
+      createdAt: updatedPocket.createdAt ?? "2025-06-16T06:52:27.685Z",
+      updatedAt: updatedPocket.updatedAt,
+    },
+    message: "Pocket updated successfully",
+    code: 200,
   };
 
   return new Response(JSON.stringify(response), {
