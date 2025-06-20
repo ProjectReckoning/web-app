@@ -2,9 +2,10 @@ import api from "@/lib/api";
 import { GetLast5TransactionResponse, GetLast5TransactionResponseItem } from "@/features/insight/entities/request/get-last-5-transaction.entities";
 import { TransactionEntity } from "@/features/insight/entities/transaction.entities";
 import { TransactionType } from "@/features/insight/constants/transaction-type.enum";
-import { GetTransactionDurationOption } from "../constants/req/get-transaction-history-duration-option.enum";
+import { GetTransactionDurationOption } from "../constants/get-transaction-history-duration-option.enum";
 import { TransactionSummaryEntity } from "@/features/insight/entities/transaction-summary.entities";
 import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/request/get-all-transaction";
+import { TransactionOverviewEntity } from "../entities/transaction-overview";
 
 class TransactionHistoryRepository {
   async getLast5Transaction(pocketId?: string): Promise<TransactionSummaryEntity[]> {
@@ -21,13 +22,19 @@ class TransactionHistoryRepository {
     }
   }
 
-  async getAllTransaction(pocketId: string, duration: GetTransactionDurationOption): Promise<TransactionEntity[]> {
+  async getAllTransaction(pocketId: string, duration: GetTransactionDurationOption): Promise<TransactionOverviewEntity> {
     try {
       const response = await api.get(`/pocket/business/${pocketId}/history?duration=${duration}`)
       const responseData = response.data as GetAllTransactionResponse
       const data = responseData.data
 
-      return data.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item))
+      return {
+        transactions: data.transaksi.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)),
+        totalIncome: data.total_pemasukan,
+        totalOutcome: data.total_pengeluaran,
+        previousBalance: data.saldo_kemarin,
+        closingBalance: data.saldo_penutupan,
+      }
     } catch (error) {
       console.error("Error fetching transaction:", error)
       throw new Error("Failed to fetch transaction")

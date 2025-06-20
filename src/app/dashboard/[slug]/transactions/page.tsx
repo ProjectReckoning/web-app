@@ -7,11 +7,11 @@ import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.
 import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import TopContributorsCard from '@/features/pocket/components/top-contributor-card.component';
-import FinanceSummaryCard, { FinanceSummaryItem } from '@/features/insight/components/finance-summary-card.component';
+import FinanceSummaryCard from '@/features/insight/components/finance-summary-card.component';
 import TransactionTable from '@/features/insight/components/transactions-table.component';
-import transactionHistoryStore from '@/features/transactions/stores/transaction-history.store';
+import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 import React, { useEffect, useMemo } from 'react';
-import { GetTransactionDurationOption } from '@/features/transactions/constants/req/get-transaction-history-duration-option.enum';
+import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
 import formatCurrency from '@/lib/format-currency';
 
 const contributors = [
@@ -20,19 +20,19 @@ const contributors = [
   { name: 'Farrel Brian Rafi', percentage: '50%', amount: 'Rp10.000.000' },
 ];
 
-const summaryItems: FinanceSummaryItem[] = [
-  { title: 'Saldo Kemarin', amount: 'Rp1.199.372' },
-  { title: 'Total Pemasukan', amount: '+ Rp7.048.943', },
-  { title: 'Total Pengeluaran', amount: '- Rp7.044.870', },
-  { title: 'Saldo Penutupan', amount: 'Rp1.203.445' },
-];
-
-
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
-  const { transactions, getAllTransactions, isLoading: isTransactionStoreLoading } = transactionHistoryStore()
+  const {
+    transactions,
+    getAllTransactions, 
+    isLoading: isTransactionStoreLoading,
+    previousBalance: pocketPreviousBalance,
+    closingBalance: pocketClosingBalance,
+    totalIncome: pocketTotalIncome,
+    totalOutcome: pocketTotalOutcome,
+  } = transactionHistoryStore()
 
-  const mappedData = useMemo(() => {
+  const mappedTransactionData = useMemo(() => {
     return transactions.map(row => ({
       waktu: <Box key={row.createdAt} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant='body1'>
@@ -56,6 +56,15 @@ export default function Page() {
       kategori: row.transactionType,
     }));
   }, [transactions]);
+
+  const financeSummaryItems = useMemo(() => {
+    return [
+      { title: 'Saldo Kemarin', amount: formatCurrency(pocketPreviousBalance ?? 0) },
+      { title: 'Total Pemasukan', amount: formatCurrency(pocketTotalIncome ?? 0), },
+      { title: 'Total Pengeluaran', amount: formatCurrency(pocketTotalOutcome ?? 0) },
+      { title: 'Saldo Penutupan', amount: formatCurrency(pocketClosingBalance ?? 0) },
+    ];
+  }, [pocketPreviousBalance, pocketTotalIncome, pocketTotalOutcome, pocketClosingBalance]);
 
   useEffect(() => {
     if (pocket) {
@@ -153,16 +162,23 @@ export default function Page() {
         Rekap Keuanganmu
       </Typography>
 
-      <FinanceSummaryCard items={summaryItems} backgroundColor='limeGreen.main' borderRadius={4} mt={2} />
+      <FinanceSummaryCard
+        isLoading={isTransactionStoreLoading}
+        items={financeSummaryItems}
+        borderRadius={4}
+        overflow="hidden"
+        gap={1}
+        mt={2}
+      />
 
       <TransactionTable
-        data={mappedData}
+        data={mappedTransactionData}
         isLoading={isTransactionStoreLoading}
         filters={[
           {
             label: 'Kategori',
             startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
-            options: ['Semua', ...mappedData.length > 0 ? Array.from(new Set(mappedData.map(row => row.kategori))) : []],
+            options: ['Semua', ...mappedTransactionData.length > 0 ? Array.from(new Set(mappedTransactionData.map(row => row.kategori))) : []],
             onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected
           },
           {

@@ -10,6 +10,10 @@ type TransactionHistoryStore = {
   errorMessage: string | null;
   transactions: TransactionEntity[];
   transactionSummary: TransactionSummaryEntity[];
+  previousBalance: number | null;
+  closingBalance: number | null;
+  totalIncome: number | null;
+  totalOutcome: number | null;
 
   getLast5Transactions: (pocketId: string) => void;
   getAllTransactions: (pocketId: string, duration: GetTransactionDurationOption) => void;
@@ -19,6 +23,10 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
   isLoading: false,
   errorMessage: null,
   transactions: [],
+  previousBalance: null,
+  closingBalance: null,
+  totalIncome: null,
+  totalOutcome: null,
   transactionSummary: [],
 
   getLast5Transactions: async (pocketId: string) => {
@@ -39,8 +47,14 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
     set({ isLoading: true, errorMessage: null })
 
     try {
-      const transactions = await getAllTransaction(pocketId, duration)
-      set({ transactions, errorMessage: null })
+      const transactionOverview = await getAllTransaction(pocketId, duration)
+      set({
+        transactions: transactionOverview.transactions,
+        previousBalance: transactionOverview.previousBalance,
+        closingBalance: transactionOverview.closingBalance,
+        totalIncome: transactionOverview.totalIncome,
+        totalOutcome: transactionOverview.totalOutcome,
+        errorMessage: null })
     } catch (error) {
       console.error(error)
       set({ errorMessage: error instanceof Error ? error.message : String(error) })

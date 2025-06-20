@@ -1,6 +1,7 @@
 'use client';
 
-import { Box, BoxProps, Divider, Typography } from '@mui/material';
+import Skeleton from '@/features/shared/components/skeleton';
+import { Box, BoxProps, Typography } from '@mui/material';
 import React from 'react';
 
 export interface FinanceSummaryItem {
@@ -10,45 +11,85 @@ export interface FinanceSummaryItem {
 
 interface FinanceSummaryCardProps {
   items: FinanceSummaryItem[];
-  backgroundColor?: string;
-  borderRadius?: number | string;
-  gap?: number;
+  isLoading?: boolean;
 }
+
+const DEFAULT_ITEM_COUNT = 4;
 
 export default function FinanceSummaryCard({
   items,
+  isLoading = false,
   ...props
 }: FinanceSummaryCardProps & BoxProps) {
-  return (
-    <Box display="flex" alignItems="stretch" {...props}>
-  {items.map((item, index) => (
-    <React.Fragment key={index}>
+  if (isLoading) {
+    return (
       <Box
-        flex={1}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        px={2}
-        py={3}
-      >
-        <Typography variant='body1' textAlign="center">
-          {item.title}
-        </Typography>
-        <Typography variant='h6' fontWeight="bold" textAlign="center">
-          {item.amount}
-        </Typography>
+        display="grid"
+        gap={2}
+        gridTemplateColumns={{
+          xs: '1fr',
+          sm: 'repeat(2, 1fr)',
+          md: 'repeat(4, 1fr)',
+        }}
+        {...props}>
+        {Array.from({ length: DEFAULT_ITEM_COUNT }).map((_, index) => (
+          <Box
+            key={index}
+            flex={1}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            px={2}
+            py={3}
+            sx={{
+              backgroundColor: "limeGreen.main"
+            }}
+          >
+            <Typography variant='body1' textAlign="center" whiteSpace="nowrap">
+              <Skeleton width="60%" sx={{ mx: "auto" }} />
+            </Typography>
+            <Typography variant='h6' fontWeight="bold" textAlign="center" whiteSpace="nowrap">
+              <Skeleton width="60%" sx={{ mx: "auto" }} />
+            </Typography>
+          </Box>
+        ))}
       </Box>
+    );
+  }
 
-      {index < items.length - 1 && (
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{ backgroundColor: 'white', mx: 1, width: 8 }}
-        />
-      )}
-    </React.Fragment>
-  ))}
-</Box>
+  return (
+    <Box
+      display="grid"
+      gap={2}
+      gridTemplateColumns={{
+        xs: '1fr',
+        sm: 'repeat(2, 1fr)',
+        md: 'repeat(4, 1fr)',
+      }}
+      {...props}>
+
+      {items.map((item) => (
+        <Box
+          key={item.title + item.amount}
+          flex={1}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          px={2}
+          py={3}
+          sx={{
+            backgroundColor: "limeGreen.main"
+          }}
+        >
+          <Typography variant='body1' textAlign="center" whiteSpace="nowrap">
+            {item.title}
+          </Typography>
+          <Typography variant='h6' fontWeight="bold" textAlign="center" whiteSpace="nowrap">
+            {item.amount}
+          </Typography>
+        </Box>
+      ))}
+    </Box>
 
   );
 }

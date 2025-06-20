@@ -1,6 +1,12 @@
 export interface GetAllTransactionResponse {
   ok: boolean;
-  data: GetAllTransactionResponseItem[];
+  data: {
+    saldo_kemarin: number;
+    saldo_penutupan: number;
+    transaksi: GetAllTransactionResponseItem[];
+    total_pemasukan: number;
+    total_pengeluaran: number;
+  }
   message: string;
   code: number;
 }

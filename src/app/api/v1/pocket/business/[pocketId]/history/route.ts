@@ -101,7 +101,13 @@ export async function GET(req: Request): Promise<Response> {
     ok: true,
     message: "Pocket's transaction history has been fetched",
     code: 200,
-    data: dataResult,
+    data: {
+      saldo_kemarin: 1234,
+      saldo_penutupan: 5678,
+      total_pemasukan: 91011,
+      total_pengeluaran: 121314,
+      transaksi: dataResult,
+    },
   };
 
   return new Response(JSON.stringify(response), {
