@@ -1,7 +1,6 @@
 "use client";
 
 import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "@/features/shared/components/loading.component";
 import Box from "@mui/material/Box";
@@ -77,7 +76,7 @@ export default function Page() {
             flexWrap: "wrap",
             gap: 2,
             flex: 1,
-            flexDirection:"column"
+            flexDirection: "column",
           }}
         >
           <Typography variant="h5" fontWeight="bold">
@@ -111,7 +110,6 @@ export default function Page() {
           defaultTitle={pocket.name}
           defaultColor={pocket.color}
           defaultIcon={pocket.icon}
-          onSave={() => console.log("Simpan perubahan")}
           onChange={handlePocketChange}
           sx={{
             flex: 1,

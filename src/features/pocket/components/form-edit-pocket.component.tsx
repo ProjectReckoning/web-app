@@ -3,16 +3,13 @@
 import { Box, TextField, Button, Typography, BoxProps } from "@mui/material";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
-import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
 import { POCKET_COLOR_OPTIONS } from "../constants/pocket-color-option.constant";
 import { POCKET_ICON_OPTIONS } from "../constants/pocket-icon-option.constant";
-import IconButton from "@mui/material";
 
 interface FormEditPocketProps {
   defaultTitle: string;
   defaultColor: string;
   defaultIcon: string;
-  onSave: () => void;
   onChange?: ({
     title,
     color,
@@ -28,20 +25,12 @@ export default function FormEditPocket({
   defaultTitle,
   defaultColor,
   defaultIcon,
-  onSave,
   onChange,
   ...props
 }: Omit<BoxProps, "onChange"> & FormEditPocketProps) {
   const [title, setTitle] = useState(defaultTitle);
   const [color, setColor] = useState(defaultColor);
   const [icon, setIcon] = useState(defaultIcon);
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTitle(e.target.value);
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setColor(e.target.value);
-  const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setIcon(e.target.value);
 
   return (
     <Box
