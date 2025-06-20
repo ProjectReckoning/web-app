@@ -5,7 +5,7 @@ import { styled, Theme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Box, Button, useMediaQuery } from '@mui/material';
+import { Box, Button, Skeleton, useMediaQuery } from '@mui/material';
 import { purple } from '@/lib/custom-color';
 import { Icon } from '@iconify/react';
 import { PocketMenuItem } from '../entities/pocket-menu-item';
@@ -41,15 +41,22 @@ interface AppbarComponentProps {
   isOpen: boolean;
   selectedPocketId: string;
   pockets: PocketMenuItem[];
+  isLoading: boolean;
   onLogout: () => void;
 }
 
-const Appbar: React.FC<AppbarComponentProps> = ({ isOpen, selectedPocketId, pockets, onLogout }) => {
+const Appbar: React.FC<AppbarComponentProps> = ({
+  isOpen,
+  selectedPocketId,
+  isLoading = false,
+  pockets,
+  onLogout
+}) => {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const currentPocket = pockets.find(p => p.id === selectedPocketId);
-  const displayPocketName = currentPocket?.name || 'Pilih Pocket';
-  const displayPocketColor = currentPocket?.color || purple[500];
+  const displayPocketName = currentPocket?.name ?? '';
+  const displayPocketColor = currentPocket?.color ?? purple[500];
 
   return (
     <StyledAppBar position="fixed" open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
@@ -59,7 +66,9 @@ const Appbar: React.FC<AppbarComponentProps> = ({ isOpen, selectedPocketId, pock
             Pocket Saat Ini : {' '}
           </Box>
           <Box color={displayPocketColor} fontWeight="600" component="span">
-            {displayPocketName}
+            {isLoading ? (
+              <Skeleton sx={{ display: "inline-block" }} width={150} />
+            ) : displayPocketName}
           </Box>
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -72,7 +81,7 @@ const Appbar: React.FC<AppbarComponentProps> = ({ isOpen, selectedPocketId, pock
             onClick={onLogout}
             sx={{ color: "MenuText", border: 1, borderColor: "border.main" }}
           >
-            <Typography variant="body2" sx={{ mt: 0.25}}>
+            <Typography variant="body2" sx={{ mt: 0.25 }}>
               Keluar
             </Typography>
           </Button>

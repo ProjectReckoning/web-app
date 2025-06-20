@@ -18,7 +18,6 @@ import BEPModalInput from '@/features/insight/components/bep-modal-input.compone
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { gray } from '@/lib/custom-color';
 
 const DATA: ChartData[] = [
   {
@@ -148,7 +147,9 @@ export default function Page() {
             icon={pocket.icon}
             isLoading={isLoading}
             sx={{
-              backgroundColor: isLoading ? gray[300] : pocket.color,
+              backgroundColor: isLoading ? "transparent" : pocket.color,
+              border: isLoading ? 1 : 0,
+              borderColor: isLoading ? "border.main" : 'transparent',
               borderRadius: 4,
               padding: 3,
               paddingRight: {

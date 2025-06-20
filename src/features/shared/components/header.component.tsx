@@ -16,7 +16,7 @@ import { purple } from '@/lib/custom-color';
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { logout } = authStore();
-  const { pockets, selectPocket } = pocketStore();
+  const { pockets, isLoading, selectPocket } = pocketStore();
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
   const availablePocketsMenus = getAvailablePocketsMenu(pockets);
 
@@ -92,6 +92,7 @@ export default function Header() {
     <>
       <Appbar
         isOpen={open}
+        isLoading={isLoading}
         selectedPocketId={selectedPocketId}
         pockets={availablePocketsMenus}
         onLogout={handleLogout}
@@ -132,7 +133,7 @@ function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
   if (pocketMenu.length === 0) {
     pocketMenu.push({
       id: '',
-      name: 'Pilih Pocket',
+      name: '',
       icon: "error",
       color: purple[500],
     });
