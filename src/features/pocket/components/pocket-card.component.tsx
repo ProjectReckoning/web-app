@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
-import { Box, Typography, BoxProps, IconButton } from '@mui/material';
-import { useState } from 'react';
-import formatCurrency from '@/lib/format-currency';
-import DoughnutShape from '@/features/shared/components/doughnut-shape.component';
-import { Icon } from '@iconify/react';
-import generateShades from '@/lib/generate-shades';
-import { orange } from '@/lib/custom-color';
+import { Box, Typography, BoxProps, IconButton } from "@mui/material";
+import { useState } from "react";
+import formatCurrency from "@/lib/format-currency";
+import DoughnutShape from "@/features/shared/components/doughnut-shape.component";
+import { Icon } from "@iconify/react";
+import generateShades from "@/lib/generate-shades";
+import { purple } from "@/lib/custom-color";
+import CustomIcon from "@/features/shared/components/custom-icon.component";
 
 interface PocketCardProps extends BoxProps {
-  title: string;
+  title: string | undefined;
   accountNumber: string;
   balance: number;
   icon: string;
@@ -21,19 +22,15 @@ export default function PocketCard({
   accountNumber,
   balance,
   icon,
-  color = orange[500],
+  color = purple[500],
+  showBalance = true,
   ...props
-}: Omit<PocketCardProps, 'color'> & { color?: string }) {
+}: Omit<PocketCardProps, "color"> & { color?: string }) {
   const [showBalanceState, setShowBalanceState] = useState(false);
   const colorShades = generateShades(color);
 
   return (
-    <Box
-      position="relative"
-      overflow="hidden"
-      color="white"
-      {...props}
-    >
+    <Box position="relative" overflow="hidden" color="white" {...props}>
       <DoughnutShape
         width={600}
         height={600}
@@ -41,29 +38,100 @@ export default function PocketCard({
         innerColor={colorShades[500]}
         sx={{
           backgroundColor: colorShades[300],
-          position: 'absolute',
+          position: "absolute",
           top: -300,
           left: -420,
         }}
       />
 
-      <Box display="flex" position="relative" alignItems="center" gap={2} zIndex={3}>
+      <Box
+        display="flex"
+        position="relative"
+        alignItems="center"
+        gap={2}
+        zIndex={3}
+      >
         <Box
           sx={{
             bgcolor: colorShades[500],
             width: 64,
             height: 64,
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Icon icon={icon} style={{ fontSize: 32, color: 'white' }} />
+          <CustomIcon name={icon} style={{ fontSize: 32, color: "white" }} />
         </Box>
 
-        <Box flex={1}>
-          <Typography color="black">
+        {showBalance && (
+          <Box flex={1}>
+            <Typography color="black" 
+            textOverflow="ellipsis"
+            sx={{
+              wordBreak: "break-word", // atau break-all
+              whiteSpace: "normal",
+            }}
+            >{title} </Typography>
+
+            <Box display="flex" alignItems="center" gap={1}>
+              <Typography fontWeight="bold" color="black">
+                {accountNumber}
+              </Typography>
+              <IconButton
+                onClick={() => navigator.clipboard.writeText(accountNumber)}
+                sx={{ padding: 0, color: "black" }}
+                aria-label="Copy account number"
+              >
+                <Icon
+                  icon="iconamoon:copy"
+                  style={{ fontSize: 16, color: "black" }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+        )}
+      </Box>
+
+      {showBalance ? (
+        <Box position="relative" mt={3}>
+          <Typography fontSize={14} color="black">
+            Saldo
+          </Typography>
+
+          <Box display="flex" alignItems="center" gap={1}>
+            <Typography variant="h5" fontWeight="bold" color="black">
+              {showBalanceState ? formatCurrency(balance) : "******"}
+            </Typography>
+
+            <IconButton onClick={() => setShowBalanceState(!showBalanceState)}>
+              {showBalanceState ? (
+                <Icon
+                  icon="ion:eye-off-outline"
+                  style={{ fontSize: 24, color: "black" }}
+                />
+              ) : (
+                <Icon
+                  icon="ion:eye-outline"
+                  style={{ fontSize: 24, color: "black" }}
+                />
+              )}
+            </IconButton>
+          </Box>
+        </Box>
+      ) : (
+        <Box position="relative" mt={3}>
+          <Typography
+            variant="h5"
+            color="black"
+            fontWeight="bold"
+            textOverflow="ellipsis"
+            sx={{
+              wordBreak: "break-word", // atau break-all
+              whiteSpace: "normal",
+            }}
+          >
             {title}
           </Typography>
 
@@ -71,36 +139,9 @@ export default function PocketCard({
             <Typography fontWeight="bold" color="black">
               {accountNumber}
             </Typography>
-            <IconButton
-              onClick={() => navigator.clipboard.writeText(accountNumber)}
-              sx={{ padding: 0, color: 'black' }}
-              aria-label="Copy account number"
-            >
-              <Icon icon="iconamoon:copy" style={{ fontSize: 16, color: 'black' }} />
-            </IconButton>
           </Box>
         </Box>
-      </Box>
-
-      <Box position="relative" mt={3}>
-        <Typography fontSize={14} color="black">
-          Saldo
-        </Typography>
-
-        <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="h5" fontWeight="bold" color="black">
-            {showBalanceState ? formatCurrency(balance) : '******'}
-          </Typography>
-
-          <IconButton onClick={() => setShowBalanceState(!showBalanceState)}>
-            {showBalanceState ? (
-              <Icon icon="ion:eye-off-outline" style={{ fontSize: 24, color: 'black' }} />
-            ) : (
-              <Icon icon="ion:eye-outline" style={{ fontSize: 24, color: 'black' }} />
-            )}
-          </IconButton>
-        </Box>
-      </Box>
+      )}
     </Box>
   );
 }

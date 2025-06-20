@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -100,11 +100,11 @@ export default function Page() {
       <Box
         sx={{
           my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '80vh',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
         }}
       >
         <Loading />
@@ -161,7 +161,7 @@ export default function Page() {
             income={pocket.income}
             expense={pocket.outcome}
             sx={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               position: {
                 xs: 'static',
                 md: 'absolute',
@@ -178,7 +178,7 @@ export default function Page() {
             minWidth: 300,
           }}
           contributors={contributors}
-          onSeeAll={() => console.log('Lihat semua diklik')}
+          onSeeAll={() => console.log("Lihat semua diklik")}
         />
       </Box>
 

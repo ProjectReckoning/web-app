@@ -1,4 +1,9 @@
-import { GetPocketDetailResponse, PocketDetailResponseItem, PocketStatus, PocketType } from "@/features/pocket/entities/get-pocket-detail-response";
+import {
+  GetPocketDetailResponse,
+  PocketDetailResponseItem,
+  PocketStatus,
+  PocketType,
+} from "@/features/pocket/entities/get-pocket-detail-response";
 
 const mockDetails: Record<number, PocketDetailResponseItem> = {
   1: {
@@ -75,7 +80,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
     current_balance: 7000000,
     deadline: null,
     status: "active" as PocketStatus,
-    icon_name: "Pocket",
+    icon_name: "pocket",
     color_hex: "#4CAF50",
     account_number: "987654321",
     owner_user_id: 1,
