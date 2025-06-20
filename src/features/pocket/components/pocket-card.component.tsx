@@ -6,8 +6,9 @@ import formatCurrency from "@/lib/format-currency";
 import DoughnutShape from "@/features/shared/components/doughnut-shape.component";
 import { Icon } from "@iconify/react";
 import generateShades from "@/lib/generate-shades";
-import { purple } from "@/lib/custom-color";
+import { gray, purple } from "@/lib/custom-color";
 import CustomIcon from "@/features/shared/components/custom-icon.component";
+import Skeleton from "@/features/shared/components/skeleton";
 
 interface PocketCardProps extends BoxProps {
   title: string | undefined;
@@ -15,6 +16,7 @@ interface PocketCardProps extends BoxProps {
   balance: number;
   icon: string;
   showBalance?: boolean;
+  isLoading?: boolean;
 }
 
 export default function PocketCard({
@@ -24,10 +26,62 @@ export default function PocketCard({
   icon,
   color = purple[500],
   showBalance = true,
+  isLoading = false,
   ...props
 }: Omit<PocketCardProps, "color"> & { color?: string }) {
   const [showBalanceState, setShowBalanceState] = useState(false);
-  const colorShades = generateShades(color);
+  const colorShades = generateShades(isLoading ? gray[300] : color);
+
+  if (isLoading) {
+    return (
+      <Box position="relative" overflow="hidden" color="white" {...props}>
+        <DoughnutShape
+          width={600}
+          height={600}
+          innerRatio={0.5}
+          innerColor={colorShades[500]}
+          sx={{
+            backgroundColor: colorShades[300],
+            position: "absolute",
+            top: -300,
+            left: -420,
+          }}
+        />
+
+        <Box display="flex" position="relative" alignItems="center" gap={2} zIndex={3}>
+          <Box
+            sx={{
+              bgcolor: "gray.main",
+              width: 64,
+              height: 64,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+          </Box>
+
+          <Box flex={1}>
+            <Skeleton variant="text" height={24} width="100%" />
+            <Box display="flex" alignItems="center" gap={1} mt={0.5}>
+              <Skeleton variant="text" height={20} width="100%" />
+              <Skeleton variant="circular" width={16} height={16} />
+            </Box>
+          </Box>
+        </Box>
+
+        <Box position="relative" mt={3}>
+          <Skeleton variant="text" width={60} height={20} />
+
+          <Box display="flex" alignItems="center" gap={1}>
+            <Skeleton variant="text" width={120} height={32} />
+            <Skeleton variant="circular" width={24} height={24} />
+          </Box>
+        </Box>
+      </Box>
+    )
+  }
 
   return (
     <Box position="relative" overflow="hidden" color="white" {...props}>
@@ -67,12 +121,12 @@ export default function PocketCard({
 
         {showBalance && (
           <Box flex={1}>
-            <Typography color="black" 
-            textOverflow="ellipsis"
-            sx={{
-              wordBreak: "break-word", // atau break-all
-              whiteSpace: "normal",
-            }}
+            <Typography color="black"
+              textOverflow="ellipsis"
+              sx={{
+                wordBreak: "break-word", // atau break-all
+                whiteSpace: "normal",
+              }}
             >{title} </Typography>
 
             <Box display="flex" alignItems="center" gap={1}>

@@ -10,15 +10,15 @@ import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Link, Stack } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
-import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
+import IncomeOutcomeCard from '@/features/insight/components/income-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
 import { Icon } from '@iconify/react';
-import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { gray } from '@/lib/custom-color';
 
 const DATA: ChartData[] = [
   {
@@ -96,7 +96,7 @@ export default function Page() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pocket && last5Transactions.length === 0) {
+    if (pocket) {
       getLast5Transactions(pocket.id);
     }
   }, [pocket, getLast5Transactions]);
@@ -106,19 +106,9 @@ export default function Page() {
     console.log('BEP input changed:', value);
   };
 
-  if (isLoading || !pocket) {
+  if (!pocket) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '80vh',
-        }}
-      >
-        <Loading />
-      </Box>
+      <></>
     );
   }
 
@@ -156,8 +146,9 @@ export default function Page() {
             balance={pocket.balance}
             color={pocket.color}
             icon={pocket.icon}
+            isLoading={isLoading}
             sx={{
-              backgroundColor: pocket.color,
+              backgroundColor: isLoading ? gray[300] : pocket.color,
               borderRadius: 4,
               padding: 3,
               paddingRight: {
@@ -174,11 +165,16 @@ export default function Page() {
             flex={1}
           />
           <IncomeOutcomeCard
+            isLoading={isLoading}
             top="10%"
             bottom="10%"
             right={0}
             income={pocket.income}
             expense={pocket.outcome}
+            display="flex"
+            flexDirection="column"
+            alignItems="start"
+            justifyContent="center"
             sx={{
               backgroundColor: 'white',
               position: {

@@ -3,7 +3,7 @@
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
-import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
+import IncomeOutcomeCard from '@/features/insight/components/income-outcome-card.component';
 import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import TopContributorsCard from '@/features/pocket/components/top-contributor-card.component';
@@ -155,6 +155,7 @@ export default function Page() {
             flex={1}
           />
           <IncomeOutcomeCard
+            isLoading={isLoading}
             top="10%"
             bottom="10%"
             right={0}
