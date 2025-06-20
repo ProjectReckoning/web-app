@@ -23,6 +23,10 @@ class PocketRepository {
     const responseData = response.data as GetPocketDetailResponse
     const data = responseData.data
 
+    if (!data) {
+      throw new Error(`Pocket with ID ${pocketId} not found`)
+    }
+
     return this.mapApiPocketDetailToEntity(data)
   }
 
@@ -72,6 +76,17 @@ class PocketRepository {
         id: data.owner.id,
         name: data.owner.name,
         phoneNumber: data.owner.phone_number,
+        metadata: {
+          id: data.owner.PocketMember.id,
+          userId: data.owner.PocketMember.user_id,
+          pocketId: data.owner.PocketMember.pocket_id,
+          role: this.mapApiPocketMemberRole(data.owner.PocketMember.role),
+          contributionAmount: data.owner.PocketMember.contribution_amount,
+          joinedAt: data.owner.PocketMember.joined_at ?? null,
+          isActive: data.owner.PocketMember.is_active ?? null,
+          createdAt: data.owner.PocketMember.createdAt,
+          updatedAt: data.owner.PocketMember.updatedAt,
+        }
       },
       members: data.members.map(member => ({
         id: member.id,

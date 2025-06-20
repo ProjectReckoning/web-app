@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography, Avatar, Link, BoxProps, } from '@mui/material';
+import { Box, Typography, Avatar, BoxProps, } from '@mui/material';
 import formatCurrency from '@/lib/format-currency';
 import { Icon } from '@iconify/react';
 import { gray, green } from '@/lib/custom-color';
@@ -8,20 +8,19 @@ import { TransactionSummaryEntity } from '../entities/transaction-summary.entiti
 import Skeleton from '@/features/shared/components/skeleton';
 import { TransactionCategory } from '../constants/transaction-category.enum';
 import getIconFromTransactionType from '@/lib/get-icon-from-transaction-type';
-import { usePathname } from 'next/navigation';
 
 const DEFAULT_COUNT = 5;
 
 export default function TransactionOverviewCard({
   transactions,
   isLoading = false,
+  actions,
   ...props
 }: Omit<BoxProps, 'children'> & {
   isLoading?: boolean,
   transactions: TransactionSummaryEntity[]
+  actions?: React.ReactNode;
 }) {
-  const pathname = usePathname();
-
   if (isLoading) {
     return (
       <Box {...props}>
@@ -53,9 +52,7 @@ export default function TransactionOverviewCard({
       {...props}
     >
       <Box display="flex" justifyContent="end" alignItems="center" mb={2}>
-        <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
-          Lihat semua
-        </Link>
+        { actions }
       </Box>
 
       <Box display="flex" flexDirection="column" gap={2}>

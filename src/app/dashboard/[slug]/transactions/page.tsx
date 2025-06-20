@@ -14,23 +14,46 @@ import React, { useEffect, useMemo } from 'react';
 import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
 import formatCurrency from '@/lib/format-currency';
 
-const contributors = [
-  { name: 'Ivanka Larasati', percentage: '50%', amount: 'Rp10.000.000' },
-  { name: 'Amira Ferial', percentage: '50%', amount: 'Rp10.000.000' },
-  { name: 'Farrel Brian Rafi', percentage: '50%', amount: 'Rp10.000.000' },
-];
-
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
   const {
     transactions,
-    getAllTransactions, 
+    getAllTransactions,
     isLoading: isTransactionStoreLoading,
     previousBalance: pocketPreviousBalance,
     closingBalance: pocketClosingBalance,
     totalIncome: pocketTotalIncome,
     totalOutcome: pocketTotalOutcome,
   } = transactionHistoryStore()
+
+  const contributors = useMemo(() => {
+    if (!pocket) {
+      return [];
+    }
+    
+    const members = [
+      pocket.owner,
+      ...(pocket.members ?? []),
+    ]
+    
+    const totalContribution = members.reduce((sum, member) => {
+      return sum + (member.metadata?.contributionAmount ?? 0);
+    }, 0);
+
+    if (totalContribution === 0) {
+      return [];
+    }
+
+    return members.map(member => {
+      const contributionAmount = member.metadata?.contributionAmount ?? 0;
+      const percentage = ((contributionAmount / totalContribution) * 100).toFixed(2);
+      return {
+        name: member.name,
+        percentage: `${percentage}%`,
+        amount: formatCurrency(contributionAmount),
+      };
+    }).sort((a, b) => parseFloat(b.percentage) - parseFloat(a.percentage)).slice(0, 3);
+  }, [pocket]);
 
   const mappedTransactionData = useMemo(() => {
     return transactions.map(row => ({
@@ -149,6 +172,7 @@ export default function Page() {
           />
         </Box>
         <TopContributorsCard
+          isLoading={ isLoading }
           flex={1}
           sx={{
             minWidth: 300,

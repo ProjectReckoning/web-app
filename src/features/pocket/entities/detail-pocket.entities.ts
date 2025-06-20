@@ -14,6 +14,7 @@ export interface PocketOwner {
   id: number;
   name: string;
   phoneNumber: string;
+  metadata?: PocketMemberMetadata;
 }
 
 export enum PocketMemberRole {

@@ -8,7 +8,7 @@ import TransactionOverviewCard from '@/features/insight/components/transactions-
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
-import { Stack } from '@mui/material';
+import { Link, Stack } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
@@ -18,6 +18,7 @@ import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const DATA: ChartData[] = [
   {
@@ -92,6 +93,7 @@ const sampleData: PieChartTabData[] = [
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
   const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions } = transactionHistoryStore();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (pocket && last5Transactions.length === 0) {
@@ -220,6 +222,11 @@ export default function Page() {
           <TransactionOverviewCard
             isLoading={isTransactionLoading}
             transactions={last5Transactions}
+            actions={
+              <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
+                Lihat semua
+              </Link>
+            }
             sx={{
               border: 1,
               borderColor: "border.main",

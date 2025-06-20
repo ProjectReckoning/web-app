@@ -14,6 +14,17 @@ export interface PocketOwner {
   id: number;
   name: string;
   phone_number: string;
+  PocketMember: {
+    id: number;
+    user_id: number;
+    pocket_id: number;
+    role: string;
+    contribution_amount: number | null;
+    joined_at: string | null;
+    is_active: boolean | null;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 export interface PocketMember {
