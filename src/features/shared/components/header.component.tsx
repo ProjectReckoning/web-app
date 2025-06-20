@@ -68,7 +68,7 @@ export default function Header() {
         router.push('/dashboard/global');
         break;
       default:
-        router.push(`/dashboard/${selectedPocketId}`);
+        router.push(`/dashboard/${selectedPocketId}/${pathname.split('/').slice(3).join('/') ?? ''}`);
         break;
     }
   }, [selectedPocketId, router]);

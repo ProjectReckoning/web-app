@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
@@ -8,37 +7,104 @@ import IncomeOutcomeCard from '@/features/insight/components/icome-outcome-card.
 import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import TopContributorsCard from '@/features/pocket/components/top-contributor-card.component';
-import FinanceSummaryCard, { FinanceSummaryItem } from '@/features/insight/components/finance-summary-card.component';
+import FinanceSummaryCard from '@/features/insight/components/finance-summary-card.component';
 import TransactionTable from '@/features/insight/components/transactions-table.component';
-
-const contributors = [
-  { name: 'Ivanka Larasati', percentage: '50%', amount: 'Rp10.000.000' },
-  { name: 'Amira Ferial', percentage: '50%', amount: 'Rp10.000.000' },
-  { name: 'Farrel Brian Rafi', percentage: '50%', amount: 'Rp10.000.000' },
-];
-
-const summaryItems: FinanceSummaryItem[] = [
-  { title: 'Saldo Kemarin', amount: 'Rp1.199.372' },
-  { title: 'Total Pemasukan', amount: '+ Rp7.048.943', },
-  { title: 'Total Pengeluaran', amount: '- Rp7.044.870', },
-  { title: 'Saldo Penutupan', amount: 'Rp1.203.445' },
-];
-
-
+import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
+import React, { useEffect, useMemo } from 'react';
+import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
+import formatCurrency from '@/lib/format-currency';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
+  const {
+    transactions,
+    getAllTransactions,
+    isLoading: isTransactionStoreLoading,
+    previousBalance: pocketPreviousBalance,
+    closingBalance: pocketClosingBalance,
+    totalIncome: pocketTotalIncome,
+    totalOutcome: pocketTotalOutcome,
+  } = transactionHistoryStore()
+
+  const contributors = useMemo(() => {
+    if (!pocket) {
+      return [];
+    }
+    
+    const members = [
+      pocket.owner,
+      ...(pocket.members ?? []),
+    ]
+    
+    const totalContribution = members.reduce((sum, member) => {
+      return sum + (member.metadata?.contributionAmount ?? 0);
+    }, 0);
+
+    if (totalContribution === 0) {
+      return [];
+    }
+
+    return members.map(member => {
+      const contributionAmount = member.metadata?.contributionAmount ?? 0;
+      const percentage = ((contributionAmount / totalContribution) * 100).toFixed(2);
+      return {
+        name: member.name,
+        percentage: `${percentage}%`,
+        amount: formatCurrency(contributionAmount),
+      };
+    }).sort((a, b) => parseFloat(b.percentage) - parseFloat(a.percentage)).slice(0, 3);
+  }, [pocket]);
+
+  const mappedTransactionData = useMemo(() => {
+    return transactions.map(row => ({
+      waktu: <Box key={row.createdAt} sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='body1'>
+          {new Date(row.createdAt).toLocaleDateString('id-ID', {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </Typography>
+        <Typography variant='body2' sx={{ color: 'gray.main' }}>
+          {new Date(row.createdAt).toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })} WIB
+        </Typography>
+      </Box>,
+      transaksi: row.initiatorUser,
+      tipe: row.type,
+      jumlah: formatCurrency(row.amount),
+      kategori: row.transactionType,
+    }));
+  }, [transactions]);
+
+  const financeSummaryItems = useMemo(() => {
+    return [
+      { title: 'Saldo Kemarin', amount: formatCurrency(pocketPreviousBalance ?? 0) },
+      { title: 'Total Pemasukan', amount: formatCurrency(pocketTotalIncome ?? 0), },
+      { title: 'Total Pengeluaran', amount: formatCurrency(pocketTotalOutcome ?? 0) },
+      { title: 'Saldo Penutupan', amount: formatCurrency(pocketClosingBalance ?? 0) },
+    ];
+  }, [pocketPreviousBalance, pocketTotalIncome, pocketTotalOutcome, pocketClosingBalance]);
+
+  useEffect(() => {
+    if (pocket && transactions.length === 0) {
+      getAllTransactions(pocket.id, GetTransactionDurationOption.LAST_30_DAYS);
+    }
+  }, [pocket, getAllTransactions]);
 
   if (isLoading || !pocket) {
     return (
       <Box
         sx={{
           my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '80vh',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
         }}
       >
         <Loading />
@@ -95,7 +161,7 @@ export default function Page() {
             income={pocket.income}
             expense={pocket.outcome}
             sx={{
-              backgroundColor: 'white',
+              backgroundColor: "white",
               position: {
                 xs: 'static',
                 md: 'absolute',
@@ -106,12 +172,13 @@ export default function Page() {
           />
         </Box>
         <TopContributorsCard
+          isLoading={ isLoading }
           flex={1}
           sx={{
             minWidth: 300,
           }}
           contributors={contributors}
-          onSeeAll={() => console.log('Lihat semua diklik')}
+          onSeeAll={() => console.log("Lihat semua diklik")}
         />
       </Box>
 
@@ -119,9 +186,52 @@ export default function Page() {
         Rekap Keuanganmu
       </Typography>
 
-      <FinanceSummaryCard items={summaryItems} backgroundColor='limeGreen.main' borderRadius={4} mt={2} />
+      <FinanceSummaryCard
+        isLoading={isTransactionStoreLoading}
+        items={financeSummaryItems}
+        borderRadius={4}
+        overflow="hidden"
+        gap={1}
+        mt={2}
+      />
 
-      <TransactionTable mt={6} />
+      <TransactionTable
+        data={mappedTransactionData}
+        isLoading={isTransactionStoreLoading}
+        filters={[
+          {
+            label: 'Kategori',
+            startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
+            options: ['Semua', ...mappedTransactionData.length > 0 ? Array.from(new Set(mappedTransactionData.map(row => row.kategori))) : []],
+            onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected
+          },
+          {
+            label: 'Durasi',
+            startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Durasi:</Typography>,
+            options: ['30 hari terakhir', '3 bulan terakhir', '6 bulan terakhir', '1 tahun terakhir'],
+            onFilter: () => true,
+            onChange: async (selected) => {
+              getAllTransactions(pocket.id, mapDurationStringToOption(selected));
+            }
+          }
+        ]}
+        mt={6}
+      />
     </>
   );
+}
+
+function mapDurationStringToOption(duration: string): GetTransactionDurationOption {
+  switch (duration) {
+    case '30 hari terakhir':
+      return GetTransactionDurationOption.LAST_30_DAYS;
+    case '3 bulan terakhir':
+      return GetTransactionDurationOption.LAST_3_MONTHS;
+    case '6 bulan terakhir':
+      return GetTransactionDurationOption.LAST_6_MONTHS;
+    case '1 tahun terakhir':
+      return GetTransactionDurationOption.LAST_1_YEAR;
+    default:
+      return GetTransactionDurationOption.LAST_30_DAYS;
+  }
 }

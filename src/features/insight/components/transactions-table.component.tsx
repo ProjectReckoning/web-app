@@ -9,122 +9,74 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
+import { MenuItem, TextField, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
-import { gray, tosca } from '@/lib/custom-color';
-import { MenuItem, Select, TextField, Typography } from '@mui/material';
+import { tosca } from '@/lib/custom-color';
+import Select from '@/features/shared/components/select.component';
+import Skeleton from '@/features/shared/components/skeleton';
 
-interface Data {
-  id: string;
-  time: string;
-  name: number;
-  type: number;
-  amount: number;
-  category: string;
-}
-
-const rows = Array.from({ length: 50 }, (_, i) => {
-  const isEven = i % 2 === 0;
-
-  const now = new Date();
-  const pastDate = new Date(now);
-  pastDate.setDate(now.getDate() - Math.floor(Math.random() * 365));
-
-  pastDate.setHours(Math.floor(Math.random() * 24));
-  pastDate.setMinutes(Math.floor(Math.random() * 60));
-  pastDate.setSeconds(Math.floor(Math.random() * 60));
-
-  return {
-    id: (i + 1).toString(),
-    time: pastDate.toISOString(),
-    name: isEven ? 'Ivanka Larasati' : 'Dimas Aryo',
-    type: isEven ? 'Transfer' : 'Debit',
-    amount: isEven
-      ? 1000000 + i * 10000
-      : 750000 + i * 5000,
-    category: isEven ? 'Penjualan' : 'Gaji',
-  };
-});
-
-
+export type Order = 'asc' | 'desc';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
+  if (
+    typeof a[orderBy] === 'object'
+    && typeof b[orderBy] === 'object'
+    && a[orderBy] !== null
+    && b[orderBy] !== null
+    && 'key' in a[orderBy]
+    && 'key' in b[orderBy]
+  ) {
+    if ((b[orderBy] as { key: string | Date }).key < (a[orderBy] as { key: string | Date }).key) return -1;
+    if ((b[orderBy] as { key: string | Date }).key > (a[orderBy] as { key: string | Date }).key) return 1;
   }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+
+  if (b[orderBy] < a[orderBy]) return -1;
+  if (b[orderBy] > a[orderBy]) return 1;
   return 0;
 }
 
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof Data>(
+function getComparator<T extends string>(
   order: Order,
-  orderBy: Key,
+  orderBy: T
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+  a: Record<string, string | number | React.ReactNode>,
+  b: Record<string, string | number | React.ReactNode>
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
+interface FilterOption {
   label: string;
-  numeric: boolean;
+  startAdornment?: React.ReactNode;
+  options: string[];
+  onFilter: (row: Record<string, string | number | React.ReactNode>, selected: string) => boolean;
+  onChange?: (selected: string) => void;
 }
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: 'time',
-    numeric: true,
-    disablePadding: false,
-    label: 'Waktu',
-  },
-  {
-    id: 'name',
-    numeric: true,
-    disablePadding: false,
-    label: 'Transaksi',
-  },
-  {
-    id: 'type',
-    numeric: true,
-    disablePadding: false,
-    label: 'Tipe',
-  },
-  {
-    id: 'amount',
-    numeric: true,
-    disablePadding: false,
-    label: 'Jumlah',
-  },
-  {
-    id: 'category',
-    numeric: true,
-    disablePadding: false,
-    label: 'Kategori',
-  },
-];
+interface TransactionTableProps extends Omit<BoxProps, 'children'> {
+  data: Record<string, string | number | React.ReactNode>[];
+  filters?: FilterOption[];
+  isLoading?: boolean;
+}
+
+const DEFAULT_COLUMN_COUNT = 5;
 
 export default function TransactionTable({
+  data,
+  isLoading = false,
+  filters = [],
   ...props
-}: BoxProps) {
+}: TransactionTableProps) {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('time');
+  const [orderBy, setOrderBy] = React.useState<string>('');
   const [query, setQuery] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [selectedCategory, setSelectedCategory] = React.useState('Semua');
-  const [selectedDuration, setSelectedDuration] = React.useState('Hari Ini');
+  const [filterSelections, setFilterSelections] = React.useState<Record<string, string>>({});
 
-  const handleRequestSort = (
-    property: keyof Data,
-  ) => {
+  const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -135,100 +87,178 @@ export default function TransactionTable({
     setPage(0);
   };
 
-  const handleSelectedCategoryChanged = (category: string) => {
-    setSelectedCategory(category);
-    setPage(0);
-  };
-
-  const handleSelectedDurationChanged = (duration: string) => {
-    setSelectedDuration(duration);
-    setPage(0);
-  };
-
-  const handleChangePage = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleFilterChange = (label: string, value: string) => {
+    setFilterSelections((prev) => ({ ...prev, [label]: value }));
     setPage(0);
   };
 
   const filteredRows = React.useMemo(() => {
-    console.log(rows)
-
-    return rows.filter((row) => {
-      return Object.values(row).some((value) =>
-        String(value).toLowerCase().includes(query.toLowerCase()),
+    return data
+      .filter(row => Object.values(row).some(val => String(val).toLowerCase().includes(query.toLowerCase())))
+      .filter(row =>
+        filters.every(filterFunction => {
+          const selected = filterSelections[filterFunction.label] ?? filterFunction.options[0];
+          return filterFunction.onFilter(row, selected);
+        })
       );
-    }).filter((row) => {
-      return selectedCategory === 'Semua' || row.category === selectedCategory;
-    }).filter((row) => {
-      if (selectedDuration === 'Hari Ini') {
-        const today = new Date()
-        today.setHours(0, 0, 0, 0);
-        return new Date(row.time) >= today
-      } else if (selectedDuration === '30 Hari Terakhir') {
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        return new Date(row.time) >= thirtyDaysAgo;
-      } else if (selectedDuration === '1 Tahun Terakhir') {
-        const oneYearAgo = new Date();
-        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-        return new Date(row.time) >= oneYearAgo;
-      }
-      return true;
-    }
-    );
-  }, [query, selectedCategory, selectedDuration]);
+  }, [query, filterSelections, data]);
 
   const visibleRows = React.useMemo(
-    () =>
-      [...filteredRows]
-        .sort(getComparator(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, query, selectedCategory, selectedDuration],
+    () => [...filteredRows].sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [order, orderBy, page, rowsPerPage, filteredRows]
   );
 
-  return (
-    <Box {...props}>
-      <EnhancedTableToolbar
-        onSearchChange={handleSearchChange}
-        onSelectedCategoryChanged={handleSelectedCategoryChanged}
-        onSelectedDurationChanged={handleSelectedDurationChanged}
-      />
-      <TableContainer sx={{ borderRadius: 8, border: 1, borderColor: "border.main", padding: 2 }}>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size={'medium'}
-        >
-          <EnhancedTableHead
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {visibleRows.map((row) => (
-              <TableRow
-                hover
-                tabIndex={-1}
-                key={`${row.id}`}
-                sx={{ cursor: 'pointer' }}
-              >
-                {Object.values(row).filter((_, i) => i !== 0).map((value) => (
-                  <TableCell key={value} align="right">
-                    {value}
+  const headCells = React.useMemo(() => {
+    if (data.length === 0) return [];
+    return Object.keys(data[0]);
+  }, [data]);
+
+  if (!data.length && isLoading) {
+    return (
+      <Box {...props}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Skeleton variant="rectangular" width={200} height={40} sx={{ borderRadius: 999 }} />
+          <Box display="flex" gap={2}>
+            <Skeleton variant="rectangular" width={120} height={40} sx={{ borderRadius: 999 }} />
+            <Skeleton variant="rectangular" width={120} height={40} sx={{ borderRadius: 999 }} />
+          </Box>
+        </Toolbar>
+
+        <TableContainer sx={{ borderRadius: 8, border: 1, borderColor: 'divider', padding: 2 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {Array.from({ length: DEFAULT_COLUMN_COUNT }).map((_, index) => (
+                  <TableCell key={index} sx={{
+                    backgroundColor: tosca[100],
+                    ...(index === 0 && {
+                      borderTopLeftRadius: 999,
+                      borderBottomLeftRadius: 999,
+                    }),
+                    ...(index === DEFAULT_COLUMN_COUNT - 1 && {
+                      borderTopRightRadius: 999,
+                      borderBottomRightRadius: 999,
+                    }),
+                  }}>
+                    <Skeleton variant="text" width="80%" />
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
+            </TableHead>
+            <TableBody>
+              {Array.from({ length: rowsPerPage }).map((_, rowIdx) => (
+                <TableRow key={rowIdx}>
+                  {Array.from({ length: DEFAULT_COLUMN_COUNT }).map((_, colIdx) => (
+                    <TableCell key={colIdx}>
+                      <Skeleton variant="text" width="100%" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-            {visibleRows.length === 0 && (
-              <TableRow
-              >
-                <TableCell colSpan={6} >
-                  <Typography variant="body2" color="text.secondary" align="center">
+        <Box display="flex" justifyContent="end" mt={2}>
+          <Skeleton variant="rectangular" width={300} height={48} />
+        </Box>
+      </Box>
+    )
+  }
+
+  return (
+    <Box {...props}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <TextField
+          onChange={handleSearchChange}
+          placeholder="Search"
+          variant="outlined"
+          size="small"
+          slotProps={{
+            input: {
+              startAdornment: <Icon icon="mdi:magnify" style={{ color: 'gray.light', fontSize: 24, marginRight: 8 }} />,
+              style: { borderRadius: 999, backgroundColor: 'transparent' }
+            }
+          }}
+        />
+
+        <Box display="flex" gap={2}>
+          {filters.map(filter => (
+            <Select
+              defaultValue={filter.options[0]}
+              key={filter.label}
+              onChange={(e) => {
+                const selected = e.target.value;
+                handleFilterChange(filter.label, selected);
+                filter.onChange?.(selected);
+              }}
+              size="small"
+              variant="outlined"
+              sx={{ borderRadius: 999 }}
+              startAdornment={filter.startAdornment}
+            >
+              {filter.options.map(option => (
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          ))}
+        </Box>
+      </Toolbar>
+
+      <TableContainer sx={{ borderRadius: 8, border: 1, borderColor: 'divider', padding: 2 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {headCells.map((key, index) => (
+                <TableCell
+                  key={key}
+                  sortDirection={orderBy === key ? order : false}
+                  sx={{
+                    backgroundColor: tosca[100],
+                    ...(index === 0 && {
+                      borderTopLeftRadius: 999,
+                      borderBottomLeftRadius: 999,
+                    }),
+                    ...(index === headCells.length - 1 && {
+                      borderTopRightRadius: 999,
+                      borderBottomRightRadius: 999,
+                    }),
+                  }}
+                >
+                  <TableSortLabel
+                    active={key === orderBy}
+                    direction={orderBy === key ? order : 'asc'}
+                    onClick={() => handleRequestSort(key)}
+                  >
+                    {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {isLoading ? (
+              Array.from({ length: rowsPerPage }).map((_, index) => (
+                <TableRow key={index}>
+                  {headCells.map((_, value) => (
+                    <TableCell key={value}><Skeleton variant="text" width="100%" /></TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              visibleRows.map((row, index) => (
+                <TableRow key={index}>
+                  {headCells.map((key) => (
+                    <TableCell key={key}>{row[key]}</TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
+
+            {!isLoading && visibleRows.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={headCells.length} align="center">
+                  <Typography variant="body2" color="text.secondary">
                     Tidak ada data yang ditemukan
                   </Typography>
                 </TableCell>
@@ -238,130 +268,25 @@ export default function TransactionTable({
         </Table>
       </TableContainer>
 
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={filteredRows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(_, newPage: number) => handleChangePage(newPage)}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {isLoading ? (
+        <Box display="flex" justifyContent="end" mt={2}>
+          <Skeleton variant="rectangular" width={300} height={48} />
+        </Box>
+      ) : (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredRows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(_, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+        />
+      )}
+
     </Box>
-  );
-}
-
-function EnhancedTableHead({
-  order,
-  orderBy,
-  onRequestSort
-}: {
-  order: Order;
-  orderBy: string;
-  onRequestSort: (property: keyof Data) => void;
-}) {
-  const createSortHandler =
-    (property: keyof Data) => () => {
-      onRequestSort(property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell, index) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-            sx={{
-              backgroundColor: tosca[100],
-              ...(index === 0 && {
-                borderTopLeftRadius: 999,
-                borderBottomLeftRadius: 999,
-              }),
-              ...(index === headCells.length - 1 && {
-                borderTopRightRadius: 999,
-                borderBottomRightRadius: 999,
-              }),
-            }}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-function EnhancedTableToolbar({ onSearchChange, onSelectedCategoryChanged, onSelectedDurationChanged }: {
-  onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSelectedCategoryChanged: (category: string) => void;
-  onSelectedDurationChanged: (duration: string) => void;
-}) {
-  const categoryMenuItems = [
-    "Semua",
-    ...Array.from(new Set(rows.map(row => row.category)))
-  ]
-
-  const durationMenuItems = [
-    "Hari Ini",
-    "30 Hari Terakhir",
-    "1 Tahun Terakhir",
-  ];
-
-  return (
-    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <TextField
-        onChange={onSearchChange}
-        placeholder="Search"
-        variant="outlined"
-        size="small"
-        slotProps={{
-          input: {
-            startAdornment: <Icon icon="mdi:magnify" style={{ color: gray[500], fontSize: 24, marginRight: 8 }} />,
-            sx: { borderRadius: 999, bgcolor: 'transparent', },
-          }
-        }}
-      />
-
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Select
-          onChange={(event) => onSelectedCategoryChanged(event.target.value as string)}
-          defaultValue={categoryMenuItems[0]}
-          startAdornment={<Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>}
-          variant="outlined"
-          size="small"
-          sx={{ borderRadius: 999, bgcolor: 'transparent', }}
-        >
-          {categoryMenuItems.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
-            </MenuItem>
-          ))}
-        </Select>
-
-        <Select
-          defaultValue={durationMenuItems[0]}
-          onChange={(event) => onSelectedDurationChanged(event.target.value as string)}
-          startAdornment={<Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Durasi:</Typography>}
-          variant="outlined"
-          size="small"
-          sx={{ borderRadius: 999, bgcolor: 'transparent', }}
-        >
-          {durationMenuItems.map((duration) => (
-            <MenuItem key={duration} value={duration}>
-              {duration}
-            </MenuItem>
-          ))}
-        </Select>
-      </Box>
-    </Toolbar>
   );
 }

@@ -29,7 +29,7 @@ export async function GET(req: Request){
   // Simulate fetching user data
   const userData = {
     name: "Marcelino Sibarani Santozo",
-    id: "123",
+    id: "1",
     phone_number: "628123456789",
   };
 
