@@ -7,6 +7,7 @@ import Select from '@/features/shared/components/select.component';
 import { limeGreen, tosca } from '@/lib/custom-color';
 import generateShades from '@/lib/generate-shades';
 import { PocketMemberRole } from '../entities/detail-pocket.entities';
+import Skeleton from '@/features/shared/components/skeleton';
 
 export interface PocketMembersTableRow {
   key: string;
@@ -24,12 +25,15 @@ export interface PocketMembersTableProps {
   useSearch?: boolean;
   editableKey?: string | null;
   onRoleEdited: (key: string, newRole: PocketMemberRole) => void;
+  isLoading?: boolean;
 }
 
 const roleColors: Record<string, string> = {
   admin: tosca[300],
   member: limeGreen[300],
 };
+
+const DEFAULT_ROWS = 3;
 
 export default function PocketMembersTable({
   title,
@@ -38,12 +42,74 @@ export default function PocketMembersTable({
   useSearch,
   editableKey,
   onRoleEdited,
+  isLoading = false,
   ...props
 }: BoxProps & PocketMembersTableProps) {
   const [query, setQuery] = React.useState('');
 
   const filteredData = data.filter(item => item.fullName.toLowerCase().includes(query.toLowerCase()));
   const isHaveActions = data.some((it) => it.actions);
+
+  if (isLoading) {
+    return (
+      <Box {...props}>
+        {/* Title Skeleton */}
+        <Box
+          sx={{
+            backgroundColor: color,
+            borderRadius: '999px',
+            px: 4,
+            py: 1,
+            mx: 'auto',
+            width: 'fit-content',
+          }}
+        >
+          <Skeleton variant="text" width={120} height={32} />
+        </Box>
+
+        {/* Search Input Skeleton */}
+        {useSearch && (
+          <Skeleton variant="rectangular" height={56} sx={{ mt: 2, borderRadius: 999 }} />
+        )}
+
+        {/* Table Skeleton */}
+        <TableContainer component={Paper} sx={{ borderRadius: 4, boxShadow: 0, border: 1, borderColor: "border.main", mt: 4 }}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: color }}>
+                <TableCell><Skeleton variant="text" width={60} /></TableCell>
+                <TableCell><Skeleton variant="text" width={60} /></TableCell>
+                {isHaveActions && <TableCell />}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.from({ length: DEFAULT_ROWS }).map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Box display="flex" alignItems="center" gap={2}>
+                      <Skeleton variant="circular" width={40} height={40} />
+                      <Skeleton variant="text" width={120} />
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="rectangular" width={100} height={32} sx={{ borderRadius: 999 }} />
+                  </TableCell>
+                  {isHaveActions && (
+                    <TableCell>
+                      <Box display="flex" justifyContent="flex-end" gap={1}>
+                        <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: 1 }} />
+                        <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: 1 }} />
+                      </Box>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    )
+  }
 
   return (
     <Box {...props}>
@@ -55,7 +121,6 @@ export default function PocketMembersTable({
           py: 1,
           mx: 'auto',
           width: 'fit-content',
-          mb: 4,
         }}
       >
         <Typography variant="h6" fontWeight={700} align="center">
