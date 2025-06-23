@@ -101,15 +101,15 @@ export default function Page() {
         <Box sx={{
           position: {
             xs: 'static',
-            md: 'relative',
+            lg: 'relative',
           },
           display: {
             xs: 'flex',
-            md: 'block',
+            lg: 'block',
           },
           flexDirection: {
             xs: 'column',
-            md: 'row',
+            lg: 'row',
           },
           gap: 2,
           flex: 1,
@@ -151,7 +151,7 @@ export default function Page() {
               backgroundColor: "white",
               position: {
                 xs: 'static',
-                md: 'absolute',
+                lg: 'absolute',
               },
             }}
             minWidth={240}
