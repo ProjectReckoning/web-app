@@ -82,7 +82,9 @@ export default function TopContributorsCard({
             </Box>
 
             <Box flex={1} display="flex" flexWrap="wrap" alignItems="center" rowGap={1}>
-              <Skeleton width={120} height={20} sx={{ flex: 1, minWidth: 100 }} />
+              <Box sx={{ flex: 1, minWidth: 100 }}>
+                <Skeleton width={120} height={20} sx={{ flex: 1, width: "50%" }} />
+              </Box>
 
               <Box display="flex" justifyContent="space-between" alignItems="center" gap={2} overflow="hidden">
                 <Skeleton

@@ -1,25 +1,40 @@
 'use client';
 
-import { orange } from "@/lib/custom-color";
+import { green, orange } from "@/lib/custom-color";
 import formatCurrency from "@/lib/format-currency";
 import { Icon } from "@iconify/react";
 import { TextField, Typography, Divider, IconButton } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function BEPModalInput({
   defaultValue,
-  onChange,
+  onSubmitChange,
 }: {
   defaultValue: number;
-  onChange?: (value: number) => void;
+  onSubmitChange?: (value: number) => void;
 }) {
   const [value, setValue] = useState(defaultValue);
   const [isEditing, setIsEditing] = useState(false);
   const textFieldRef = useRef<HTMLInputElement>(null);
 
+  const formatedValue = useMemo(() => {
+    return formatCurrency(value, {
+      maximumFractionDigits: 0,
+    });
+  }, [value])
+
   const handleEditClick = () => {
     setIsEditing(prev => !prev);
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatedStringValue = e.target.value
+      .replace(/[^0-9]+/g, "")
+    const newValue = parseFloat(formatedStringValue);
+    if (!isNaN(newValue)) {
+      setValue(newValue);
+    }
+  }
 
   useEffect(() => {
     if (isEditing) {
@@ -28,9 +43,9 @@ export default function BEPModalInput({
     }
 
     if (!isEditing && textFieldRef.current) {
-      const value = parseFloat(textFieldRef.current.value.replace(/[^0-9.-]+/g, ""));
-      if (!isNaN(value) && onChange) {
-        onChange(value);
+      const value = parseFloat(textFieldRef.current.value.replace(/[^0-9]+/g, ""));
+      if (!isNaN(value) && onSubmitChange) {
+        onSubmitChange(value);
       }
     }
   }, [isEditing]);
@@ -40,11 +55,8 @@ export default function BEPModalInput({
       inputRef={textFieldRef}
       disabled={!isEditing}
       inputMode="numeric"
-      value={isEditing ? value : formatCurrency(value)}
-      onChange={(e) => {
-        const value = parseFloat(e.target.value.replace(/[^0-9.-]+/g, ""));
-        setValue(value)
-      }}
+      value={formatedValue}
+      onChange={handleChange}
       variant="outlined"
       sx={{
         borderRadius: 4,
@@ -77,7 +89,11 @@ export default function BEPModalInput({
             <>
               <Divider orientation="vertical" flexItem sx={{ mr: 1 }} />
               <IconButton onClick={handleEditClick}>
-                <Icon icon="ph:pencil-simple-bold" style={{ fontSize: 24, color: orange[500] }} />
+                {isEditing ? (
+                  <Icon icon="mdi:check" color={green[500]} />
+                ) : (
+                  <Icon icon="mdi:pencil" color={orange[500]} />
+                )}
               </IconButton>
             </>
           ),

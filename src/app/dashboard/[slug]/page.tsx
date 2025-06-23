@@ -102,7 +102,7 @@ export default function Page() {
   }, [pocket, getLast5Transactions]);
 
   // TODO: Implement the logic to handle BEP input changes
-  const onChangeBEPModalInput = (value: number) => {
+  const onSubmitChangeBep = (value: number) => {
     console.log('BEP input changed:', value);
   };
 
@@ -140,7 +140,7 @@ export default function Page() {
             balance={pocket?.balance ?? 0}
             color={pocket?.color ?? gray[300]}
             icon={pocket?.icon ?? "pocket"}
-            isLoading={isLoading}
+            isLoading={isLoading || !pocket}
             sx={{
               backgroundColor: isLoading ? "transparent" : pocket?.color ?? "gray.main",
               border: isLoading ? 1 : 0,
@@ -161,7 +161,7 @@ export default function Page() {
             flex={1}
           />
           <IncomeOutcomeCard
-            isLoading={isLoading}
+            isLoading={isLoading || !pocket}
             top="10%"
             bottom="10%"
             right={0}
@@ -203,7 +203,7 @@ export default function Page() {
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
-            isLoading={isTransactionLoading}
+            isLoading={isTransactionLoading || !last5Transactions.length}
             transactions={last5Transactions}
             actions={
               <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
@@ -229,7 +229,7 @@ export default function Page() {
           </Box>
 
           <Box display="flex" flexDirection="column" gap={2} flex={1}>
-            <BEPModalInput defaultValue={pocket?.targetNominal ?? 0} onChange={onChangeBEPModalInput} />
+            <BEPModalInput defaultValue={pocket?.targetNominal ?? 0} onSubmitChange={onSubmitChangeBep} />
             <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
               border: 1,
               borderColor: 'border.main',
