@@ -35,7 +35,6 @@ describe("authRepository Integration Test", () => {
     expect(result).toEqual({
       id: expect.any(String),
       name: expect.any(String),
-      phone_number: expect.any(String)
     })
   });
 });

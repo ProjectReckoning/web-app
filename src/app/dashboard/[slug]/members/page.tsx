@@ -104,7 +104,7 @@ export default function Page() {
     };
 
     if (
-      member.id.toString() === user?.id &&
+      member.id.toString() !== user?.id &&
       pocket?.userRole === PocketMemberRole.Owner
     ) {
       data.actions = (

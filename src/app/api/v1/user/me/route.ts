@@ -26,7 +26,6 @@ export async function GET(req: Request){
     );
   }
 
-  // Simulate fetching user data
   const userData = {
     name: "Marcelino Sibarani Santozo",
     user_id: "2",

@@ -23,10 +23,6 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
       return;
     }
 
-    if (!user) {
-      getUser();
-    }
-
     if (pathname === '/auth' && token) {
       router.replace('/dashboard');
       return;
@@ -37,6 +33,17 @@ export function AuthGuard({ children }: Readonly<{ children: React.ReactNode }>)
       return;
     }
   }, [pathname, token, router, hydrated]);
+
+  useEffect(() => {
+    if (token && !user) {
+      try {
+        getUser();
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        router.replace('/auth');
+      }
+    }
+  }, [token, user, getUser, router]);
 
   return <>{children}</>;
 }
