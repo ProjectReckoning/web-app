@@ -1,12 +1,12 @@
 'use client';
 
-import { Box, TextField, Typography, Button } from "@mui/material";
+import { Box, TextField, Typography, Button, BoxProps } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import authStore from "../stores/auth.store";
 import { useRouter } from "next/navigation";
 
-export default function AuthWIthOtpForm({ phoneNumber }: { phoneNumber: string }) {
+export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { phoneNumber: string }) {
   const { sessionId, sessionExpiresAt, logout, loginWithOtp, errorMessage, token, isLoading } = authStore();
   const [timer, setTimer] = useState(0);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -71,16 +71,25 @@ export default function AuthWIthOtpForm({ phoneNumber }: { phoneNumber: string }
 
   return (
     <Box
-      sx={{
-        borderRadius: 4,
-        border: 1,
-        borderColor: 'border.main',
-        p: 4,
-        mt: 8,
-        width: '100%',
-        maxWidth: 500,
-        mx: 'auto',
-      }}
+    {...props}
+    sx={{
+      borderRadius: 4,
+      border: {
+        xs: 0,
+        lg: 1,
+      },
+      borderColor: {
+        xs: 'transparent',
+        lg: 'border.main',
+      },
+      p: {
+        xs: 0,
+        lg: 4,
+      },
+      width: '100%',
+      mx: 'auto',
+      ...props.sx,
+    }}
     >
       <Typography variant="h5" fontWeight={600} mb={1}>
         Verifikasi Kode OTP
@@ -95,7 +104,7 @@ export default function AuthWIthOtpForm({ phoneNumber }: { phoneNumber: string }
         Masukan 6 digit kode di bawah ini untuk melanjutkan.
       </Typography>
 
-      <Box display="flex" gap={2} justifyContent="center" mb={3}>
+      <Box display="flex" width="100%" gap={2} justifyContent="center" mb={3}>
         {otp.map((digit, index) => (
           <TextField
             key={index}
@@ -110,12 +119,12 @@ export default function AuthWIthOtpForm({ phoneNumber }: { phoneNumber: string }
               }
             }}
             sx={{
-              width: 56,
-              height: 56,
               borderRadius: 2,
-              backgroundColor: '#f0f0f0',
+
+              backgroundColor: "gray.light",
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
+                aspectRatio: 1,
               },
             }}
           />
