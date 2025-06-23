@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/income-outcome-card.component';
-import Loading from '@/features/shared/components/loading.component';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import TopContributorsCard from '@/features/pocket/components/top-contributor-card.component';
 import FinanceSummaryCard from '@/features/insight/components/finance-summary-card.component';
@@ -13,6 +12,7 @@ import transactionHistoryStore from '@/features/insight/stores/transaction-histo
 import React, { useEffect, useMemo } from 'react';
 import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
 import formatCurrency from '@/lib/format-currency';
+import { gray } from '@/lib/custom-color';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
@@ -30,12 +30,12 @@ export default function Page() {
     if (!pocket) {
       return [];
     }
-    
+
     const members = [
       pocket.owner,
       ...(pocket.members ?? []),
     ]
-    
+
     const totalContribution = members.reduce((sum, member) => {
       return sum + (member.metadata?.contributionAmount ?? 0);
     }, 0);
@@ -95,23 +95,6 @@ export default function Page() {
     }
   }, [pocket, getAllTransactions]);
 
-  if (isLoading || !pocket) {
-    return (
-      <Box
-        sx={{
-          my: 4,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <Loading />
-      </Box>
-    );
-  }
-
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="stretch" flexWrap="wrap" gap={2}>
@@ -132,22 +115,25 @@ export default function Page() {
           flex: 1,
         }}>
           <PocketCard
-            title={pocket.name}
-            accountNumber={pocket.accountNumber}
-            balance={pocket.balance}
-            color={pocket.color}
-            icon={pocket.icon}
+            title={pocket?.name ?? ""}
+            accountNumber={pocket?.accountNumber ?? ""}
+            balance={pocket?.balance ?? 0}
+            color={pocket?.color ?? gray[300]}
+            icon={pocket?.icon ?? "pocket"}
+            isLoading={isLoading}
             sx={{
-              backgroundColor: pocket.color,
+              backgroundColor: isLoading ? "transparent" : pocket?.color ?? "gray.main",
+              border: isLoading ? 1 : 0,
+              borderColor: isLoading ? "border.main" : 'transparent',
               borderRadius: 4,
               padding: 3,
               paddingRight: {
                 xs: 8,
-                md: 16,
+                lg: 16,
               },
               marginRight: {
                 xs: 0,
-                md: 24,
+                lg: 24,
               }
             }}
             minWidth={300}
@@ -159,8 +145,8 @@ export default function Page() {
             top="10%"
             bottom="10%"
             right={0}
-            income={pocket.income}
-            expense={pocket.outcome}
+            income={pocket?.income ?? 0}
+            expense={pocket?.outcome ?? 0}
             sx={{
               backgroundColor: "white",
               position: {
@@ -173,7 +159,7 @@ export default function Page() {
           />
         </Box>
         <TopContributorsCard
-          isLoading={ isLoading }
+          isLoading={isLoading}
           flex={1}
           sx={{
             minWidth: 300,
@@ -212,6 +198,7 @@ export default function Page() {
             options: ['30 hari terakhir', '3 bulan terakhir', '6 bulan terakhir', '1 tahun terakhir'],
             onFilter: () => true,
             onChange: async (selected) => {
+              if (!pocket) return;
               getAllTransactions(pocket.id, mapDurationStringToOption(selected));
             }
           }
