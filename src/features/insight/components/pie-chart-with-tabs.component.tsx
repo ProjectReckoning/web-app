@@ -6,6 +6,8 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import formatCurrency from "@/lib/format-currency";
 import { gray } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
+import { useRouter } from "next/navigation";
+import pocketStore from "@/features/pocket/stores/pocket.store";
 
 export interface PieChartItem {
   label: string;
@@ -31,6 +33,8 @@ export default function PieChartWithTabs({
   const [tab, setTab] = useState(0);
   const currentData = data[tab];
   const total = currentData.data.reduce((acc, item) => acc + item.value, 0);
+  const route = useRouter();
+  const { selectedPocket } = pocketStore()
 
   return (
     <Box {...props}>
@@ -151,9 +155,10 @@ export default function PieChartWithTabs({
                 style={{
                   color: "text.secondary",
                   cursor: "pointer",
+                  fontSize: 24,
                 }}
                 onClick={() =>
-                  console.log(`Navigate to details for ${item.label}`)
+                  route.push(`/dashboard/${selectedPocket?.id}/transactions?type=${item.label.toLowerCase()}`)
                 }
               />
             </Box>

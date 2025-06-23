@@ -13,6 +13,7 @@ import React, { useEffect, useMemo } from 'react';
 import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
 import formatCurrency from '@/lib/format-currency';
 import { gray } from '@/lib/custom-color';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
@@ -25,6 +26,9 @@ export default function Page() {
     totalIncome: pocketTotalIncome,
     totalOutcome: pocketTotalOutcome,
   } = transactionHistoryStore()
+
+  const searchParams = useSearchParams()
+  const defaultType = searchParams.get('type')
 
   const contributors = useMemo(() => {
     if (!pocket) {
@@ -190,7 +194,8 @@ export default function Page() {
             label: 'Kategori',
             startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
             options: ['Semua', ...mappedTransactionData.length > 0 ? Array.from(new Set(mappedTransactionData.map(row => row.kategori))) : []],
-            onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected
+            onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected,
+            defaultValue: defaultType ?? 'Semua',
           },
           {
             label: 'Durasi',

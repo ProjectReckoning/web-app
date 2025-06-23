@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box, { BoxProps } from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,6 +13,7 @@ import { Icon } from '@iconify/react';
 import { tosca } from '@/lib/custom-color';
 import Select from '@/features/shared/components/select.component';
 import Skeleton from '@/features/shared/components/skeleton';
+import { ChangeEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 
 export type Order = 'asc' | 'desc';
 
@@ -39,8 +39,8 @@ function getComparator<T extends string>(
   order: Order,
   orderBy: T
 ): (
-  a: Record<string, string | number | React.ReactNode>,
-  b: Record<string, string | number | React.ReactNode>
+  a: Record<string, string | number | ReactNode>,
+  b: Record<string, string | number | ReactNode>
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -49,14 +49,15 @@ function getComparator<T extends string>(
 
 interface FilterOption {
   label: string;
-  startAdornment?: React.ReactNode;
+  startAdornment?: ReactNode;
   options: string[];
-  onFilter: (row: Record<string, string | number | React.ReactNode>, selected: string) => boolean;
+  onFilter: (row: Record<string, string | number | ReactNode>, selected: string) => boolean;
   onChange?: (selected: string) => void;
+  defaultValue?: string;
 }
 
 interface TransactionTableProps extends Omit<BoxProps, 'children'> {
-  data: Record<string, string | number | React.ReactNode>[];
+  data: Record<string, string | number | ReactNode>[];
   filters?: FilterOption[];
   isLoading?: boolean;
 }
@@ -69,12 +70,12 @@ export default function TransactionTable({
   filters = [],
   ...props
 }: TransactionTableProps) {
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<string>('');
-  const [query, setQuery] = React.useState('');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [filterSelections, setFilterSelections] = React.useState<Record<string, string>>({});
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<string>('');
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filterSelections, setFilterSelections] = useState<Record<string, string>>({});
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -82,7 +83,15 @@ export default function TransactionTable({
     setOrderBy(property);
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    filters.forEach(filter => {
+      if (filter.defaultValue) {
+        handleFilterChange(filter.label, filter.defaultValue);
+      }
+    });
+  }, []);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
     setPage(0);
   };
@@ -92,7 +101,7 @@ export default function TransactionTable({
     setPage(0);
   };
 
-  const filteredRows = React.useMemo(() => {
+  const filteredRows = useMemo(() => {
     return data
       .filter(row => Object.values(row).some(val => String(val).toLowerCase().includes(query.toLowerCase())))
       .filter(row =>
@@ -103,12 +112,12 @@ export default function TransactionTable({
       );
   }, [query, filterSelections, data]);
 
-  const visibleRows = React.useMemo(
+  const visibleRows = useMemo(
     () => [...filteredRows].sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [order, orderBy, page, rowsPerPage, filteredRows]
   );
 
-  const headCells = React.useMemo(() => {
+  const headCells = useMemo(() => {
     if (data.length === 0) return [];
     return Object.keys(data[0]);
   }, [data]);
@@ -185,7 +194,7 @@ export default function TransactionTable({
         <Box display="flex" flexWrap="wrap" gap={2}>
           {filters.map(filter => (
             <Select
-              defaultValue={filter.options[0]}
+              defaultValue={filter.defaultValue ?? filter.options[0]}
               key={filter.label}
               onChange={(e) => {
                 const selected = e.target.value;
