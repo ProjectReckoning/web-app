@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Box, Tabs, Tab, Typography, Stack, BoxProps } from '@mui/material';
-import { PieChart } from '@mui/x-charts/PieChart';
-import formatCurrency from '@/lib/format-currency';
-import { gray } from '@/lib/custom-color';
-import { Icon } from '@iconify/react';
+import { useState } from "react";
+import { Box, Tabs, Tab, Typography, Stack, BoxProps } from "@mui/material";
+import { PieChart } from "@mui/x-charts/PieChart";
+import formatCurrency from "@/lib/format-currency";
+import { gray } from "@/lib/custom-color";
+import { Icon } from "@iconify/react";
 
 export interface PieChartItem {
   label: string;
@@ -24,31 +24,32 @@ export interface PieChartWithTabsProps {
   data: PieChartTabData[];
 }
 
-export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsProps & BoxProps) {
+export default function PieChartWithTabs({
+  data,
+  ...props
+}: PieChartWithTabsProps & BoxProps) {
   const [tab, setTab] = useState(0);
   const currentData = data[tab];
   const total = currentData.data.reduce((acc, item) => acc + item.value, 0);
 
   return (
-    <Box
-      {...props}
-    >
+    <Box {...props}>
       <Tabs
         value={tab}
         onChange={(_, newValue) => setTab(newValue)}
         centered
-        variant='standard'
+        variant="standard"
         slotProps={{
           root: {
             sx: {
-              width: 'fit-content',
-              mx: 'auto',
+              width: "fit-content",
+              mx: "auto",
               backgroundColor: gray[50],
               borderRadius: 999,
               mb: 4,
             },
           },
-          indicator: { style: { display: 'none' } },
+          indicator: { style: { display: "none" } },
         }}
       >
         {data.map((tabItem, index) => (
@@ -57,12 +58,12 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
             label={tabItem.label}
             value={index}
             sx={{
-              color: 'black',
-              textTransform: 'none',
-              fontWeight: 'bold',
-              '&.Mui-selected': {
-                backgroundColor: 'limeGreen.main',
-                color: 'black',
+              color: "black",
+              textTransform: "none",
+              fontWeight: "bold",
+              "&.Mui-selected": {
+                backgroundColor: "limeGreen.main",
+                color: "black",
                 borderRadius: 999,
               },
             }}
@@ -77,11 +78,16 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
               id: index,
               value: item.value,
               color: item.color,
+              label: item.label,
             })),
             innerRadius: 50,
             outerRadius: 100,
-            cx: '50%',
-            cy: '50%',
+            cx: "50%",
+            cy: "50%",
+            valueFormatter: (v) => {
+              const value = typeof v === "number" ? v : v?.value ?? 0;
+              return formatCurrency(value);
+            },
           },
         ]}
         width={200}
@@ -95,33 +101,61 @@ export default function PieChartWithTabs({ data, ...props }: PieChartWithTabsPro
               sx={{
                 bgcolor: item.color,
                 p: 1.5,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               {item.icon}
             </Box>
-            <Box flex={1} sx={{ borderBottom: `2px solid ${gray[100]}`, paddingBottom: 2, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }} >
+            <Box
+              flex={1}
+              sx={{
+                borderBottom: `2px solid ${gray[100]}`,
+                paddingBottom: 2,
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <Box display="flex" flexDirection="column" gap={0.5} flex={1}>
-                <Typography fontWeight="bold" sx={{ whiteSpace: 'nowrap' }}>{item.label}</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
+                <Typography fontWeight="bold" sx={{ whiteSpace: "nowrap" }}>
+                  {item.label}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ whiteSpace: "nowrap" }}
+                >
                   {formatCurrency(item.value)}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
-                  Dari <Box component="span" fontWeight="bold">{item.transactionCount}</Box> Transaksi
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ whiteSpace: "nowrap" }}
+                >
+                  Dari{" "}
+                  <Box component="span" fontWeight="bold">
+                    {item.transactionCount}
+                  </Box>{" "}
+                  Transaksi
                 </Typography>
               </Box>
-              
-              <Typography fontWeight="bold">{((item.value / total) * 100).toFixed(0)}%</Typography>
+
+              <Typography fontWeight="bold">
+                {((item.value / total) * 100).toFixed(0)}%
+              </Typography>
               <Icon
                 icon="mdi:chevron-right"
                 style={{
-                  color: 'text.secondary',
-                  cursor: 'pointer',
+                  color: "text.secondary",
+                  cursor: "pointer",
                 }}
-                onClick={() => console.log(`Navigate to details for ${item.label}`)}
+                onClick={() =>
+                  console.log(`Navigate to details for ${item.label}`)
+                }
               />
             </Box>
           </Box>

@@ -70,7 +70,7 @@ const mockDetails: Record<number, PocketDetailResponseItem> = {
         },
       },
     ],
-    user_role: "owner",
+    user_role: "admin",
   },
   2: {
     id: 2,
