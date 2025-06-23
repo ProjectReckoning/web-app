@@ -194,15 +194,6 @@ export default function Page() {
         />
       </Box>
 
-      <Stack spacing={2}>
-        <Typography variant='h6'>
-          Pilih Periode
-        </Typography>
-        <Box width="fit-content">
-          <DateRangeSelector />
-        </Box>
-      </Stack>
-
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
