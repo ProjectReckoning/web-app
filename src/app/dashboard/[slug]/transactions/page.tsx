@@ -17,7 +17,7 @@ import { gray } from '@/lib/custom-color';
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
   const {
-    transactions,
+    transactions, 
     getAllTransactions,
     isLoading: isTransactionStoreLoading,
     previousBalance: pocketPreviousBalance,
@@ -120,9 +120,9 @@ export default function Page() {
             balance={pocket?.balance ?? 0}
             color={pocket?.color ?? gray[300]}
             icon={pocket?.icon ?? "pocket"}
-            isLoading={isLoading}
+            isLoading={isLoading || !pocket}
             sx={{
-              backgroundColor: isLoading ? "transparent" : pocket?.color ?? "gray.main",
+              backgroundColor: isLoading ? "gray.main" : pocket?.color ?? "gray.main",
               border: isLoading ? 1 : 0,
               borderColor: isLoading ? "border.main" : 'transparent',
               borderRadius: 4,
@@ -141,7 +141,7 @@ export default function Page() {
             flex={1}
           />
           <IncomeOutcomeCard
-            isLoading={isLoading}
+            isLoading={isLoading || !pocket}
             top="10%"
             bottom="10%"
             right={0}
@@ -159,7 +159,7 @@ export default function Page() {
           />
         </Box>
         <TopContributorsCard
-          isLoading={isLoading}
+          isLoading={isLoading || !pocket}
           flex={1}
           sx={{
             minWidth: 300,
@@ -174,7 +174,7 @@ export default function Page() {
       </Typography>
 
       <FinanceSummaryCard
-        isLoading={isTransactionStoreLoading}
+        isLoading={isTransactionStoreLoading || !mappedTransactionData.length}
         items={financeSummaryItems}
         borderRadius={4}
         overflow="hidden"
@@ -184,7 +184,7 @@ export default function Page() {
 
       <TransactionTable
         data={mappedTransactionData}
-        isLoading={isTransactionStoreLoading}
+        isLoading={isTransactionStoreLoading || !mappedTransactionData.length}
         filters={[
           {
             label: 'Kategori',
