@@ -105,12 +105,6 @@ export default function Page() {
     console.log('BEP input changed:', value);
   };
 
-  if (!pocket) {
-    return (
-      <></>
-    );
-  }
-
   return (
     <Box
       sx={{
@@ -140,14 +134,14 @@ export default function Page() {
         }}
         >
           <PocketCard
-            title={pocket.name}
-            accountNumber={pocket.accountNumber}
-            balance={pocket.balance}
-            color={pocket.color}
-            icon={pocket.icon}
+            title={pocket?.name ?? ""}
+            accountNumber={pocket?.accountNumber ?? ""}
+            balance={pocket?.balance ?? 0}
+            color={pocket?.color ?? ""}
+            icon={pocket?.icon ?? "mdi:wallet"}
             isLoading={isLoading}
             sx={{
-              backgroundColor: isLoading ? "transparent" : pocket.color,
+              backgroundColor: isLoading ? "transparent" : pocket?.color ?? "purple.main",
               border: isLoading ? 1 : 0,
               borderColor: isLoading ? "border.main" : 'transparent',
               borderRadius: 4,
@@ -170,8 +164,8 @@ export default function Page() {
             top="10%"
             bottom="10%"
             right={0}
-            income={pocket.income}
-            expense={pocket.outcome}
+            income={pocket?.income ?? 0}
+            expense={pocket?.outcome ?? 0}
             display="flex"
             flexDirection="column"
             alignItems="start"
@@ -243,7 +237,7 @@ export default function Page() {
           </Box>
 
           <Box display="flex" flexDirection="column" gap={2} flex={1}>
-            <BEPModalInput defaultValue={pocket.targetNominal} onChange={onChangeBEPModalInput} />
+            <BEPModalInput defaultValue={pocket?.targetNominal ?? 0} onChange={onChangeBEPModalInput} />
             <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
               border: 1,
               borderColor: 'border.main',
