@@ -78,7 +78,6 @@ export default function PieChartWithTabs({
               id: index,
               value: item.value,
               color: item.color,
-              label: item.label,
             })),
             innerRadius: 50,
             outerRadius: 100,

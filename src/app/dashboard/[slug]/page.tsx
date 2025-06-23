@@ -7,14 +7,12 @@ import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-wi
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
-import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import { Link, Stack } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/income-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
 import { Icon } from '@iconify/react';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
-import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
@@ -42,26 +40,7 @@ const DATA: ChartData[] = [
   },
 ];
 
-const sampleData: PieChartTabData[] = [
-  {
-    label: 'Pemasukan',
-    data: [
-      {
-        label: 'Penjualan',
-        value: 770000,
-        color: '#B57BFF',
-        icon: <Icon icon="mdi:upload" style={{ color: 'white' }} />,
-        transactionCount: 8,
-      },
-      {
-        label: 'Top up',
-        value: 330000,
-        color: '#48DDE0',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
-        transactionCount: 2,
-      },
-    ],
-  },
+const expenseSampleData: PieChartTabData[] = [
   {
     label: 'Pengeluaran',
     data: [
@@ -69,26 +48,48 @@ const sampleData: PieChartTabData[] = [
         label: 'Salary',
         value: 40000,
         color: '#FFD700',
-        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ fontSize: 24, color: 'white' }} />,
         transactionCount: 1,
       },
       {
         label: 'Withdraw',
         value: 20000,
         color: '#FFB6FF',
-        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ fontSize: 24, color: 'white' }} />,
         transactionCount: 1,
       },
       {
         label: 'Other',
         value: 30000,
         color: '#B0B0B0',
-        icon: <Icon icon="mdi:currency-usd" style={{ color: 'white' }} />,
+        icon: <Icon icon="mdi:currency-usd" style={{ fontSize: 24, color: 'white' }} />,
         transactionCount: 1,
       },
     ],
   },
 ];
+
+const incomeSampleData: PieChartTabData[] = [
+  {
+    label: 'Pemasukan',
+    data: [
+      {
+        label: 'Penjualan',
+        value: 770000,
+        color: '#B57BFF',
+        icon: <Icon icon="mdi:upload" style={{ fontSize: 24, color: 'white' }} />,
+        transactionCount: 8,
+      },
+      {
+        label: 'Top up',
+        value: 330000,
+        color: '#48DDE0',
+        icon: <Icon icon="mdi:download" style={{ fontSize: 24, color: 'white' }} />,
+        transactionCount: 2,
+      },
+    ],
+  },
+]
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
@@ -100,11 +101,6 @@ export default function Page() {
       getLast5Transactions(pocket.id);
     }
   }, [pocket, getLast5Transactions]);
-
-  // TODO: Implement the logic to handle BEP input changes
-  const onSubmitChangeBep = (value: number) => {
-    console.log('BEP input changed:', value);
-  };
 
   return (
     <Box
@@ -194,6 +190,15 @@ export default function Page() {
         />
       </Box>
 
+      <Stack spacing={2}>
+        <Typography variant='h6'>
+          Pilih Periode
+        </Typography>
+        <Box width="fit-content">
+          <DateRangeSelector />
+        </Box>
+      </Stack>
+
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
@@ -224,20 +229,11 @@ export default function Page() {
         <Typography variant='h6'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
           <Box display="flex" flexDirection="column" gap={2} flex={1}>
-            <DateRangeSelector />
-            <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
+            <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={expenseSampleData} />
           </Box>
 
           <Box display="flex" flexDirection="column" gap={2} flex={1}>
-            <BEPModalInput defaultValue={pocket?.targetNominal ?? 0} onSubmitChange={onSubmitChangeBep} />
-            <BEPInsightCard flex={1} currentProfit={10000000} targetProfit={20000000} avgDailyProfit={1000000} sx={{
-              border: 1,
-              borderColor: 'border.main',
-              borderRadius: 10,
-              backgroundColor: 'white',
-              padding: 4,
-              textAlign: 'center',
-            }} />
+            <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={incomeSampleData} />
           </Box>
         </Box>
       </Stack>
