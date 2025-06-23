@@ -218,17 +218,19 @@ export async function PATCH(req: Request): Promise<Response> {
   const pocketId = parseInt(slug ?? "");
 
   if (!mockDetails[pocketId]) {
-    return new Response(JSON.stringify({
-      ok: false,
-      message: "Pocket not found",
-      code: 404,
-    }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        message: "Pocket not found",
+        code: 404,
+      }),
+      {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 
-  
   const requestBody = await req.json();
 
   const updatedPocket = {
@@ -236,30 +238,32 @@ export async function PATCH(req: Request): Promise<Response> {
     ...requestBody,
   };
 
-
   mockDetails[pocketId] = updatedPocket;
 
-  return new Response(JSON.stringify({
-    ok: true,
-    data: {
-      id: updatedPocket.id,
-      name: updatedPocket.name,
-      type: updatedPocket.type,
-      target_nominal: updatedPocket.target_nominal,
-      current_balance: updatedPocket.current_balance,
-      deadline: updatedPocket.deadline,
-      status: updatedPocket.status,
-      owner_user_id: updatedPocket.owner_user_id,
-      icon_name: updatedPocket.icon_name,
-      color_hex: updatedPocket.color_hex,
-      account_number: updatedPocket.account_number,
-      createdAt: updatedPocket.createdAt,
-      updatedAt: updatedPocket.updatedAt,
-    },
-    message: "Pocket updated successfully",
-    code: 200,
-  }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      data: {
+        id: updatedPocket.id,
+        name: updatedPocket.name,
+        type: updatedPocket.type,
+        target_nominal: updatedPocket.target_nominal,
+        current_balance: updatedPocket.current_balance,
+        deadline: updatedPocket.deadline,
+        status: updatedPocket.status,
+        owner_user_id: updatedPocket.owner_user_id,
+        icon_name: updatedPocket.icon_name,
+        color_hex: updatedPocket.color_hex,
+        account_number: updatedPocket.account_number,
+        createdAt: updatedPocket.createdAt,
+        updatedAt: updatedPocket.updatedAt,
+      },
+      message: "Pocket updated successfully",
+      code: 200,
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }
