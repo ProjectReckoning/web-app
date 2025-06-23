@@ -1,12 +1,12 @@
 'use client';
 
 import { gray } from "@/lib/custom-color";
-import { Box, TextField, InputAdornment, Typography, Button } from "@mui/material";
+import { Box, TextField, InputAdornment, Typography, Button, BoxProps } from "@mui/material";
 import { useState } from "react";
 import authStore from "../stores/auth.store";
 import { Icon } from "@iconify/react";
 
-export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber }: { phoneNumber: string, setPhoneNumber: (value: string) => void }) {
+export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber, ...props }: BoxProps & { phoneNumber: string, setPhoneNumber: (value: string) => void }) {
   const { isLoading, errorMessage, loginWithCredential } = authStore();
   const [password, setPassword] = useState("");
 
@@ -23,12 +23,15 @@ export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber }: 
   return (
     <Box
       component="form"
+      {...props}
       onSubmit={handleSubmit}
       sx={{
-        mt: 8,
         display: "flex",
         flexDirection: "column",
         gap: 2,
+        maxWidth: 320,
+        mx: "auto",
+        ...props.sx,
       }}
     >
       <TextField
@@ -71,10 +74,15 @@ export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber }: 
       </Typography>
 
       <Box sx={{
-        display: "flex", flexDirection: "column", gap: 2, width: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        width: {
           xs: "100%",
           sm: "fit-content",
-        }, margin: "auto", marginTop: 4
+        },
+        mx: "auto",
+        marginTop: 4
       }}>
         <Button
           type="submit"
