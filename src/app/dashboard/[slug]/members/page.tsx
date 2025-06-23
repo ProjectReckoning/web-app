@@ -12,6 +12,7 @@ import { limeGreen, orange, tosca } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
+import { Theme, useMediaQuery } from "@mui/material";
 
 export default function Page() {
   const { pocket, getAllMembers, isLoading } = detailPocketStore();
@@ -39,6 +40,9 @@ export default function Page() {
 
     setEditableKey(key);
   };
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
+  );
 
   const ownerData: PocketMembersTableRow[] = owners.map((member) => {
     const data: PocketMembersTableRow = {
@@ -212,16 +216,22 @@ export default function Page() {
           <Button
             color="gray"
             startIcon={<Icon icon="material-symbols:door-open-outline" />}
+            // make the icon is center
             size="small"
             sx={{
               textTransform: "none",
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              ...(isMobile && {
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }),
             }}
             onClick={onLeavePocketClicked}
           >
-            Keluar dari pocket ini
+            {!isMobile && "Keluar dari pocket ini"}
           </Button>
         </>
       );
@@ -280,7 +290,7 @@ function RemoveMemberConfirmationModalContent() {
         component="img"
         src="/images/remove-member-confirmation-illustration.png"
         alt="Remove Member"
-        sx={{ width: "80%" }}
+        sx={{ width: "100%" }}
       />
       <Box paddingTop={2}>
         <Typography fontWeight={600} component="h3" textAlign="center">
@@ -308,23 +318,23 @@ function RemoveMemberConfirmationModalContent() {
           color="error"
           size="small"
           sx={{
-            width: { xs: "100%", sm: "50%" }, 
+            width: { xs: "100%", sm: "50%" },
             fontSize: { xs: "0.7rem", sm: "0.875rem" },
-            py: { xs: 0.5, sm: 1 }, 
+            py: { xs: 0.5, sm: 1 },
           }}
         >
           Hapus Member
         </Button>
         <Button
           variant="outlined"
-          color="inherit" 
+          color="inherit"
           size="small"
           onClick={closeModal}
           sx={{
             width: { xs: "100%", sm: "50%" },
             fontSize: { xs: "0.7rem", sm: "0.875rem" },
             py: { xs: 0.5, sm: 1 },
-            mt: { xs: -1, sm: -2 }, // kasih jarak vertikal jika stacked
+            mt: { xs: -1, sm: -2 }, 
           }}
         >
           Batalkan
@@ -395,13 +405,19 @@ function LeavePocketConfirmationModalContent() {
         display="flex"
         flexWrap="wrap"
         gap={2}
-        sx={{ paddingTop: 4, justifyContent: "center" }}
+        sx={{ paddingTop: 2, justifyContent: "center" }}
       >
         <Button
           variant="contained"
           color="error"
           size="large"
-          sx={{ flex: 1, minWidth: 160 }}
+          sx={{
+            flex: 1,
+            minWidth: 160,
+            width: { xs: "100%", sm: "50%" },
+            fontSize: { xs: "0.7rem", sm: "0.875rem" },
+            py: { xs: 0.5, sm: 1 },
+          }}
         >
           Keluar Pocket
         </Button>
@@ -409,7 +425,13 @@ function LeavePocketConfirmationModalContent() {
           variant="outlined"
           color="black"
           size="large"
-          sx={{ flex: 1, minWidth: 160 }}
+          sx={{
+            flex: 1,
+            minWidth: 160,
+            width: { xs: "100%", sm: "50%" },
+            fontSize: { xs: "0.7rem", sm: "0.875rem" },
+            py: { xs: 0.5, sm: 1 },
+          }}
           onClick={closeModal}
         >
           Batal

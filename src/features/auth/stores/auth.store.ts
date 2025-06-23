@@ -93,6 +93,7 @@ const authStore = create<AuthStore>()(
 				sessionExpiresAt: null,
 				phoneNumber: null,
 				isLoading: false,
+				user: null,
 			});
 		},
 	}), {

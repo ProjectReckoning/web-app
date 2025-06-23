@@ -13,7 +13,7 @@ export interface ResponseScheme {
   };
 }
 
-export async function GET(req: Request){
+export async function GET(req: Request) {
   const authorization = req.headers.get("authorization");
 
   if (!authorization) {
@@ -28,7 +28,7 @@ export async function GET(req: Request){
 
   const userData = {
     name: "Marcelino Sibarani Santozo",
-    user_id: "2",
+    user_id: "3",
   };
 
   return new Response(
