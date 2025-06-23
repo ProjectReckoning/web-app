@@ -10,7 +10,7 @@ export default function Modal({ children }: { children?: React.ReactNode }) {
       open={isOpen}
       onClose={closeModal}
       fullWidth
-      maxWidth="sm"
+      maxWidth="xs"
       slotProps={{
         paper: {
           sx: {
@@ -20,19 +20,17 @@ export default function Modal({ children }: { children?: React.ReactNode }) {
               xs: 0,
               sm: 2,
             },
-            backgroundColor: 'background.paper',
+            backgroundColor: "background.paper",
           },
         },
         backdrop: {
           sx: {
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
           },
         },
       }}
     >
-      <DialogContent>
-        {content || children}
-      </DialogContent>
+      <DialogContent>{content || children}</DialogContent>
     </Dialog>
   );
 }

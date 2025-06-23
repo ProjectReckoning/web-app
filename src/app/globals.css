@@ -1,0 +1,21 @@
+/* Scrollbar for Webkit browsers */
+::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #A471E1;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  /* Scrollbar for Firefox */
+  /* * {
+    scrollbar-width: thin;
+    scrollbar-color: #A471E1 transparent;
+  } */
+  
