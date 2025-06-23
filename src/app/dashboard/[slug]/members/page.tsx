@@ -12,7 +12,7 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
 export default function Page() {
-  const { pocket, getAllMembers } = detailPocketStore();
+  const { pocket, getAllMembers, isLoading } = detailPocketStore();
   const { user } = authStore();
 
   const { openModal } = modalStore();
@@ -128,6 +128,8 @@ export default function Page() {
         color="tosca.light"
         editableKey={editableKey}
         onRoleEdited={onRoleEdited}
+        mt={8}
+        isLoading={isLoading || !pocket?.id}
       />
 
       <PocketMembersTable
@@ -138,6 +140,8 @@ export default function Page() {
         useSearch
         editableKey={editableKey}
         onRoleEdited={onRoleEdited}
+        mt={8}
+        isLoading={isLoading || !pocket?.id}
       />
       <Modal />
     </>
