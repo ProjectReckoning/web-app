@@ -12,6 +12,7 @@ import {
   GetPocketDetailResponse,
   PocketDetailResponseItem as PocketDetailResponseItem,
 } from "../entities/get-pocket-detail-response";
+import { ChangePocketMemberRoleResponse } from "../entities/patch-pocket-change-role";
 
 class PocketRepository {
   async getAllPocket(): Promise<PocketEntity[]> {
@@ -61,23 +62,19 @@ class PocketRepository {
       name: responseData.data.name,
       color: responseData.data.color_hex,
       icon: responseData.data.icon_name,
-    }
+    };
   }
 
   async changePocketMemberRole(
     pocketId: string,
     userId: string,
     role: string
-  ): Promise<{ message: string }> {
+  ): Promise<ChangePocketMemberRoleResponse> {
     const response = await api.patch(
       `/pocket/${pocketId}/members/${userId}/role`,
-      {
-        role,
-      }
+      { role }
     );
-    const responseData = response.data as { message: string };
-
-    return responseData;
+    return response.data as ChangePocketMemberRoleResponse;
   }
 
   private mapApiPocketToEntity(data: PocketResponseItem): PocketEntity {
