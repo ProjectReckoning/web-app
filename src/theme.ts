@@ -158,6 +158,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          ".MuiOutlinedInput-input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0 999px background inset !important",
+            WebkitTextFillColor: "inherit !important",
+          },
+        }
+      }
+    }
   },
 });
 
