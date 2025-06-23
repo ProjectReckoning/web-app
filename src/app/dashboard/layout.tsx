@@ -2,14 +2,11 @@
 
 import { Box, Container, Toolbar } from '@mui/material';
 import Header from '@/features/shared/components/header.component';
-import authStore from '@/features/auth/stores/auth.store';
-import Loading from '@/features/shared/components/loading.component';
 import pocketStore from '@/features/pocket/stores/pocket.store';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
-  const { isLoading } = authStore();
   const { pockets, getAllPockets } = pocketStore();
   const pathname = usePathname();
 
@@ -19,21 +16,6 @@ export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
       return;
     }
   }, [pathname]);
-
-  if (isLoading) {
-    return (
-      <Container maxWidth="lg">
-        <Box
-          sx={{
-            position: 'relative',
-            minHeight: '100vh',
-          }}
-        >
-          <Loading />
-        </Box>
-      </Container>
-    );
-  }
 
   return (
     <>

@@ -91,7 +91,10 @@ export default function Page() {
 
   useEffect(() => {
     getLast5Transactions();
-    getAllPockets();
+
+    if (!pockets.length) {
+      getAllPockets();
+    }
   }, []);
 
   return (
