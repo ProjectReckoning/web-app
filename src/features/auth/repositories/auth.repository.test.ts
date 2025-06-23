@@ -32,9 +32,6 @@ describe("authRepository Integration Test", () => {
     const authRepository = (await import("./auth.repository")).default;
 
     const result = await authRepository.me();
-
-    
-
     expect(result).toEqual({
       id: expect.any(String),
       name: expect.any(String),
