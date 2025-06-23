@@ -168,7 +168,7 @@ export default function TransactionTable({
 
   return (
     <Box {...props}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Toolbar sx={{ display: 'flex', flexWrap: "wrap", gap: 2, justifyContent: 'space-between' }}>
         <TextField
           onChange={handleSearchChange}
           placeholder="Search"
@@ -182,7 +182,7 @@ export default function TransactionTable({
           }}
         />
 
-        <Box display="flex" gap={2}>
+        <Box display="flex" flexWrap="wrap" gap={2}>
           {filters.map(filter => (
             <Select
               defaultValue={filter.options[0]}
@@ -205,7 +205,7 @@ export default function TransactionTable({
         </Box>
       </Toolbar>
 
-      <TableContainer sx={{ borderRadius: 8, border: 1, borderColor: 'divider', padding: 2 }}>
+      <TableContainer sx={{ borderRadius: 8, border: 1, borderColor: 'divider', padding: 2, mt: 4 }}>
         <Table>
           <TableHead>
             <TableRow>
