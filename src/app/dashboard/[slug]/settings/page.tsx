@@ -2,7 +2,6 @@
 
 import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
 import { useEffect } from "react";
-import Loading from "@/features/shared/components/loading.component";
 import Box from "@mui/material/Box";
 import PocketCard from "@/features/pocket/components/pocket-card.component";
 import FormEditPocket from "@/features/pocket/components/form-edit-pocket.component";
@@ -46,23 +45,6 @@ export default function Page() {
     setFormData(data);
   };
 
-  if (isLoading || !pocket) {
-    return (
-      <Box
-        sx={{
-          my: 4,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <Loading />
-      </Box>
-    );
-  }
-
   return (
     <Box
       sx={{
@@ -94,12 +76,13 @@ export default function Page() {
             Atur Pocket Kamu
           </Typography>
           <PocketCard
+            isLoading={isLoading || !pocket?.id}
             title={formData.title}
-            accountNumber={pocket.accountNumber}
-            balance={pocket.balance}
+            accountNumber={pocket?.accountNumber ?? ""}
+            balance={pocket?.balance ?? 0}
             color={formData.color}
             showBalance={false}
-            icon={formData?.icon ? formData.icon : pocket.icon}
+            icon={formData?.icon ? formData.icon : pocket?.icon ?? ""}
             sx={{
               backgroundColor: formData.color,
               borderRadius: 4,
@@ -118,15 +101,14 @@ export default function Page() {
           />
         </Box>
         <FormEditPocket
-          defaultTitle={pocket.name}
-          defaultColor={pocket.color}
-          defaultIcon={pocket.icon}
+          defaultTitle={pocket?.name ?? ""}
+          defaultColor={pocket?.color ?? ""}
+          defaultIcon={pocket?.icon ?? ""}
           onChange={handlePocketChange}
           onSave={handlePocketUpdate}
           sx={{
             flex: 1,
             minWidth: 300,
-            // maxWidth: 400,
           }}
         />
       </Box>
