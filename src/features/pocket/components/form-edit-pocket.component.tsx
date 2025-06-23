@@ -82,8 +82,8 @@ export default function FormEditPocket({
         </Typography>
         <TextField
           required
-          type="tel"
-          inputMode="tel"
+          type="text"
+          inputMode="text"
           value={title}
           disabled={!isEditMode}
           onChange={(e) => {
