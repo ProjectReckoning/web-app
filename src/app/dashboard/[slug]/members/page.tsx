@@ -88,6 +88,13 @@ export default function Page() {
       );
     }
 
+    if (
+      pocket?.userRole === PocketMemberRole.Owner ||
+      pocket?.userRole === PocketMemberRole.Admin
+    ) {
+      data.contribution = member.metadata?.contributionAmount ?? 0;
+    }
+
     if (member.id.toString() === user?.id) {
       data.actions = <></>;
     }
@@ -140,6 +147,13 @@ export default function Page() {
           </IconButton>
         </>
       );
+    }
+
+    if (
+      pocket?.userRole === PocketMemberRole.Owner ||
+      pocket?.userRole === PocketMemberRole.Admin
+    ) {
+      data.contribution = member.metadata?.contributionAmount ?? 0;
     }
 
     if (member.id.toString() === user?.id) {
@@ -235,6 +249,13 @@ export default function Page() {
           </Button>
         </>
       );
+    }
+
+    if (
+      pocket?.userRole === PocketMemberRole.Owner ||
+      pocket?.userRole === PocketMemberRole.Admin
+    ) {
+      data.contribution = member.metadata?.contributionAmount ?? 0;
     }
 
     return data;
@@ -334,7 +355,7 @@ function RemoveMemberConfirmationModalContent() {
             width: { xs: "100%", sm: "50%" },
             fontSize: { xs: "0.7rem", sm: "0.875rem" },
             py: { xs: 0.5, sm: 1 },
-            mt: { xs: -1, sm: -2 }, 
+            mt: { xs: -1, sm: -2 },
           }}
         >
           Batalkan

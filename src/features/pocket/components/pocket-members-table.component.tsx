@@ -8,12 +8,14 @@ import { limeGreen, tosca } from '@/lib/custom-color';
 import generateShades from '@/lib/generate-shades';
 import { PocketMemberRole } from '../entities/detail-pocket.entities';
 import Skeleton from '@/features/shared/components/skeleton';
+import formatCurrency from '@/lib/format-currency';
 
 export interface PocketMembersTableRow {
   key: string;
   fullName: string;
   role: string;
   color: string;
+  contribution?: number;
   actions?: React.ReactNode;
   iconName?: string
 }
@@ -49,6 +51,7 @@ export default function PocketMembersTable({
 
   const filteredData = data.filter(item => item.fullName.toLowerCase().includes(query.toLowerCase()));
   const isHaveActions = data.some((it) => it.actions);
+  const isHaveContribution = data.some((it) => it.contribution);
 
   if (isLoading) {
     return (
@@ -76,7 +79,6 @@ export default function PocketMembersTable({
               <TableRow sx={{ backgroundColor: color }}>
                 <TableCell><Skeleton variant="text" width={60} /></TableCell>
                 <TableCell><Skeleton variant="text" width={60} /></TableCell>
-                {isHaveActions && <TableCell />}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -91,14 +93,6 @@ export default function PocketMembersTable({
                   <TableCell>
                     <Skeleton variant="rectangular" width={100} height={32} sx={{ borderRadius: 999 }} />
                   </TableCell>
-                  {isHaveActions && (
-                    <TableCell>
-                      <Box display="flex" justifyContent="flex-end" gap={1}>
-                        <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: 1 }} />
-                        <Skeleton variant="rectangular" width={32} height={32} sx={{ borderRadius: 1 }} />
-                      </Box>
-                    </TableCell>
-                  )}
                 </TableRow>
               ))}
             </TableBody>
@@ -141,7 +135,6 @@ export default function PocketMembersTable({
                 <Icon icon="mdi:magnify" width={24} height={24} style={{ marginRight: 8, color: 'grey' }} />
               ),
             },
-
           }}
         />
       )}
@@ -151,6 +144,7 @@ export default function PocketMembersTable({
             <TableRow sx={{ backgroundColor: color }}>
               <TableCell><Typography fontWeight={700}>Nama</Typography></TableCell>
               <TableCell><Typography fontWeight={700}>Role</Typography></TableCell>
+              {isHaveContribution && <TableCell><Typography fontWeight={700}>Kontribusi</Typography></TableCell>}
               {isHaveActions && <TableCell></TableCell>}
             </TableRow>
           </TableHead>
@@ -198,6 +192,12 @@ export default function PocketMembersTable({
                       />
                     )}
                   </TableCell>
+                  {isHaveContribution && (
+                    <TableCell>
+                      <Typography>{formatCurrency(item.contribution ?? 0)}</Typography>
+                    </TableCell>
+                  )}
+
                   {isHaveActions && (
                     <TableCell>
                       {item.actions && (
