@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
-import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
 import { Link, Stack } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
@@ -196,15 +195,6 @@ export default function Page() {
           minWidth={300}
         />
       </Box>
-
-      <Stack spacing={2}>
-        <Typography variant='h6'>
-          Pilih Periode
-        </Typography>
-        <Box width="fit-content">
-          <DateRangeSelector />
-        </Box>
-      </Stack>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
