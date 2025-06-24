@@ -1,31 +1,46 @@
 import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/response/get-all-transaction";
 
-const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) => {
-    const isEven = i % 2 === 0;
+const categories: { type: string; transaction_type: 0 | 1 }[] = [
+  { type: "contribution", transaction_type: 1 },
+  { type: "withdrawal", transaction_type: 1 },
+  { type: "payment", transaction_type: 1 },
+  { type: "autotopup", transaction_type: 0 },
+  { type: "autorecurring", transaction_type: 1 },
+  { type: "topup", transaction_type: 0 },
+  { type: "transfer", transaction_type: 0 },
+  { type: "income", transaction_type: 0 },
+  { type: "expense", transaction_type: 1 },
+];
 
-    const now = new Date();
-    const pastDate = new Date(now);
-    pastDate.setDate(now.getDate() - Math.floor(Math.random() * 365));
+const names = ["Ivanka Larasati", "Dimas Aryo"];
+const initiators = ["John Doe", "Jane Smith"];
 
-    pastDate.setHours(Math.floor(Math.random() * 24));
-    pastDate.setMinutes(Math.floor(Math.random() * 60));
-    pastDate.setSeconds(Math.floor(Math.random() * 60));
+export const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) => {
+  const now = new Date();
+  const pastDate = new Date(now);
+  pastDate.setDate(now.getDate() - Math.floor(Math.random() * 365));
+  pastDate.setHours(Math.floor(Math.random() * 24));
+  pastDate.setMinutes(Math.floor(Math.random() * 60));
+  pastDate.setSeconds(Math.floor(Math.random() * 60));
 
-    return {
-      id: (i + 1).toString(),
-      time: pastDate.toISOString(),
-      name: isEven ? 'Ivanka Larasati' : 'Dimas Aryo',
-      type: isEven ? 'Contribution' : 'Payment',
-      amount: isEven
-        ? 1000000 + i * 10000
-        : 750000 + i * 5000,
-      category: isEven ? 'Penjualan' : 'Gaji',
-      created_at: pastDate.toISOString(),
-      initiator_user: isEven ? 'John Doe' : 'Jane Smith',
-      transaction_type: isEven ? 1 : 0,
-      purpose: isEven ? 'Monthly saving' : 'Office supplies',
-    };
-  });
+  const category = categories[Math.floor(Math.random() * categories.length)];
+  const amount = category.transaction_type === 0
+    ? 100000 + Math.floor(Math.random() * 500000)
+    : 10000 + Math.floor(Math.random() * 250000);
+
+  return {
+    id: (i + 1).toString(),
+    time: pastDate.toISOString(),
+    name: names[i % names.length],
+    type: category.type,
+    amount,
+    category: category.type.charAt(0).toUpperCase() + category.type.slice(1), // just to mock category name
+    created_at: pastDate.toISOString(),
+    initiator_user: initiators[i % initiators.length],
+    transaction_type: category.transaction_type,
+    purpose: "Generated purpose",
+  };
+});
 
 export async function GET(req: Request): Promise<Response> {
   await new Promise((resolve) => setTimeout(resolve, 2000));

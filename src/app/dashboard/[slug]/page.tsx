@@ -268,6 +268,10 @@ function TransactionInsightSection({
     setShowedTransactions(filteredTransactions);
   };
 
+  useEffect(() => {
+    setShowedTransactions(inputTransactions);
+  }, [inputTransactions]);
+
   return (
     <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
       <DateRangeSelector onChange={handleDateRangeChange} mx={4} />

@@ -13,26 +13,26 @@ export enum TransactionCategory {
 export function getTransactionCateogryFromString(
   category: string
 ): TransactionCategory {
-  const normalizedCategory = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  const normalizedCategory = category.toLowerCase();
 
   switch (normalizedCategory) {
-    case 'Contribution':
+    case 'contribution':
       return TransactionCategory.Contribution;
-    case 'Withdrawal':
+    case 'withdrawal':
       return TransactionCategory.Withdrawal;
-    case 'Payment':
+    case 'payment':
       return TransactionCategory.Payment;
-    case 'AutoTopUp':
+    case 'autotopup':
       return TransactionCategory.AutoTopUp;
-    case 'AutoRecurring':
+    case 'autorecurring':
       return TransactionCategory.AutoRecurring;
-    case 'Topup':
+    case 'topup':
       return TransactionCategory.Topup;
-    case 'Transfer':
+    case 'transfer':
       return TransactionCategory.Transfer;
-    case 'Income':
+    case 'income':
       return TransactionCategory.Income;
-    case 'Expense':
+    case 'expense':
       return TransactionCategory.Expense;
     default:
       throw new Error(`Unknown transaction category: ${category}`);
