@@ -47,8 +47,9 @@ export default function PocketMembersTable({
   isLoading = false,
   ...props
 }: BoxProps & PocketMembersTableProps) {
+  
   const [query, setQuery] = React.useState('');
-
+  
   const filteredData = data.filter(item => item.fullName.toLowerCase().includes(query.toLowerCase()));
   const isHaveActions = data.some((it) => it.actions);
   const isHaveContribution = data.some((it) => it.contribution);

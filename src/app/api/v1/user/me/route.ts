@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 
   const userData = {
     name: "Marcelino Sibarani Santozo",
-    user_id: "1",
+    user_id: "3",
   };
 
   return new Response(

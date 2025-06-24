@@ -13,19 +13,43 @@ import { Icon } from "@iconify/react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { Theme, useMediaQuery } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const { pocket, getAllMembers, isLoading } = detailPocketStore();
+  const { pocket, getAllMembers, isLoading, changePocketMemberRole, getDetailPocket } = detailPocketStore();
   const { user } = authStore();
+  const router = useRouter();
 
   const { openModal } = modalStore();
   const [editableKey, setEditableKey] = useState<string | null>(null);
 
-  const onRemoveMemberClicked = () => {
-    openModal(<RemoveMemberConfirmationModalContent />);
+  const onRemoveMemberClicked = (memberId: string) => {
+    if (!pocket || !pocket.id) {
+      console.error("Pocket not found or ID is missing");
+      return;
+    }
+
+    const onRemoveMemberConfirmed = (memberId: string) => {
+      // TODO: Implement the logic to remove a member from the pocket
+      console.log(`Member with ID ${memberId} removed from the pocket.`);
+      getDetailPocket(pocket.id);
+    };
+
+    openModal(<RemoveMemberConfirmationModalContent onConfirmed={() => onRemoveMemberConfirmed(memberId)} />);
   };
   const onLeavePocketClicked = () => {
-    openModal(<LeavePocketConfirmationModalContent />);
+    if (!pocket || !pocket.id) {
+      console.error("Pocket not found or ID is missing");
+      return;
+    }
+
+    const onLeavePocketConfirmed = () => {
+      // TODO: Implement the logic to remove a member from the pocket
+      console.log(`User with ID ${user?.id} left the pocket.`);
+      router.push("/dashboard");
+    };
+    
+    openModal(<LeavePocketConfirmationModalContent onConfirmed={onLeavePocketConfirmed} />);
   };
 
   const owners = getAllMembers(PocketMemberRole.Owner);
@@ -69,7 +93,7 @@ export default function Page() {
               borderRadius: 2,
             }}
           >
-            <Icon icon="bi:trash" onClick={onRemoveMemberClicked} />
+            <Icon icon="bi:trash" onClick={() => onRemoveMemberClicked(member.id.toString())} />
           </IconButton>
           <IconButton
             color="gray"
@@ -130,7 +154,7 @@ export default function Page() {
               borderRadius: 2,
             }}
           >
-            <Icon icon="bi:trash" onClick={onRemoveMemberClicked} />
+            <Icon icon="bi:trash" onClick={() => onRemoveMemberClicked(member.id.toString())} />
           </IconButton>
           <IconButton
             color="gray"
@@ -205,7 +229,7 @@ export default function Page() {
               borderRadius: 2,
             }}
           >
-            <Icon icon="bi:trash" onClick={onRemoveMemberClicked} />
+            <Icon icon="bi:trash" onClick={() => onRemoveMemberClicked(member.id.toString())} />
           </IconButton>
           <IconButton
             color="gray"
@@ -262,7 +286,12 @@ export default function Page() {
   });
 
   const onRoleEdited = (key: string, newRole: PocketMemberRole) => {
-    console.log(`Role for member with key ${key} changed to ${newRole}`);
+    if (!pocket || !pocket.id) {
+      console.error("Pocket not found or ID is missing");
+      return;
+    }
+
+    changePocketMemberRole(key, newRole);
     setEditableKey(null);
   };
 
@@ -296,7 +325,11 @@ export default function Page() {
   );
 }
 
-function RemoveMemberConfirmationModalContent() {
+function RemoveMemberConfirmationModalContent({
+  onConfirmed,
+}: {
+  onConfirmed?: () => void;
+}) {
   const { closeModal } = modalStore();
 
   return (
@@ -335,6 +368,12 @@ function RemoveMemberConfirmationModalContent() {
         sx={{ width: "100%", paddingTop: 2, justifyContent: "center" }}
       >
         <Button
+          onClick={() => {
+            if (onConfirmed) {
+              onConfirmed();
+            }
+            closeModal();
+          }}
           variant="contained"
           color="error"
           size="small"
@@ -365,7 +404,11 @@ function RemoveMemberConfirmationModalContent() {
   );
 }
 
-function LeavePocketConfirmationModalContent() {
+function LeavePocketConfirmationModalContent({
+  onConfirmed,
+}: {
+  onConfirmed?: () => void;
+}) {
   const { closeModal } = modalStore();
 
   return (
@@ -429,6 +472,12 @@ function LeavePocketConfirmationModalContent() {
         sx={{ paddingTop: 2, justifyContent: "center" }}
       >
         <Button
+          onClick={() => {
+            if (onConfirmed) {
+              onConfirmed();
+            }
+            closeModal();
+          }}
           variant="contained"
           color="error"
           size="large"

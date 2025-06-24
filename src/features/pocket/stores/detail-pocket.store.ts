@@ -6,6 +6,7 @@ import {
 } from "../entities/detail-pocket.entities";
 import { getDetailPocketUsecase } from "../use-cases/get-detail-pockets.usecase copy";
 import { editPocketUsecase } from "../use-cases/edit-pocket.usecase";
+import { changePocketMemberRoleUseCase } from "../use-cases/change-role-member-pockets.usecase";
 
 type DetailPocketStore = {
   pocket: DetailPocketEntity | null;
@@ -22,6 +23,10 @@ type DetailPocketStore = {
     color: string;
     icon: string;
   }) => void;
+  changePocketMemberRole: (
+    userId: string,
+    role: PocketMemberRole
+  ) => Promise<void>;
 };
 
 const detailPocketStore = create<DetailPocketStore>((set, get) => ({
@@ -87,6 +92,19 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
           errorMessage: error instanceof Error ? error.message : String(error),
         });
       });
+  },
+
+  changePocketMemberRole: async (
+    userId: string,
+    role: PocketMemberRole
+  ) => {
+    const pocketId = get().pocket?.id;
+    if (!pocketId) {
+      return set({ errorMessage: "Pocket ID is missing" });
+    }
+
+    await changePocketMemberRoleUseCase(pocketId, userId, role)
+    await get().getDetailPocket(pocketId);
   },
 }));
 
