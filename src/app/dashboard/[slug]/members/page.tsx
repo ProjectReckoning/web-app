@@ -81,41 +81,6 @@ export default function Page() {
       pocket?.userRole === PocketMemberRole.Owner ||
       pocket?.userRole === PocketMemberRole.Admin
     ) {
-      data.actions = (
-        <>
-          <IconButton
-            color="gray"
-            size="small"
-            sx={{
-              textTransform: "none",
-              border: 2,
-              borderColor: "border.main",
-              borderRadius: 2,
-            }}
-          >
-            <Icon icon="bi:trash" onClick={() => onRemoveMemberClicked(member.id.toString())} />
-          </IconButton>
-          <IconButton
-            color="gray"
-            size="small"
-            sx={{
-              textTransform: "none",
-              border: 2,
-              borderColor: "border.main",
-              borderRadius: 2,
-            }}
-            onClick={() => editEditableKey(member.id.toString())}
-          >
-            <Icon icon="ph:pencil-simple-bold" />
-          </IconButton>
-        </>
-      );
-    }
-
-    if (
-      pocket?.userRole === PocketMemberRole.Owner ||
-      pocket?.userRole === PocketMemberRole.Admin
-    ) {
       data.contribution = member.metadata?.contributionAmount ?? 0;
     }
 
