@@ -257,8 +257,8 @@ function TransactionInsightSection({
   transactions: TransactionEntity[];
   isTransactionLoading?: boolean;
 } & BoxProps) {
-  const [showedTransactions, setShowedTransactions] = useState<TransactionEntity[]>(inputTransactions);
-  const transactionOverviewData = useMemo(() => mapTransactionData(showedTransactions), [showedTransactions]);
+  const [showedTransactions, setShowedTransactions] = useState<TransactionEntity[] | null>(null);
+  const transactionOverviewData = useMemo(() => mapTransactionData(showedTransactions ?? []), [showedTransactions]);
 
   const handleDateRangeChange = ({ startDate, endDate }: { startDate: Date; endDate: Date }) => {
     const filteredTransactions = inputTransactions.filter(transaction => {
@@ -276,7 +276,7 @@ function TransactionInsightSection({
     <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
       <DateRangeSelector onChange={handleDateRangeChange} mx={4} />
       <PieChartWithTabs
-        isLoading={isTransactionLoading}
+        isLoading={isTransactionLoading || !showedTransactions}
         data={transactionOverviewData}
         sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
       />
