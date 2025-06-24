@@ -18,10 +18,12 @@ type DetailPocketStore = {
     name,
     color,
     icon,
+    targetNominal,
   }: {
-    name: string;
-    color: string;
-    icon: string;
+    name?: string;
+    color?: string;
+    icon?: string;
+    targetNominal?: number;
   }) => void;
   changePocketMemberRole: (
     userId: string,
@@ -69,25 +71,36 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
     name,
     color,
     icon,
+    targetNominal,
   }: {
-    name: string;
-    color: string;
-    icon: string;
+    name?: string;
+    color?: string;
+    icon?: string;
+    targetNominal?: number;
   }) => {
     if (!get().pocket || !get().pocket?.id) {
       return set({ errorMessage: "Pocket not found or ID is missing" });
     }
 
-    editPocketUsecase(get().pocket?.id || "", { name, color, icon })
-      .then((updatedPocket) => {
-        set((state) => ({
-          pocket: state.pocket
-            ? { ...state.pocket, ...updatedPocket }
-            : state.pocket,
-        }));
+    const pocketId = get().pocket?.id;
+
+    if (!pocketId) {
+      return set({ errorMessage: "Pocket ID is missing" });
+    }
+    
+    const updatedPocket: Partial<DetailPocketEntity> = {
+      name,
+      color,
+      icon,
+      targetNominal,
+    };
+
+    editPocketUsecase(pocketId, updatedPocket)
+      .then(() => {
+        get().getDetailPocket(pocketId);
       })
       .catch((error) => {
-        console.error("Failed to update pocket:", error);
+        console.error(error);
         set({
           errorMessage: error instanceof Error ? error.message : String(error),
         });

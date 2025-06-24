@@ -123,7 +123,7 @@ describe("pocketRepository Integration Test", () => {
       icon: "NewIcon",
     };
 
-    const result = await pocketRepository.editPocket(pocketId, editData);
+    const result = await pocketRepository.patchDetailPocket(pocketId, editData);
 
     expect(result).toEqual(
       expect.objectContaining({
@@ -146,7 +146,7 @@ describe("pocketRepository Integration Test", () => {
     };
 
     await expect(
-      pocketRepository.editPocket(nonExistentId, editData)
+      pocketRepository.patchDetailPocket(nonExistentId, editData)
     ).rejects.toThrow();
   });
 });

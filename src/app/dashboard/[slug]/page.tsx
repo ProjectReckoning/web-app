@@ -24,6 +24,10 @@ import { TransactionEntity } from '@/features/insight/entities/transaction.entit
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
 import { getTransactionCateogryFromString } from '@/features/insight/constants/transaction-category.enum';
+import { BepProfit } from '@/features/insight/entities/bep-profit.entities';
+import { BepLoss } from '@/features/insight/entities/bep-loss.entities';
+import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
+import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 
 const DATA: ChartData[] = [
   {
@@ -49,10 +53,16 @@ const DATA: ChartData[] = [
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
-  const { isLoading, pocket } = detailPocketStore();
+  const { isLoading, pocket, updatePocket } = detailPocketStore();
   const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions, transactions, getAllTransactions } = transactionHistoryStore();
   const { isLoading: isBepLoading, getBep, bep } = bepStore()
   const pathname = usePathname();
+
+  const handleChangeBepModal = (value: number) => {
+    if (pocket) {
+      updatePocket({ targetNominal: value });
+    }
+  }
 
   useEffect(() => {
     if (
@@ -180,25 +190,22 @@ export default function Page() {
         </Box>
       </Box>
 
-      <Stack spacing={2}>
+      <Stack spacing={4}>
         <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
           <TransactionInsightSection
             transactions={transactions}
             isTransactionLoading={isTransactionLoading}
           />
-          <BEPInsightCard
-            isLoading={isBepLoading}
+          <BepInsightSection
             bep={bep}
+            onChangeBepModal={handleChangeBepModal}
+            pocket={selectedPocket}
+            isLoading={isBepLoading}
             flex={1}
-            sx={{
-              border: 1,
-              borderColor: 'border.main',
-              borderRadius: 10,
-              backgroundColor: 'white',
-              padding: 4,
-              textAlign: 'center',
-            }}
+            display="flex"
+            flexDirection="column"
+            gap={4}
           />
         </Box>
       </Stack>
@@ -206,6 +213,42 @@ export default function Page() {
   );
 }
 
+function BepInsightSection({
+  bep,
+  isLoading = false,
+  onChangeBepModal,
+  pocket,
+  ...props
+}: {
+  bep: BepProfit | BepLoss | null;
+  pocket: PocketEntity | null;
+  isLoading?: boolean;
+  onChangeBepModal?: (value: number) => void;
+} & BoxProps) {
+  return (
+    <Box
+      {...props}
+    >
+      <BEPModalInput
+        onSubmitChange={onChangeBepModal}
+        sx={{ mx: 4 }} defaultValue={pocket?.target_nominal ?? 0}
+      />
+      <BEPInsightCard
+        isLoading={isLoading || !bep || !pocket}
+        bep={bep}
+        flex={1}
+        sx={{
+          border: 1,
+          borderColor: 'border.main',
+          borderRadius: 10,
+          backgroundColor: 'white',
+          padding: 4,
+          textAlign: 'center',
+        }}
+      />
+    </Box>
+  )
+}
 function TransactionInsightSection({
   transactions: inputTransactions,
   isTransactionLoading = false,

@@ -3,16 +3,17 @@
 import { green, orange } from "@/lib/custom-color";
 import formatCurrency from "@/lib/format-currency";
 import { Icon } from "@iconify/react";
-import { TextField, Typography, Divider, IconButton } from "@mui/material";
+import { TextField, Typography, Divider, IconButton, TextFieldProps } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function BEPModalInput({
   defaultValue,
   onSubmitChange,
+  ...props
 }: {
   defaultValue: number;
   onSubmitChange?: (value: number) => void;
-}) {
+} & TextFieldProps) {
   const [value, setValue] = useState(defaultValue);
   const [isEditing, setIsEditing] = useState(false);
   const textFieldRef = useRef<HTMLInputElement>(null);
@@ -58,6 +59,7 @@ export default function BEPModalInput({
       value={formatedValue}
       onChange={handleChange}
       variant="outlined"
+      {...props}
       sx={{
         borderRadius: 4,
         '& .MuiOutlinedInput-root': {
@@ -70,8 +72,10 @@ export default function BEPModalInput({
             borderColor: 'border.main',
           },
         },
+        ...props.sx,
       }}
       slotProps={{
+        ...props.slotProps,
         input: {
           startAdornment: (
             <Typography sx={{

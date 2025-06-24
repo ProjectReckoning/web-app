@@ -42,21 +42,32 @@ class PocketRepository {
     return this.mapApiPocketDetailToEntity(data);
   }
 
-  async editPocket(
+  async patchDetailPocket(
     pocketId: string,
     data: {
       name?: string;
       color?: string;
       icon?: string;
+      targetNominal?: number;
     }
   ): Promise<{ name: string; color: string; icon: string }> {
-    console.log("Editing Pocket:", pocketId, data);
-    const response = await api.patch(`/pocket/${pocketId}`, data);
+    const mappedData: {
+      name?: string;
+      color_hex?: string;
+      icon_name?: string;
+      target_nominal?: number;
+    } = {};
+
+    if (data.name) mappedData.name = data.name;
+    if (data.color) mappedData.color_hex = data.color;
+    if (data.icon) mappedData.icon_name = data.icon;
+    if (data.targetNominal) mappedData.target_nominal = data.targetNominal;
+
+    const response = await api.patch(`/pocket/${pocketId}`, mappedData);
     const responseData = response.data as {
       message: string;
       data: PocketDetailResponseItem;
     };
-    console.log("Edit Pocket Response:", responseData.data);
 
     return {
       name: responseData.data.name,
