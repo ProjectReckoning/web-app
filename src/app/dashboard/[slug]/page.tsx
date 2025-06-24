@@ -1,24 +1,29 @@
 'use client';
 
-import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
-import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
+import PieChartWithTabs from '@/features/insight/components/pie-chart-with-tabs.component';
 import { Link, Stack } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/income-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
-import { Icon } from '@iconify/react';
 import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { gray } from '@/lib/custom-color';
 import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
 import bepStore from '@/features/insight/stores/bep.store';
 import pocketStore from '@/features/pocket/stores/pocket.store';
+import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
+import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
+import { TransactionType } from '@/features/insight/constants/transaction-type.enum';
+import { TransactionEntity } from '@/features/insight/entities/transaction.entities';
+import CustomIcon from '@/features/shared/components/custom-icon.component';
+import { getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
+import { getTransactionCateogryFromString } from '@/features/insight/constants/transaction-category.enum';
 
 const DATA: ChartData[] = [
   {
@@ -42,70 +47,23 @@ const DATA: ChartData[] = [
   },
 ];
 
-const sampleData: PieChartTabData[] = [
-  {
-    label: 'Pemasukan',
-    data: [
-      {
-        label: 'Penjualan',
-        value: 770000,
-        color: '#B57BFF',
-        icon: <Icon icon="mdi:upload" style={{ color: 'white' }} />,
-        transactionCount: 8,
-      },
-      {
-        label: 'Top up',
-        value: 330000,
-        color: '#48DDE0',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
-        transactionCount: 2,
-      },
-    ],
-  },
-  {
-    label: 'Pengeluaran',
-    data: [
-      {
-        label: 'Salary',
-        value: 40000,
-        color: '#FFD700',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
-        transactionCount: 1,
-      },
-      {
-        label: 'Withdraw',
-        value: 20000,
-        color: '#FFB6FF',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
-        transactionCount: 1,
-      },
-      {
-        label: 'Other',
-        value: 30000,
-        color: '#B0B0B0',
-        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
-        transactionCount: 1,
-      },
-    ],
-  },
-];
-
 export default function Page() {
   const { selectedPocket } = pocketStore();
   const { isLoading, pocket } = detailPocketStore();
-  const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions } = transactionHistoryStore();
+  const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions, transactions, getAllTransactions } = transactionHistoryStore();
   const { isLoading: isBepLoading, getBep, bep } = bepStore()
   const pathname = usePathname();
 
   useEffect(() => {
     if (
       pocket &&
-      (pocket.id !== selectedPocket?.id || !last5Transactions.length || !bep)
+      (pocket.id !== selectedPocket?.id || !transactions.length || !last5Transactions.length || !bep)
     ) {
       getLast5Transactions();
+      getAllTransactions(pocket.id, GetTransactionDurationOption.LAST_1_YEAR);
       getBep(pocket.id);
     }
-    
+
   }, [pocket, selectedPocket, getLast5Transactions]);
 
   return (
@@ -225,7 +183,10 @@ export default function Page() {
       <Stack spacing={2}>
         <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-          <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
+          <TransactionInsightSection
+            transactions={transactions}
+            isTransactionLoading={isTransactionLoading}
+          />
           <BEPInsightCard
             isLoading={isBepLoading}
             bep={bep}
@@ -243,4 +204,70 @@ export default function Page() {
       </Stack>
     </Box>
   );
+}
+
+function TransactionInsightSection({
+  transactions: inputTransactions,
+  isTransactionLoading = false,
+  ...props
+}: {
+  transactions: TransactionEntity[];
+  isTransactionLoading?: boolean;
+} & BoxProps) {
+  const [showedTransactions, setShowedTransactions] = useState<TransactionEntity[]>(inputTransactions);
+  const transactionOverviewData = useMemo(() => mapTransactionData(showedTransactions), [showedTransactions]);
+
+  const handleDateRangeChange = ({ startDate, endDate }: { startDate: Date; endDate: Date }) => {
+    const filteredTransactions = inputTransactions.filter(transaction => {
+      const transactionDate = new Date(transaction.createdAt);
+      return transactionDate >= startDate && transactionDate <= endDate;
+    });
+    setShowedTransactions(filteredTransactions);
+  };
+
+  return (
+    <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
+      <DateRangeSelector onChange={handleDateRangeChange} mx={4} />
+      <PieChartWithTabs
+        isLoading={isTransactionLoading}
+        data={transactionOverviewData}
+        sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+      />
+    </Box>
+  )
+}
+
+function mapTransactionData(transactions: TransactionEntity[]) {
+  const grouped: Record<TransactionType, Record<string, { value: number; transactionCount: number }>> = {
+    [TransactionType.INCOME]: {},
+    [TransactionType.OUTCOME]: {},
+  };
+
+  for (const transaction of transactions) {
+    const category = transaction.type;
+    const type = transaction.transactionType;
+
+    if (!grouped[type][category]) {
+      grouped[type][category] = { value: 0, transactionCount: 0 };
+    }
+
+    grouped[type][category].value += transaction.amount;
+    grouped[type][category].transactionCount += 1;
+  }
+
+  const result = Object.entries(grouped).map(([typeStr, data]) => {
+    const type = typeStr as TransactionType;
+    return {
+      label: type === TransactionType.OUTCOME ? 'Pengeluaran' : 'Pemasukan',
+      data: Object.entries(data).map(([category, { value, transactionCount }]) => ({
+        label: category,
+        value,
+        color: getColorFromTransactionType(getTransactionCateogryFromString(category)),
+        icon: <CustomIcon name={category} style={{ color: 'white', fontSize: 24 }} />,
+        transactionCount,
+      })),
+    };
+  });
+
+  return result;
 }

@@ -8,6 +8,7 @@ import { gray } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
 import pocketStore from "@/features/pocket/stores/pocket.store";
+import Skeleton from "@/features/shared/components/skeleton";
 
 export interface PieChartItem {
   label: string;
@@ -24,9 +25,11 @@ export interface PieChartTabData {
 
 export interface PieChartWithTabsProps {
   data: PieChartTabData[];
+  isLoading?: boolean;
 }
 
 export default function PieChartWithTabs({
+  isLoading = false,
   data,
   ...props
 }: PieChartWithTabsProps & BoxProps) {
@@ -35,6 +38,72 @@ export default function PieChartWithTabs({
   const total = currentData.data.reduce((acc, item) => acc + item.value, 0);
   const route = useRouter();
   const { selectedPocket } = pocketStore()
+
+  if (isLoading) {
+    return (
+      <Box {...props}>
+        {/* Tabs Skeleton */}
+        <Box
+          sx={{
+            width: 'fit-content',
+            mx: 'auto',
+            backgroundColor: gray[50],
+            borderRadius: 999,
+            mb: 4,
+            px: 2,
+            py: 1,
+            display: 'flex',
+            gap: 2,
+          }}
+        >
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              width={80}
+              height={32}
+              sx={{ borderRadius: 999 }}
+            />
+          ))}
+        </Box>
+
+        {/* Pie Chart Skeleton */}
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Skeleton variant="circular" width={200} height={200} />
+        </Box>
+
+        {/* List Item Skeletons */}
+        <Stack spacing={2} mt={2}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Box key={i} display="flex" alignItems="center" gap={2}>
+              <Skeleton variant="circular" width={48} height={48} />
+
+              <Box
+                flex={1}
+                sx={{
+                  borderBottom: `2px solid ${gray[100]}`,
+                  paddingBottom: 2,
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Box display="flex" flexDirection="column" gap={0.5} flex={1}>
+                  <Skeleton variant="text" width={100} height={24} />
+                  <Skeleton variant="text" width={80} height={18} />
+                  <Skeleton variant="text" width={120} height={18} />
+                </Box>
+
+                <Skeleton variant="text" width={40} height={24} />
+                <Skeleton variant="circular" width={24} height={24} />
+              </Box>
+            </Box>
+          ))}
+        </Stack>
+      </Box>
+    )
+  }
 
   return (
     <Box {...props}>

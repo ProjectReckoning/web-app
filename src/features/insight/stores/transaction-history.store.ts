@@ -54,7 +54,8 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
         closingBalance: transactionOverview.closingBalance,
         totalIncome: transactionOverview.totalIncome,
         totalOutcome: transactionOverview.totalOutcome,
-        errorMessage: null })
+        errorMessage: null,
+      })
     } catch (error) {
       console.error(error)
       set({ errorMessage: error instanceof Error ? error.message : String(error) })

@@ -9,10 +9,8 @@ export default function CustomIcon({
     bank: "material-symbols:bank",
     savings: "material-symbols:savings",
     card: "material-symbols:credit-card",
-    income: "material-symbols:paid",
     cash: "material-symbols:attach-money",
     investment: "material-symbols:monetization-on",
-    payment: "material-symbols:money",
     exchange: "material-symbols:currency-exchange",
     category: "material-symbols:category",
     diamond: "material-symbols:diamond",
@@ -27,6 +25,17 @@ export default function CustomIcon({
     plant: "akar-icons:plant",
     motorcycle: 'pepicons-pop:motorcycle',
     group: "material-symbols:group",
+
+    // Transaction enums
+    contribution: 'material-symbols:volunteer-activism',
+    withdrawal: 'material-symbols:download',
+    payment: 'material-symbols:credit-card',
+    autotopup: 'material-symbols:autorenew',
+    autorecurring: 'material-symbols:schedule',
+    topup: 'material-symbols:trending-up',
+    transfer: 'material-symbols:compare-arrows',
+    income: 'material-symbols:attach-money',
+    expense: 'material-symbols:money-off',
   };
 
   if (!icons[name.toLowerCase()]) {

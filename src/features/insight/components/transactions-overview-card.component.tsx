@@ -2,12 +2,10 @@
 
 import { Box, Typography, Avatar, BoxProps, } from '@mui/material';
 import formatCurrency from '@/lib/format-currency';
-import { Icon } from '@iconify/react';
 import { gray, green } from '@/lib/custom-color';
 import { TransactionSummaryEntity } from '../entities/transaction-summary.entities';
 import Skeleton from '@/features/shared/components/skeleton';
-import { TransactionCategory } from '../constants/transaction-category.enum';
-import getIconFromTransactionType from '@/lib/get-icon-from-transaction-type';
+import CustomIcon from '@/features/shared/components/custom-icon.component';
 
 const DEFAULT_COUNT = 5;
 
@@ -52,7 +50,7 @@ export default function TransactionOverviewCard({
       {...props}
     >
       <Box display="flex" justifyContent="end" alignItems="center" mb={2}>
-        { actions }
+        {actions}
       </Box>
 
       <Box display="flex" flexDirection="column" gap={2}>
@@ -68,8 +66,8 @@ export default function TransactionOverviewCard({
               }}
               variant="rounded"
             >
-              <Icon
-                icon={getIconFromTransactionType(tx.type as TransactionCategory)}
+              <CustomIcon
+                name={tx.type}
                 fontSize={24}
               />
             </Avatar>
