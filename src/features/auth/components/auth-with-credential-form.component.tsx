@@ -6,7 +6,7 @@ import { useState } from "react";
 import authStore from "../stores/auth.store";
 import { Icon } from "@iconify/react";
 
-export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber, ...props }: BoxProps & { phoneNumber: string, setPhoneNumber: (value: string) => void }) {
+export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber, setLoginWithQr, ...props }: BoxProps & { phoneNumber: string, setPhoneNumber: (value: string) => void, setLoginWithQr: (value: boolean) => void }) {
   const { isLoading, errorMessage, loginWithCredential } = authStore();
   const [password, setPassword] = useState("");
 
@@ -112,6 +112,7 @@ export default function AuthWithCredentialForm({ phoneNumber, setPhoneNumber, ..
           color='limeGreen'
           variant='contained'
           sx={{ padding: "8px 48px" }}
+          onClick={() => setLoginWithQr(true)}
         >
           <Typography variant="body2" component="span">
             Masuk dengan QR
