@@ -1,10 +1,10 @@
 import api from "@/lib/api";
-import { GetLast5TransactionResponse, GetLast5TransactionResponseItem } from "@/features/insight/entities/request/get-last-5-transaction.entities";
+import { GetLast5TransactionResponse, GetLast5TransactionResponseItem } from "@/features/insight/entities/response/get-last-5-transaction.entities";
 import { TransactionEntity } from "@/features/insight/entities/transaction.entities";
 import { TransactionType } from "@/features/insight/constants/transaction-type.enum";
 import { GetTransactionDurationOption } from "../constants/get-transaction-history-duration-option.enum";
 import { TransactionSummaryEntity } from "@/features/insight/entities/transaction-summary.entities";
-import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/request/get-all-transaction";
+import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/response/get-all-transaction";
 import { TransactionOverviewEntity } from "../entities/transaction-overview";
 import { getTransactionCateogryFromString } from "../constants/transaction-category.enum";
 

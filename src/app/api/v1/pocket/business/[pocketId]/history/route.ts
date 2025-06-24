@@ -1,4 +1,4 @@
-import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/request/get-all-transaction";
+import { GetAllTransactionResponse, GetAllTransactionResponseItem } from "@/features/insight/entities/response/get-all-transaction";
 
 const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) => {
     const isEven = i % 2 === 0;

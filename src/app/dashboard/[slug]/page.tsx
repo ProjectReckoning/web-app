@@ -17,6 +17,9 @@ import transactionHistoryStore from '@/features/insight/stores/transaction-histo
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { gray } from '@/lib/custom-color';
+import BEPInsightCard from '@/features/insight/components/bep-insight-card.component';
+import bepStore from '@/features/insight/stores/bep.store';
+import pocketStore from '@/features/pocket/stores/pocket.store';
 
 const DATA: ChartData[] = [
   {
@@ -40,36 +43,7 @@ const DATA: ChartData[] = [
   },
 ];
 
-const expenseSampleData: PieChartTabData[] = [
-  {
-    label: 'Pengeluaran',
-    data: [
-      {
-        label: 'Salary',
-        value: 40000,
-        color: '#FFD700',
-        icon: <Icon icon="mdi:currency-usd" style={{ fontSize: 24, color: 'white' }} />,
-        transactionCount: 1,
-      },
-      {
-        label: 'Withdraw',
-        value: 20000,
-        color: '#FFB6FF',
-        icon: <Icon icon="mdi:currency-usd" style={{ fontSize: 24, color: 'white' }} />,
-        transactionCount: 1,
-      },
-      {
-        label: 'Other',
-        value: 30000,
-        color: '#B0B0B0',
-        icon: <Icon icon="mdi:currency-usd" style={{ fontSize: 24, color: 'white' }} />,
-        transactionCount: 1,
-      },
-    ],
-  },
-];
-
-const incomeSampleData: PieChartTabData[] = [
+const sampleData: PieChartTabData[] = [
   {
     label: 'Pemasukan',
     data: [
@@ -77,30 +51,63 @@ const incomeSampleData: PieChartTabData[] = [
         label: 'Penjualan',
         value: 770000,
         color: '#B57BFF',
-        icon: <Icon icon="mdi:upload" style={{ fontSize: 24, color: 'white' }} />,
+        icon: <Icon icon="mdi:upload" style={{ color: 'white' }} />,
         transactionCount: 8,
       },
       {
         label: 'Top up',
         value: 330000,
         color: '#48DDE0',
-        icon: <Icon icon="mdi:download" style={{ fontSize: 24, color: 'white' }} />,
+        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
         transactionCount: 2,
       },
     ],
   },
-]
+  {
+    label: 'Pengeluaran',
+    data: [
+      {
+        label: 'Salary',
+        value: 40000,
+        color: '#FFD700',
+        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
+        transactionCount: 1,
+      },
+      {
+        label: 'Withdraw',
+        value: 20000,
+        color: '#FFB6FF',
+        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
+        transactionCount: 1,
+      },
+      {
+        label: 'Other',
+        value: 30000,
+        color: '#B0B0B0',
+        icon: <Icon icon="mdi:download" style={{ color: 'white' }} />,
+        transactionCount: 1,
+      },
+    ],
+  },
+];
 
 export default function Page() {
+  const { selectedPocket } = pocketStore();
   const { isLoading, pocket } = detailPocketStore();
   const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions } = transactionHistoryStore();
+  const { isLoading: isBepLoading, getBep, bep } = bepStore()
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pocket) {
-      getLast5Transactions(pocket.id);
+    if (
+      pocket &&
+      (pocket.id !== selectedPocket?.id || !last5Transactions.length || !bep)
+    ) {
+      getLast5Transactions();
+      getBep(pocket.id);
     }
-  }, [pocket, getLast5Transactions]);
+    
+  }, [pocket, selectedPocket, getLast5Transactions]);
 
   return (
     <Box
@@ -226,15 +233,22 @@ export default function Page() {
       </Box>
 
       <Stack spacing={2}>
-        <Typography variant='h6'>Rekap Keuanganmu</Typography>
+        <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-          <Box display="flex" flexDirection="column" gap={2} flex={1}>
-            <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={expenseSampleData} />
-          </Box>
-
-          <Box display="flex" flexDirection="column" gap={2} flex={1}>
-            <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={incomeSampleData} />
-          </Box>
+          <PieChartWithTabs flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={sampleData} />
+          <BEPInsightCard
+            isLoading={isBepLoading}
+            bep={bep}
+            flex={1}
+            sx={{
+              border: 1,
+              borderColor: 'border.main',
+              borderRadius: 10,
+              backgroundColor: 'white',
+              padding: 4,
+              textAlign: 'center',
+            }}
+          />
         </Box>
       </Stack>
     </Box>

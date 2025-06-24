@@ -1,4 +1,4 @@
-import { GetLast5TransactionResponse, GetLast5TransactionResponseItem } from "@/features/insight/entities/request/get-last-5-transaction.entities";
+import { GetLast5TransactionResponse, GetLast5TransactionResponseItem } from "@/features/insight/entities/response/get-last-5-transaction.entities";
 
 export async function GET(req: Request): Promise<Response> {
   await new Promise((resolve) => setTimeout(resolve, 2000));
