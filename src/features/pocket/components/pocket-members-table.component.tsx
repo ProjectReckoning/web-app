@@ -53,7 +53,6 @@ export default function PocketMembersTable({
   if (isLoading) {
     return (
       <Box {...props}>
-        {/* Title Skeleton */}
         <Box
           sx={{
             backgroundColor: color,
@@ -67,12 +66,10 @@ export default function PocketMembersTable({
           <Skeleton variant="text" width={120} height={32} />
         </Box>
 
-        {/* Search Input Skeleton */}
         {useSearch && (
           <Skeleton variant="rectangular" height={56} sx={{ mt: 2, borderRadius: 999 }} />
         )}
 
-        {/* Table Skeleton */}
         <TableContainer component={Paper} sx={{ borderRadius: 4, boxShadow: 0, border: 1, borderColor: "border.main", mt: 4 }}>
           <Table>
             <TableHead>
@@ -121,6 +118,7 @@ export default function PocketMembersTable({
           py: 1,
           mx: 'auto',
           width: 'fit-content',
+          mb: 4,
         }}
       >
         <Typography variant="h6" fontWeight={700} align="center">
