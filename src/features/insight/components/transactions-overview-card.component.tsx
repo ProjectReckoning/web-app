@@ -45,7 +45,7 @@ export default function TransactionOverviewCard({
     )
   }
 
-  if (!transactions.length) {
+  if (!transactions?.length) {
     return (
       <Box {...props}>
         <Typography variant="body2" textAlign="center" py={2}>
@@ -64,7 +64,7 @@ export default function TransactionOverviewCard({
       </Box>
 
       <Box display="flex" flexDirection="column" gap={2}>
-        {transactions.map((tx, idx) => (
+        {transactions?.map((tx, idx) => (
           <Box key={idx} display="flex" alignItems="center" gap={2}>
             <Avatar
               sx={{

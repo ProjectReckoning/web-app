@@ -61,7 +61,7 @@ export default function Page() {
   }, [pocket]);
 
   const mappedTransactionData = useMemo(() => {
-    return transactions.map(row => ({
+    return transactions?.map(row => ({
       waktu: <Box key={row.createdAt} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant='body1'>
           {new Date(row.createdAt).toLocaleDateString('id-ID', {
@@ -95,7 +95,7 @@ export default function Page() {
   }, [pocketPreviousBalance, pocketTotalIncome, pocketTotalOutcome, pocketClosingBalance]);
 
   useEffect(() => {
-    if (pocket && transactions.length === 0) {
+    if (pocket && transactions?.length === 0) {
       getAllTransactions({
         pocketId: pocket.id,
         duration: GetTransactionDurationOption.LAST_30_DAYS,
@@ -182,7 +182,7 @@ export default function Page() {
       </Typography>
 
       <FinanceSummaryCard
-        isLoading={isTransactionStoreLoading || !mappedTransactionData.length}
+        isLoading={isTransactionStoreLoading || !mappedTransactionData?.length}
         items={financeSummaryItems}
         borderRadius={4}
         overflow="hidden"
@@ -191,13 +191,13 @@ export default function Page() {
       />
 
       <TransactionTable
-        data={mappedTransactionData}
-        isLoading={isTransactionStoreLoading || !mappedTransactionData.length}
+        data={mappedTransactionData ?? []}
+        isLoading={isTransactionStoreLoading || !mappedTransactionData?.length}
         filters={[
           {
             label: 'Kategori',
             startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
-            options: ['Semua', ...mappedTransactionData.length > 0 ? Array.from(new Set(mappedTransactionData.map(row => row.kategori))) : []],
+            options: ['Semua', ...(mappedTransactionData?.length ?? 0) > 0 ? Array.from(new Set((mappedTransactionData ?? []).map(row => row.kategori))) : []],
             onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected,
             defaultValue: defaultType ?? 'Semua',
           },

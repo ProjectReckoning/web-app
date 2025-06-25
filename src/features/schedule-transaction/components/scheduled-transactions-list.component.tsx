@@ -41,7 +41,7 @@ export default function ScheduledTransactionList({
       </Typography>
 
       <Box position="relative" zIndex={20} display="flex" gap={2} overflow="auto">
-        {transactions.map((item, index) => (
+        {transactions?.map((item, index) => (
           <ScheduledTransactionItem key={index} {...item} />
         ))}
       </Box>

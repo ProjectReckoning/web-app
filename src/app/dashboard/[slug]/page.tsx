@@ -168,8 +168,8 @@ export default function Page() {
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
-            isLoading={isTransactionLoading || !last5Transactions.length}
-            transactions={last5Transactions}
+            isLoading={isTransactionLoading || !last5Transactions?.length}
+            transactions={last5Transactions ?? []}
             actions={
               <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
                 Lihat semua
@@ -189,7 +189,7 @@ export default function Page() {
         <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
           <TransactionInsightSection
-            transactions={transactions}
+            transactions={transactions ?? []}
             isTransactionLoading={isTransactionLoading}
           />
           <BepInsightSection

@@ -15,7 +15,7 @@ const categories: { type: string; transaction_type: 0 | 1 }[] = [
 const names = ["Ivanka Larasati", "Dimas Aryo"];
 const initiators = ["John Doe", "Jane Smith"];
 
-export const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) => {
+const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) => {
   const now = new Date();
   const pastDate = new Date(now);
   pastDate.setDate(now.getDate() - Math.floor(Math.random() * 365));
