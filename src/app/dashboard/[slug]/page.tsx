@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import Box, { BoxProps } from '@mui/material/Box';
-import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
+import ChartWithTabs from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import PieChartWithTabs from '@/features/insight/components/pie-chart-with-tabs.component';
 import { Link, Stack } from '@mui/material';
@@ -28,34 +28,20 @@ import { BepProfit } from '@/features/insight/entities/bep-profit.entities';
 import { BepLoss } from '@/features/insight/entities/bep-loss.entities';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
 import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
-
-const DATA: ChartData[] = [
-  {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    label: 'Pengeluaran',
-    series: {
-      makanan: { data: [1_200_000, 1_500_000, 1_450_000, 1_600_000, 1_700_000, 1_750_000], color: '#ff6384' },
-      transportasi: { data: [300_000, 350_000, 330_000, 400_000, 420_000, 450_000], color: '#36a2eb' },
-      hiburan: { data: [500_000, 600_000, 550_000, 700_000, 800_000, 900_000], color: '#ffce56' },
-      tagihan: { data: [900_000, 950_000, 1_000_000, 1_050_000, 1_100_000, 1_150_000], color: '#4bc0c0' },
-    },
-  },
-  {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    label: 'Pemasukan',
-    series: {
-      gaji: { data: [7_000_000, 7_000_000, 7_000_000, 7_500_000, 8_000_000, 8_000_000], color: '#81c784' },
-      freelance: { data: [1_000_000, 1_200_000, 1_000_000, 1_500_000, 1_600_000, 1_800_000], color: '#9575cd' },
-      investasi: { data: [250_000, 300_000, 320_000, 350_000, 370_000, 400_000], color: '#ffb74d' },
-    },
-  },
-];
+import statsStore from '@/features/insight/stores/stats.store';
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
   const { isLoading, pocket, updatePocket } = detailPocketStore();
-  const { isLoading: isTransactionLoading, last5Transactions, getLast5Transactions, transactions, getAllTransactions } = transactionHistoryStore();
+  const {
+    isLoading: isTransactionLoading,
+    last5Transactions,
+    getLast5Transactions,
+    transactions,
+    getAllTransactions
+  } = transactionHistoryStore();
   const { isLoading: isBepLoading, getBep, bep } = bepStore()
+  const { isLoading: isStatsLoading, getStatsSpesificPocket: getStats, stats } = statsStore()
   const pathname = usePathname();
 
   const handleChangeBepModal = (value: number) => {
@@ -67,11 +53,12 @@ export default function Page() {
   useEffect(() => {
     if (
       pocket &&
-      (pocket.id !== selectedPocket?.id || !transactions.length || !last5Transactions.length || !bep)
+      (pocket.id !== selectedPocket?.id || !transactions.length || !last5Transactions.length || !bep || !stats)
     ) {
       getLast5Transactions();
       getAllTransactions(pocket.id, GetTransactionDurationOption.LAST_1_YEAR);
       getBep(pocket.id);
+      getStats(pocket.id);
     }
 
   }, [pocket, selectedPocket, getLast5Transactions]);
@@ -167,7 +154,12 @@ export default function Page() {
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
-          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} height={250} />
+          <ChartWithTabs
+            isLoading={isStatsLoading}
+            data={stats ?? []}
+            sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            height={250}
+          />
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>

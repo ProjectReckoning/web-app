@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
+import ChartWithTabs from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs, { PieChartTabData } from '@/features/insight/components/pie-chart-with-tabs.component';
@@ -13,28 +13,7 @@ import pocketStore from '@/features/pocket/stores/pocket.store';
 import { useEffect } from 'react';
 import PocketOverviewList from '@/features/pocket/components/pocket-overview-list.component';
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
-
-const DATA: ChartData[] = [
-  {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    label: 'Pengeluaran',
-    series: {
-      makanan: { data: [1_200_000, 1_500_000, 1_450_000, 1_600_000, 1_700_000, 1_750_000], color: '#ff6384' },
-      transportasi: { data: [300_000, 350_000, 330_000, 400_000, 420_000, 450_000], color: '#36a2eb' },
-      hiburan: { data: [500_000, 600_000, 550_000, 700_000, 800_000, 900_000], color: '#ffce56' },
-      tagihan: { data: [900_000, 950_000, 1_000_000, 1_050_000, 1_100_000, 1_150_000], color: '#4bc0c0' },
-    },
-  },
-  {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    label: 'Pemasukan',
-    series: {
-      gaji: { data: [7_000_000, 7_000_000, 7_000_000, 7_500_000, 8_000_000, 8_000_000], color: '#81c784' },
-      freelance: { data: [1_000_000, 1_200_000, 1_000_000, 1_500_000, 1_600_000, 1_800_000], color: '#9575cd' },
-      investasi: { data: [250_000, 300_000, 320_000, 350_000, 370_000, 400_000], color: '#ffb74d' },
-    },
-  },
-];
+import statsStore from '@/features/insight/stores/stats.store';
 
 const expenseSampleData: PieChartTabData[] = [
   {
@@ -89,10 +68,12 @@ const incomeSampleData: PieChartTabData[] = [
 
 export default function Page() {
   const { pockets, isLoading, getAllPockets } = pocketStore()
+  const { isLoading: isStatsLoading, getStatsGlobalPocket, stats } = statsStore()
   const { last5Transactions, getLast5Transactions, isLoading: isTransactionLoading } = transactionHistoryStore()
 
   useEffect(() => {
     getLast5Transactions();
+    getStatsGlobalPocket();
 
     if (!pockets.length) {
       getAllPockets();
@@ -127,7 +108,12 @@ export default function Page() {
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h5'>Grafik Keuanganmu</Typography>
-          <ChartWithTabs data={DATA} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} height={250} />
+          <ChartWithTabs
+            isLoading={isStatsLoading || !stats}
+            data={stats || []}
+            sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            height={250}
+          />
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>

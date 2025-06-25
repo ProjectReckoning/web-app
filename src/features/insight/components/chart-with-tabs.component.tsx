@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Tabs, Tab, Box, BoxProps } from '@mui/material';
+import { Tabs, Tab, Box, BoxProps, Typography } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { limeGreen } from '@/lib/custom-color';
+import Skeleton from '@/features/shared/components/skeleton';
+import formatCurrency from '@/lib/format-currency';
 
 export interface ChartData {
   x: string[];
@@ -19,27 +21,67 @@ export interface ChartData {
 
 export interface ChartWithTabsProps {
   data: ChartData[];
+  isLoading?: boolean;
 }
 
-export default function ChartWithTabs({ data, height, ...props }: Omit<BoxProps, 'children'> & ChartWithTabsProps) {
+export default function ChartWithTabs({ data, height, isLoading = false, ...props }: Omit<BoxProps, 'children'> & ChartWithTabsProps) {
   const [tab, setTab] = useState(0);
-  const currentData = data[tab];
 
-  if (!data || data.length === 0) {
+  if (isLoading || !data) {
     return (
-      <Box
-        sx={{
-          my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        {...props}
-      >
-        <h1>Loading...</h1>
+      <Box {...props}>
+        {/* Tabs Skeleton */}
+        <Box
+          sx={{
+            width: 'fit-content',
+            mx: 'auto',
+            backgroundColor: "gray.light",
+            borderRadius: 999,
+            mb: 4,
+            px: 2,
+            py: 1,
+            display: 'flex',
+            gap: 2,
+          }}
+        >
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              variant="rounded"
+              width={80}
+              height={32}
+              sx={{ borderRadius: 999 }}
+            />
+          ))}
+        </Box>
+
+        {/* Chart Skeleton */}
+        <Skeleton
+          variant="rounded"
+          width="100%"
+          sx={{ borderRadius: 2, height: height || 400, bgcolor: "gray.light" }}
+        />
+        <Box display="flex" justifyContent="center" gap={4} mt={2}>
+          {Array.from({ length: 2 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              variant="text"
+              width={120}
+              height={32}
+              sx={{ borderRadius: 999 }}
+            />
+          ))}
+        </Box>
       </Box>
     );
+  }
+
+  const currentData = data[tab];
+
+  if (!currentData) {
+    return (<Box {...props}>
+      <Typography variant="body1" textAlign="center" mt={4}>Belum ada data</Typography>
+    </Box>)
   }
 
   return (
@@ -92,6 +134,10 @@ export default function ChartWithTabs({ data, height, ...props }: Omit<BoxProps,
           Object.entries(currentData.series).map(([key, value]) => ({
             data: value.data,
             label: key,
+            valueFormatter: (v) => {
+              const value = typeof v === "number" ? v : v ?? 0;
+              return formatCurrency(value);
+            },
           }))
         }
         slotProps={{
