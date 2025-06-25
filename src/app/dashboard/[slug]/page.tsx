@@ -53,7 +53,7 @@ export default function Page() {
   useEffect(() => {
     if (
       pocket &&
-      (pocket.id !== selectedPocket?.id || !transactions.length || !last5Transactions.length || !bep || !stats)
+      (pocket.id !== selectedPocket?.id || !transactions?.length || !last5Transactions?.length || !bep || !stats)
     ) {
       getLast5Transactions();
       getAllTransactions({

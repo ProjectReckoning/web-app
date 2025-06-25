@@ -45,6 +45,16 @@ export default function TransactionOverviewCard({
     )
   }
 
+  if (!transactions.length) {
+    return (
+      <Box {...props}>
+        <Typography variant="body2" textAlign="center" py={2}>
+          Tidak ada transaksi
+        </Typography>
+      </Box>
+    )
+  }
+
   return (
     <Box
       {...props}

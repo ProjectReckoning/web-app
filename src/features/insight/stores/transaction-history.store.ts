@@ -8,9 +8,9 @@ import { GetTransactionDurationOption } from '../constants/get-transaction-histo
 type TransactionHistoryStore = {
   isLoading: boolean;
   errorMessage: string | null;
-  transactions: TransactionEntity[];
-  allPocketsTransactions: TransactionEntity[];
-  last5Transactions: TransactionSummaryEntity[];
+  transactions: TransactionEntity[] | null;
+  allPocketsTransactions: TransactionEntity[] | null;
+  last5Transactions: TransactionSummaryEntity[] | null;
   previousBalance: number | null;
   closingBalance: number | null;
   totalIncome: number | null;
@@ -37,14 +37,14 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
   isLoading: false,
   errorMessage: null,
 
-  transactions: [],
-  allPocketsTransactions: [],
+  transactions: null,
+  allPocketsTransactions: null,
 
   previousBalance: null,
   closingBalance: null,
   totalIncome: null,
   totalOutcome: null,
-  last5Transactions: [],
+  last5Transactions: null,
 
   getLast5Transactions: async (pocketId?: string) => {
     set({ isLoading: true, errorMessage: null })
