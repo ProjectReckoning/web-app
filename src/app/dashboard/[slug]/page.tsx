@@ -56,7 +56,10 @@ export default function Page() {
       (pocket.id !== selectedPocket?.id || !transactions.length || !last5Transactions.length || !bep || !stats)
     ) {
       getLast5Transactions();
-      getAllTransactions(pocket.id, GetTransactionDurationOption.LAST_1_YEAR);
+      getAllTransactions({
+        pocketId: pocket.id,
+        duration: GetTransactionDurationOption.LAST_1_YEAR,
+      });
       getBep(pocket.id);
       getStats(pocket.id);
     }

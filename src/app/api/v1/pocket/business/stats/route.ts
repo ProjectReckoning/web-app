@@ -26,19 +26,27 @@ export async function GET(req: Request): Promise<Response> {
       ],
       "label": type ?? "Bulanan",
       "series": {
-        "pemasukan": {
+        "additionalProp1": {
           "data": [
             100000,
             200000,
             150000
           ],
-          "color": "#81c784"
+          "color": "#ff6384"
         },
-        "pengeluaran": {
+        "additionalProp2": {
           "data": [
-            50000,
-            80000,
-            60000
+            100000,
+            200000,
+            150000
+          ],
+          "color": "#ff6384"
+        },
+        "additionalProp3": {
+          "data": [
+            100000,
+            200000,
+            150000
           ],
           "color": "#ff6384"
         }

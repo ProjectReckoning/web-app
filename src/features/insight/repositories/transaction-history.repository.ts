@@ -23,11 +23,22 @@ class TransactionHistoryRepository {
     }
   }
 
-  async getAllTransaction(pocketId: string, duration: GetTransactionDurationOption): Promise<TransactionOverviewEntity> {
+  async getAllTransaction({
+    pocketId,
+    duration
+  }: {
+    pocketId?: string;
+    duration: GetTransactionDurationOption;
+  }): Promise<TransactionOverviewEntity> {
     try {
-      const response = await api.get(`/pocket/business/${pocketId}/history?duration=${duration}`)
+      const url = pocketId ? `/pocket/business/${pocketId}/history?duration=${duration}` : `/pocket/business/history?duration=${duration}`
+      const response = await api.get(url)
       const responseData = response.data as GetAllTransactionResponse
       const data = responseData.data
+
+      if (!data) {
+        throw new Error("Failed to fetch transaction")
+      }
 
       return {
         transactions: data.transaksi.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)),

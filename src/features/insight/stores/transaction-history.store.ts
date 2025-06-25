@@ -9,20 +9,37 @@ type TransactionHistoryStore = {
   isLoading: boolean;
   errorMessage: string | null;
   transactions: TransactionEntity[];
+  allPocketsTransactions: TransactionEntity[];
   last5Transactions: TransactionSummaryEntity[];
   previousBalance: number | null;
   closingBalance: number | null;
   totalIncome: number | null;
   totalOutcome: number | null;
 
-  getLast5Transactions: (pocketId?: string) => void;
-  getAllTransactions: (pocketId: string, duration: GetTransactionDurationOption) => void;
+  getLast5Transactions: (pocketId?: string) => Promise<void>;
+  getAllTransactions: ({
+    pocketId,
+    duration,
+  }: {
+    pocketId: string,
+    duration: GetTransactionDurationOption,
+  }) => Promise<void>
+  getAllPocketsTransactions: ({
+    pocketIds,
+    duration,
+  }: {
+    pocketIds: string[],
+    duration: GetTransactionDurationOption,
+  }) => Promise<void>
 };
 
 const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
   isLoading: false,
   errorMessage: null,
+
   transactions: [],
+  allPocketsTransactions: [],
+
   previousBalance: null,
   closingBalance: null,
   totalIncome: null,
@@ -43,11 +60,17 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
     }
   },
 
-  getAllTransactions: async (pocketId: string, duration: GetTransactionDurationOption) => {
+  getAllTransactions: async ({
+    pocketId,
+    duration,
+  }: {
+    pocketId: string,
+    duration: GetTransactionDurationOption
+  }) => {
     set({ isLoading: true, errorMessage: null })
 
     try {
-      const transactionOverview = await getAllTransaction(pocketId, duration)
+      const transactionOverview = await getAllTransaction({ pocketId, duration })
       set({
         transactions: transactionOverview.transactions,
         previousBalance: transactionOverview.previousBalance,
@@ -56,6 +79,33 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
         totalOutcome: transactionOverview.totalOutcome,
         errorMessage: null,
       })
+    } catch (error) {
+      console.error(error)
+      set({ errorMessage: error instanceof Error ? error.message : String(error) })
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  getAllPocketsTransactions: async ({
+    pocketIds,
+    duration,
+  }: {
+    pocketIds: string[],
+    duration: GetTransactionDurationOption,
+  }): Promise<void> => {
+    set({ isLoading: true, errorMessage: null })
+
+    try {
+      const promises = pocketIds.map((pocketId) => {
+        return getAllTransaction({ pocketId, duration })
+      })
+
+      const transactionOverviews = await Promise.all(promises)
+      const allTransactions = transactionOverviews.map((transactionOverview) => transactionOverview.transactions)
+      const allPocketsTransactions = allTransactions.flat()
+      console.log('testing', pocketIds)
+      set({ allPocketsTransactions, errorMessage: null })
     } catch (error) {
       console.error(error)
       set({ errorMessage: error instanceof Error ? error.message : String(error) })

@@ -19,7 +19,7 @@ export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
   const router = useRouter();
   const {
-    transactions, 
+    transactions,
     getAllTransactions,
     isLoading: isTransactionStoreLoading,
     previousBalance: pocketPreviousBalance,
@@ -96,7 +96,10 @@ export default function Page() {
 
   useEffect(() => {
     if (pocket && transactions.length === 0) {
-      getAllTransactions(pocket.id, GetTransactionDurationOption.LAST_30_DAYS);
+      getAllTransactions({
+        pocketId: pocket.id,
+        duration: GetTransactionDurationOption.LAST_30_DAYS,
+      });
     }
   }, [pocket, getAllTransactions]);
 
@@ -205,7 +208,10 @@ export default function Page() {
             onFilter: () => true,
             onChange: async (selected) => {
               if (!pocket) return;
-              getAllTransactions(pocket.id, mapDurationStringToOption(selected));
+              getAllTransactions({
+                pocketId: pocket.id,
+                duration: mapDurationStringToOption(selected),
+              });
             }
           }
         ]}
