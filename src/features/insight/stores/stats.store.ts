@@ -20,11 +20,12 @@ const statsStore = create<StatsStore>((set) => ({
     set({ isLoading: true, errorMessage: null })
 
     try {
-      const [incomeStats, outcomeStats] = await Promise.all([
+      const [incomeStats, outcomeStats, overview] = await Promise.all([
         getStats(undefined, "pemasukan"),
         getStats(undefined, "pengeluaran"),
+        getStats(undefined, "overview"),
       ])
-      set({ stats: [...incomeStats, ...outcomeStats], errorMessage: null })
+      set({ stats: [...overview, ...incomeStats, ...outcomeStats], errorMessage: null })
     } catch (error) {
       console.error(error)
       set({ errorMessage: error instanceof Error ? error.message : String(error) })
