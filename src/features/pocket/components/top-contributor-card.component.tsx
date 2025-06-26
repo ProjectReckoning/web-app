@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography, Avatar, Stack, Button, BoxProps } from '@mui/material';
+import { Box, Typography, Avatar, Stack, BoxProps, Link } from '@mui/material';
 import { Icon } from '@iconify/react';
 import DoughnutShape from '@/features/shared/components/doughnut-shape.component';
 import { purple } from '@/lib/custom-color';
@@ -16,7 +16,7 @@ interface TopContributorsCardProps {
   title?: string;
   contributors: Contributor[];
   isLoading?: boolean;
-  onSeeAll?: () => void;
+  href?: string;
 }
 
 const DEFAULT_COUNT = 3;
@@ -25,7 +25,7 @@ export default function TopContributorsCard({
   title = 'Kontribusi Terbesar',
   contributors,
   isLoading = false,
-  onSeeAll,
+  href,
   ...props
 }: TopContributorsCardProps & BoxProps) {
   return (
@@ -58,14 +58,13 @@ export default function TopContributorsCard({
         <Typography fontWeight="bold" fontSize="1.2rem">
           {title}
         </Typography>
-        {onSeeAll && (
-          <Button
-            onClick={onSeeAll}
+        {href && (
+          <Link
+            href={href}
             sx={{ color: 'orange.main', fontWeight: 600, p: 0, textDecoration: 'underline' }}
-            disableRipple
           >
             Lihat semua
-          </Button>
+          </Link>
         )}
       </Box>
 

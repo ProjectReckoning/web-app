@@ -13,11 +13,10 @@ import React, { useEffect, useMemo } from 'react';
 import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
 import formatCurrency from '@/lib/format-currency';
 import { gray } from '@/lib/custom-color';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
-  const router = useRouter();
   const {
     transactions,
     getAllTransactions,
@@ -173,7 +172,7 @@ export default function Page() {
             minWidth: 300,
           }}
           contributors={contributors}
-          onSeeAll={() => router.push(`/dashboard/${pocket?.id}/members`)}
+          href={`/dashboard/${pocket?.id}/members`}
         />
       </Box>
 
