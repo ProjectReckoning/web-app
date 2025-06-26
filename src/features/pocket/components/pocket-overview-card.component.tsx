@@ -38,7 +38,7 @@ export default function PocketOverviewCard({
             </Typography>
 
             <Typography variant="body1" fontWeight={600} component="p">
-              {formatCurrency(pocket.current_balance)}
+              {formatCurrency(pocket.currentBalance)}
             </Typography>
           </Box>
         </Box>

@@ -226,7 +226,7 @@ function BepInsightSection({
     >
       <BEPModalInput
         onSubmitChange={onChangeBepModal}
-        sx={{ mx: 4 }} defaultValue={pocket?.target_nominal ?? 0}
+        sx={{ mx: 4 }} defaultValue={pocket?.targetNominal ?? 0}
       />
       <BEPInsightCard
         isLoading={isLoading || !bep || !pocket}

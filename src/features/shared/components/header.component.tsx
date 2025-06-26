@@ -112,7 +112,7 @@ export default function Header() {
 }
 
 function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
-  const isAdminOrOwner = pockets.some((p) => p.user_role === 'admin' || p.user_role === 'owner');
+  const isAdminOrOwner = pockets.some((p) => p.userRole === 'admin' || p.userRole === 'owner');
 
   const pocketMenu = pockets.map((pocket) => ({
     id: pocket.id,

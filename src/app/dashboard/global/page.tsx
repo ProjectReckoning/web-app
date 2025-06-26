@@ -35,7 +35,7 @@ export default function Page() {
 
 
   const nonMemberPockets = useMemo(() => {
-    return pockets.filter((pocket) => pocket.user_role !== 'member');
+    return pockets.filter((pocket) => pocket.userRole !== 'member');
   }, [pockets]);
 
   useEffect(() => {

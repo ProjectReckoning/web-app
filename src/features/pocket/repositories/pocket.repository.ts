@@ -93,20 +93,20 @@ class PocketRepository {
       id: data.pocket_id.toString(),
       name: data.name,
       type: data.type as PocketEntity["type"],
-      target_nominal: parseFloat(data.target_nominal),
-      current_balance: parseFloat(data.current_balance),
+      targetNominal: parseFloat(data.target_nominal),
+      currentBalance: parseFloat(data.current_balance),
       deadline: data.deadline ? new Date(data.deadline) : null,
       status: data.status as PocketEntity["status"],
       icon: data.icon_name,
       color: data.color_hex,
-      account_number: data.account_number,
-      user_role: this.mapUserRole(data.user_role),
+      accountNumber: data.account_number,
+      userRole: this.mapUserRole(data.user_role),
       income: data.income,
       outcome: data.outcome,
     };
   }
 
-  private mapUserRole(role: string): PocketEntity["user_role"] {
+  private mapUserRole(role: string): PocketEntity["userRole"] {
     switch (role) {
       case "owner":
         return "owner";

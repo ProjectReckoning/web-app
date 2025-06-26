@@ -12,14 +12,14 @@ export type PocketEntity = {
   id: string;
   name: string;
   type: PocketType;
-  target_nominal: number;
-  current_balance: number;
+  targetNominal: number;
+  currentBalance: number;
   deadline: Date | null;
   status: PocketStatus;
   icon: string;
   color: string;
-  account_number: string;
-  user_role: "owner" | "admin" | "member";
+  accountNumber: string;
+  userRole: "owner" | "admin" | "member";
   income: number;
   outcome: number;
 };
