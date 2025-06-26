@@ -56,7 +56,7 @@ export default function Page() {
       <PocketOverviewList
         isLoading={isLoading ?? !pockets}
         pockets={nonMemberPockets ?? []}
-        sx={{ gap: 3, overflowX: 'auto', width: '100%', py: 2 }}
+        sx={{ gap: 3, overflowX: 'auto', width: '100%' }}
       />
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
