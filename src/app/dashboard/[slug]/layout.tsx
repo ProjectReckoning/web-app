@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       return
     }
 
-    if (!pocket || pocket?.id !== selectedPocket.id) {
+    if (!pocket || pocket?.id !== selectedPocket?.id) {
       getDetailPocket(selectedPocket.id)
     }
   }, [selectedPocket]);

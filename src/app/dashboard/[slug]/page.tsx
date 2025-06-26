@@ -100,7 +100,7 @@ export default function Page() {
             balance={pocket?.balance ?? 0}
             color={pocket?.color ?? gray[300]}
             icon={pocket?.icon ?? "pocket"}
-            isLoading={isLoading || !pocket}
+            isLoading={isLoading || !pocket?.id}
             sx={{
               backgroundColor: isLoading ? "transparent" : pocket?.color ?? "gray.main",
               border: isLoading ? 1 : 0,

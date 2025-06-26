@@ -4,7 +4,7 @@ import { green, orange } from "@/lib/custom-color";
 import formatCurrency from "@/lib/format-currency";
 import { Icon } from "@iconify/react";
 import { TextField, Typography, Divider, IconButton, TextFieldProps } from "@mui/material";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 export default function BEPModalInput({
   defaultValue,
@@ -26,18 +26,7 @@ export default function BEPModalInput({
 
   const handleEditClick = () => {
     setIsEditing(prev => !prev);
-  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatedStringValue = e.target.value
-      .replace(/[^0-9]+/g, "")
-    const newValue = parseFloat(formatedStringValue);
-    if (!isNaN(newValue)) {
-      setValue(newValue);
-    }
-  }
-
-  useEffect(() => {
     if (isEditing) {
       textFieldRef.current?.focus();
       textFieldRef.current?.select();
@@ -49,7 +38,16 @@ export default function BEPModalInput({
         onSubmitChange(value);
       }
     }
-  }, [isEditing]);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatedStringValue = e.target.value
+      .replace(/[\D]+/g, "")
+    const newValue = parseFloat(formatedStringValue);
+    if (!isNaN(newValue)) {
+      setValue(newValue);
+    }
+  }
 
   return (
     <TextField
