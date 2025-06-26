@@ -6,6 +6,7 @@ import { gray, green } from '@/lib/custom-color';
 import { TransactionSummaryEntity } from '../entities/transaction-summary.entities';
 import Skeleton from '@/features/shared/components/skeleton';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
+import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
 
 const DEFAULT_COUNT = 5;
 
@@ -65,7 +66,7 @@ export default function TransactionOverviewCard({
 
       <Box display="flex" flexDirection="column" gap={2}>
         {transactions?.map((tx, idx) => (
-          <Box key={idx} display="flex" alignItems="center" gap={2}>
+          <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}`} display="flex" alignItems="center" gap={2}>
             <Avatar
               sx={{
                 bgcolor: gray[50],
@@ -84,7 +85,7 @@ export default function TransactionOverviewCard({
             <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" rowGap={2}>
               <Box flex={1} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
                 <Typography variant="body2" fontWeight={500} whiteSpace="nowrap">
-                  {tx.type}
+                  {getLabelFromTransactionType(tx.type)}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" whiteSpace="nowrap">
                   {tx.description}

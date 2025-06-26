@@ -26,7 +26,8 @@ export function getTransactionCateogryFromString(
    */
   switch (normalizedCategory) {
     case 'payment':
-      return TransactionCategory.Payment;
+    case 'sell':
+      return TransactionCategory.Sell;
 
     case 'topup':
     case 'autotopup':

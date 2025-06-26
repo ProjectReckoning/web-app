@@ -22,13 +22,14 @@ import { GetTransactionDurationOption } from '@/features/insight/constants/get-t
 import { TransactionType } from '@/features/insight/constants/transaction-type.enum';
 import { TransactionEntity } from '@/features/insight/entities/transaction.entities';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
-import { getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
+import { getBackgroundColorFromTransactionType, getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
 import { getTransactionCateogryFromString } from '@/features/insight/constants/transaction-category.enum';
 import { BepProfit } from '@/features/insight/entities/bep-profit.entities';
 import { BepLoss } from '@/features/insight/entities/bep-loss.entities';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
 import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import statsStore from '@/features/insight/stores/stats.store';
+import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
@@ -301,13 +302,20 @@ function mapTransactionData(transactions: TransactionEntity[]) {
     const type = typeStr as TransactionType;
     return {
       label: type === TransactionType.OUTCOME ? 'Pengeluaran' : 'Pemasukan',
-      data: Object.entries(data).map(([category, { value, transactionCount }]) => ({
-        label: category,
-        value,
-        color: getColorFromTransactionType(getTransactionCateogryFromString(category)),
-        icon: <CustomIcon name={category} style={{ color: 'white', fontSize: 24 }} />,
-        transactionCount,
-      })),
+      data: Object.entries(data).map(([category, { value, transactionCount }]) => {
+        const categoryEnum = getTransactionCateogryFromString(category)
+        const backgroundColor = getBackgroundColorFromTransactionType(categoryEnum);
+        const color = getColorFromTransactionType(categoryEnum)
+
+        return {
+          label: getLabelFromTransactionType(categoryEnum),
+          value,
+          color,
+          backgroundColor,
+          icon: <CustomIcon name={category} style={{ color, fontSize: 24 }} />,
+          transactionCount,
+        }
+      }),
     };
   });
 

@@ -28,12 +28,7 @@ class BepRepository {
           status: 'loss',
           loss: data.data.loss,
           averageDailyCleanProfit: data.data.averageDailyCleanProfit,
-          projections: data.data.projections.map(projection => ({
-            increaseRate: projection.increaseRate,
-            increasedIncome: projection.increasedIncome,
-            projectedDailyProfit: projection.projectedDailyProfit,
-            estimatedDaysToCoverLoss: projection.estimatedDaysToCoverLoss,
-          })),
+          projections: [this.getLowestDayProjection(data.data.projections)],
         } as BepLoss
       }
 
@@ -41,7 +36,16 @@ class BepRepository {
       console.error(error)
       throw new Error('Failed to fetch BEP information')
     }
-  } 
+  }
+
+  private getLowestDayProjection(projections: BepLoss['projections']) {
+    return projections.reduce((lowest, projection) => {
+      if (lowest.estimatedDaysToCoverLoss > projection.estimatedDaysToCoverLoss) {
+        return projection
+      }
+      return lowest
+    }, projections[0])
+  }
 }
 
 const bepRepository = new BepRepository()

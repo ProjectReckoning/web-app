@@ -18,6 +18,7 @@ import { TransactionType } from '@/features/insight/constants/transaction-type.e
 import { TransactionEntity } from '@/features/insight/entities/transaction.entities';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getBackgroundColorFromTransactionType, getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
+import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
 
 export default function Page() {
   const { pockets, isLoading, getAllPockets } = pocketStore()
@@ -169,16 +170,16 @@ function mapTransactionData(transactions: TransactionEntity[]) {
     return {
       label: type === TransactionType.OUTCOME ? 'Pengeluaran' : 'Pemasukan',
       data: Object.entries(data).map(([category, { value, transactionCount }]) => {
-        const categoryString = getTransactionCateogryFromString(category)
-        const backgroundColor = getBackgroundColorFromTransactionType(categoryString);
-        const color = getColorFromTransactionType(categoryString)
+        const categoryEnum = getTransactionCateogryFromString(category)
+        const backgroundColor = getBackgroundColorFromTransactionType(categoryEnum);
+        const color = getColorFromTransactionType(categoryEnum)
 
         return {
-          label: category,
+          label: getLabelFromTransactionType(categoryEnum),
           value,
           backgroundColor,
           color,
-          icon: <CustomIcon name={categoryString} style={{ color, fontSize: 24 }} />,
+          icon: <CustomIcon name={categoryEnum} style={{ color, fontSize: 24 }} />,
           transactionCount,
         }
       }),

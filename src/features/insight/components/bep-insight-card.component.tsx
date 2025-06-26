@@ -212,7 +212,7 @@ export default function BEPInsightCard({
   );
 }
 
-function AdditionalInformation({ bep }: { bep: BepProfit | BepLoss }) {
+function AdditionalInformation({ bep }: Readonly<{ bep: BepProfit | BepLoss }>) {
   const isLoss = bep.status === 'loss';
   const progressPercent = isLoss ? 0 : bep.profitPercentage
 
