@@ -140,6 +140,7 @@ export default function TransactionTable({
                 {Array.from({ length: DEFAULT_COLUMN_COUNT }).map((_, index) => (
                   <TableCell key={index} sx={{
                     backgroundColor: tosca[100],
+                    borderBottom: 0,
                     ...(index === 0 && {
                       borderTopLeftRadius: 999,
                       borderBottomLeftRadius: 999,
@@ -224,6 +225,7 @@ export default function TransactionTable({
                   sortDirection={orderBy === key ? order : false}
                   sx={{
                     backgroundColor: tosca[100],
+                    borderBottom: 0,
                     ...(index === 0 && {
                       borderTopLeftRadius: 999,
                       borderBottomLeftRadius: 999,
