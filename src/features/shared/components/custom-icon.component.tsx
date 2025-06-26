@@ -27,13 +27,17 @@ export default function CustomIcon({
     group: "material-symbols:group",
 
     // Transaction enums
+    withdrawal: 'lucide:banknote-arrow-down',
+    transfer: 'lucide:send',
+    other: 'lucide:wallet-cards',
+
+    sell: 'lucide:hand-coins',
+    autorecurring: 'material-symbols:schedule',
+
     contribution: 'material-symbols:volunteer-activism',
-    withdrawal: 'material-symbols:download',
     payment: 'material-symbols:credit-card',
     autotopup: 'material-symbols:autorenew',
-    autorecurring: 'material-symbols:schedule',
-    topup: 'material-symbols:trending-up',
-    transfer: 'material-symbols:compare-arrows',
+    topup: 'lucide:banknote-arrow-up',
     income: 'material-symbols:attach-money',
     expense: 'material-symbols:money-off',
   };

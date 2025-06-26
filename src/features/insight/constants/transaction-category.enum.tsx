@@ -8,6 +8,8 @@ export enum TransactionCategory {
   Transfer = 'Transfer',
   Income = 'Income',
   Expense = 'Expense',
+  Sell = 'Sell',
+  Other = 'Other',
 }
 
 export function getTransactionCateogryFromString(
@@ -15,26 +17,33 @@ export function getTransactionCateogryFromString(
 ): TransactionCategory {
   const normalizedCategory = category.toLowerCase();
 
+  /**
+   * 1. Penjualan : payment
+   * 2. Top up : AutoTopUp, TopUp, AutoRecurring, Contiribution
+   * 3. Withdraw : Withdrawal
+   * 4. Transfer : Transfer
+   * 5. Lainnya : itu yg income sama expense masuknya ke lainnya
+   */
   switch (normalizedCategory) {
-    case 'contribution':
-      return TransactionCategory.Contribution;
-    case 'withdrawal':
-      return TransactionCategory.Withdrawal;
     case 'payment':
       return TransactionCategory.Payment;
-    case 'autotopup':
-      return TransactionCategory.AutoTopUp;
-    case 'autorecurring':
-      return TransactionCategory.AutoRecurring;
+
     case 'topup':
+    case 'autotopup':
+    case 'autorecurring':
+    case 'contribution':
       return TransactionCategory.Topup;
+
+    case 'withdrawal':
+      return TransactionCategory.Withdrawal;
+
     case 'transfer':
       return TransactionCategory.Transfer;
+
     case 'income':
-      return TransactionCategory.Income;
     case 'expense':
-      return TransactionCategory.Expense;
+      return TransactionCategory.Other;
     default:
-      throw new Error(`Unknown transaction category: ${category}`);
+      return TransactionCategory.Other;
   }
 }

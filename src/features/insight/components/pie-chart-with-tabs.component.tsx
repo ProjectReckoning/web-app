@@ -13,6 +13,7 @@ import Skeleton from "@/features/shared/components/skeleton";
 export interface PieChartItem {
   label: string;
   value: number;
+  backgroundColor?: string;
   color: string;
   icon: React.ReactNode;
   transactionCount: number;
@@ -173,7 +174,7 @@ export default function PieChartWithTabs({
           <Box key={index} display="flex" alignItems="center" gap={2}>
             <Box
               sx={{
-                bgcolor: item.color,
+                bgcolor: item.backgroundColor ?? item.color,
                 p: 1.5,
                 borderRadius: "50%",
                 display: "flex",
