@@ -189,6 +189,7 @@ export default function PocketMembersTable({
                           px: 2,
                           py: 1,
                           fontSize: 14,
+                          textTransform: 'capitalize',
                         }}
                       />
                     )}
@@ -221,10 +222,10 @@ export default function PocketMembersTable({
 function SelectRole({
   defaultValue = 'member',
   onRoleEdited
-}: {
+}: Readonly<{
   defaultValue?: string,
   onRoleEdited: (newRole: PocketMemberRole) => void
-}) {
+}>) {
   const [value, setValue] = React.useState(defaultValue);
 
   const roleMap: Record<string, PocketMemberRole> = {
@@ -237,13 +238,13 @@ function SelectRole({
       defaultValue={value}
       onChange={(e) => {
         setValue(e.target.value);
-        onRoleEdited(roleMap[e.target.value as string]);
+        onRoleEdited(roleMap[e.target.value]);
       }}
       variant="outlined"
       displayEmpty
       renderValue={(selected) => (
         <Chip
-          label={selected as string}
+          label={(selected as string)}
           clickable={false}
           sx={{
             bgcolor: "transparent",
@@ -252,6 +253,7 @@ function SelectRole({
             color: 'black',
             borderRadius: '999px',
             fontSize: 14,
+            textTransform: 'capitalize',
           }}
         />
       )}

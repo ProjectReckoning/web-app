@@ -48,7 +48,7 @@ export default function Page() {
       console.log(`User with ID ${user?.id} left the pocket.`);
       router.push("/dashboard");
     };
-    
+
     openModal(<LeavePocketConfirmationModalContent onConfirmed={onLeavePocketConfirmed} />);
   };
 
@@ -147,22 +147,20 @@ export default function Page() {
 
     if (member.id.toString() === user?.id) {
       data.actions = (
-        <>
-          <Button
-            color="gray"
-            startIcon={<Icon icon="material-symbols:door-open-outline" />}
-            size="small"
-            sx={{
-              textTransform: "none",
-              border: 2,
-              borderColor: "border.main",
-              borderRadius: 2,
-            }}
-            onClick={onLeavePocketClicked}
-          >
-            Keluar dari pocket ini
-          </Button>
-        </>
+        <Button
+          color="gray"
+          startIcon={<Icon icon="material-symbols:door-open-outline" />}
+          size="small"
+          sx={{
+            textTransform: "none",
+            border: 2,
+            borderColor: "border.main",
+            borderRadius: 2,
+          }}
+          onClick={onLeavePocketClicked}
+        >
+          Keluar dari pocket ini
+        </Button>
       );
     }
 
@@ -215,36 +213,27 @@ export default function Page() {
 
     if (member.id.toString() === user?.id) {
       data.actions = (
-        <>
-          <Button
-            color="gray"
-            startIcon={<Icon icon="material-symbols:door-open-outline" />}
-            // make the icon is center
-            size="small"
-            sx={{
-              textTransform: "none",
-              border: 2,
-              borderColor: "border.main",
-              borderRadius: 2,
-              ...(isMobile && {
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }),
-            }}
-            onClick={onLeavePocketClicked}
-          >
-            {!isMobile && "Keluar dari pocket ini"}
-          </Button>
-        </>
+        <Button
+          color="gray"
+          startIcon={<Icon icon="material-symbols:door-open-outline" />}
+          // make the icon is center
+          size="small"
+          sx={{
+            textTransform: "none",
+            border: 2,
+            borderColor: "border.main",
+            borderRadius: 2,
+            ...(isMobile && {
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }),
+          }}
+          onClick={onLeavePocketClicked}
+        >
+          {!isMobile && "Keluar dari pocket ini"}
+        </Button>
       );
-    }
-
-    if (
-      pocket?.userRole === PocketMemberRole.Owner ||
-      pocket?.userRole === PocketMemberRole.Admin
-    ) {
-      data.contribution = member.metadata?.contributionAmount ?? 0;
     }
 
     return data;
