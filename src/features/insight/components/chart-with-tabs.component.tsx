@@ -110,7 +110,7 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
           {data.map((item, index) => (
             <Tab
               key={item.label}
-              label={item.label}
+              label={item.label.charAt(0).toUpperCase() + item.label.slice(1)}
               value={index}
               color='limeGreen'
               sx={{
@@ -143,6 +143,9 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
         slotProps={{
           legend: {
             position: { vertical: 'bottom', },
+            sx: {
+              textTransform: "capitalize"
+            }
           },
         }}
         sx={{
