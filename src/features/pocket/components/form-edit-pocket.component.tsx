@@ -253,6 +253,7 @@ export default function FormEditPocket({
               py: 0.5,
               fontSize: 18,
               minWidth: 0,
+              marginLeft: 2,
             }}
           >
             Cancel
