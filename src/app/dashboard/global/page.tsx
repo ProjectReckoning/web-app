@@ -123,11 +123,23 @@ function TransactionInsightSection({
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
         <Box display="flex" flexDirection="column" gap={2} flex={1}>
-          <PieChartWithTabs isLoading={isTransactionLoading || !showedTransactions} flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={[transactionOverviewData?.[0] ?? []]} />
+          <PieChartWithTabs
+            isLoading={isTransactionLoading || !showedTransactions}
+            flex={1}
+            sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            showAction={false}
+            data={[transactionOverviewData?.[0] ?? []]}
+          />
         </Box>
 
         <Box display="flex" flexDirection="column" gap={2} flex={1}>
-          <PieChartWithTabs isLoading={isTransactionLoading || !showedTransactions} flex={1} sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }} data={[transactionOverviewData?.[1] ?? []]} />
+          <PieChartWithTabs
+            isLoading={isTransactionLoading || !showedTransactions}
+            flex={1}
+            sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            showAction={false}
+            data={[transactionOverviewData?.[1] ?? []]}
+          />
         </Box>
       </Box>
     </Box>

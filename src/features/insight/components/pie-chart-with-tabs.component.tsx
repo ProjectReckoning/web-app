@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Tabs, Tab, Typography, Stack, BoxProps } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Stack, BoxProps, IconButton } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import formatCurrency from "@/lib/format-currency";
 import { gray } from "@/lib/custom-color";
@@ -25,11 +25,13 @@ export interface PieChartTabData {
 
 export interface PieChartWithTabsProps {
   data: PieChartTabData[];
+  showAction?: boolean;
   isLoading?: boolean;
 }
 
 export default function PieChartWithTabs({
   isLoading = false,
+  showAction = true,
   data,
   ...props
 }: PieChartWithTabsProps & BoxProps) {
@@ -219,17 +221,22 @@ export default function PieChartWithTabs({
               <Typography fontWeight="bold">
                 {((item.value / total) * 100).toFixed(0)}%
               </Typography>
-              <Icon
-                icon="mdi:chevron-right"
-                style={{
-                  color: "text.secondary",
-                  cursor: "pointer",
-                  fontSize: 24,
-                }}
-                onClick={() =>
-                  route.push(`/dashboard/${selectedPocket?.id}/transactions?type=${item.label.toLowerCase()}`)
-                }
-              />
+              {showAction && (
+                <IconButton
+                  onClick={() =>
+                    route.push(`/dashboard/${selectedPocket?.id}/transactions?type=${item.label.toLowerCase()}`)
+                  }
+                >
+                  <Icon
+                    icon="mdi:chevron-right"
+                    style={{
+                      color: "text.secondary",
+                      cursor: "pointer",
+                      fontSize: 24,
+                    }}
+                  />
+                </IconButton>
+              )}
             </Box>
           </Box>
         ))}
