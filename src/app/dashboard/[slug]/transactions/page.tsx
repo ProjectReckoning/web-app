@@ -95,7 +95,7 @@ export default function Page() {
   }, [pocketPreviousBalance, pocketTotalIncome, pocketTotalOutcome, pocketClosingBalance]);
 
   useEffect(() => {
-    if (pocket && transactions?.length === 0) {
+    if (pocket && !transactions) {
       getAllTransactions({
         pocketId: pocket.id,
         duration: GetTransactionDurationOption.LAST_30_DAYS,
