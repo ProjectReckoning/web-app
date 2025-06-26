@@ -10,5 +10,5 @@ export default function formatCurrency(
     style: "currency",
     currency,
     maximumFractionDigits: maximumFractionDigits,
-  }).format(value);
+  }).format(value).replace(/\s/g, '')
 }

@@ -7,6 +7,7 @@ import React from 'react';
 export interface FinanceSummaryItem {
   title: string;
   amount: string;
+  color?: string;
 }
 
 interface FinanceSummaryCardProps {
@@ -84,7 +85,7 @@ export default function FinanceSummaryCard({
           <Typography variant='body1' textAlign="center" whiteSpace="nowrap">
             {item.title}
           </Typography>
-          <Typography variant='h6' fontWeight="bold" textAlign="center" whiteSpace="nowrap">
+          <Typography variant='h6' fontWeight="bold" textAlign="center" whiteSpace="nowrap" color={item.color ?? "inherit"}>
             {item.amount}
           </Typography>
         </Box>

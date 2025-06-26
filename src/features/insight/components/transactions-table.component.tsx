@@ -69,7 +69,7 @@ export default function TransactionTable({
   isLoading = false,
   filters = [],
   ...props
-}: TransactionTableProps) {
+}: Readonly<TransactionTableProps>) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<string>('');
   const [query, setQuery] = useState('');

@@ -87,10 +87,10 @@ export default function Page() {
 
   const financeSummaryItems = useMemo(() => {
     return [
-      { title: 'Saldo Kemarin', amount: formatCurrency(pocketPreviousBalance ?? 0) },
-      { title: 'Total Pemasukan', amount: formatCurrency(pocketTotalIncome ?? 0), },
-      { title: 'Total Pengeluaran', amount: formatCurrency(pocketTotalOutcome ?? 0) },
-      { title: 'Saldo Penutupan', amount: formatCurrency(pocketClosingBalance ?? 0) },
+      { title: 'Saldo Awal', amount: formatCurrency(pocketPreviousBalance ?? 0) },
+      { title: 'Total Pemasukan', amount: `+${formatCurrency(pocketTotalIncome ?? 0)}`, color: 'green.main' },
+      { title: 'Total Pengeluaran', amount: formatCurrency((pocketTotalOutcome ?? 0) * -1) },
+      { title: 'Saldo Akhir', amount: formatCurrency(pocketClosingBalance ?? 0) },
     ];
   }, [pocketPreviousBalance, pocketTotalIncome, pocketTotalOutcome, pocketClosingBalance]);
 
