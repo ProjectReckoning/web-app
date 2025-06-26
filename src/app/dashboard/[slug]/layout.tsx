@@ -17,17 +17,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       return
     }
 
-    if (!pockets && selectedPocket) {
+    if (!pockets) {
       getAllPockets();
-      return;
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!selectedPocket) {
+      return
     }
 
-    
     if (!pocket || pocket?.id !== selectedPocket.id) {
       getDetailPocket(selectedPocket.id)
     }
-
-  }, [selectedPocket, pathname]);
+  }, [selectedPocket]);
 
   if (isLoading) {
     return (
