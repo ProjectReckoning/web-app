@@ -97,7 +97,7 @@ export default function Drawer({
           component="img"
           src="/images/logo.png"
           alt="Logo"
-          height={48}
+          height={64}
           sx={{ display: isOpen ? "block" : "none" }}
         />
         <IconButton onClick={onToggleDrawer} color='purple'>
