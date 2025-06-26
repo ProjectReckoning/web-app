@@ -2,7 +2,7 @@ export type PocketType = "spending" | "business" | "saving" | "investment";
 
 export type PocketStatus = "active" | "inactive" | "completed";
 
-export type PocketUserRole = "owner" | "admin" | "viewer";
+export type PocketUserRole = "owner" | "admin" | "spender";
 
 export type PocketResponseItem = {
   pocket_id: number;

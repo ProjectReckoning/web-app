@@ -182,7 +182,7 @@ class PocketRepository {
         return PocketMemberRole.Owner;
       case "admin":
         return PocketMemberRole.Admin;
-      case "viewer":
+      case "spender":
         return PocketMemberRole.Member;
       default:
         throw new Error(`Unknown role: ${role}`);
