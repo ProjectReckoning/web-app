@@ -1,3 +1,4 @@
+import { TransactionType } from "../constants/transaction-type.enum";
 import transactionHistoryRepository from "../repositories/transaction-history.repository";
 import { TransactionSummaryEntity } from "@/features/insight/entities/transaction-summary.entities";
 
@@ -7,5 +8,13 @@ export async function get5LastTransactionsUsecase(
   const result = await transactionHistoryRepository.getLast5Transaction(
     pocketId
   );
-  return result;
+
+  const formattedResult = result.map((item) => {
+    return {
+      ...item,
+      amount: item.transactionType === TransactionType.INCOME ? item.amount : -item.amount
+    };
+  });
+
+  return formattedResult;
 }
