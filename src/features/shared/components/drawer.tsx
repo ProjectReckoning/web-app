@@ -89,7 +89,7 @@ export default function Drawer({
   menus,
   pathname,
   onNavigate,
-}: DrawerComponentProps) {
+}: Readonly<DrawerComponentProps>) {
   return (
     <StyledDrawer variant="permanent" open={isOpen}>
       <DrawerHeader sx={{ justifyContent: isOpen ? "space-between" : "center", height: 84 }}>
@@ -137,9 +137,11 @@ export default function Drawer({
               selected={pathname === menu.href}
               sx={[
                 {
-                  minHeight: 48,
+                  height: 48,
                   px: 2.5,
+                  mx: 1,
                   borderRadius: 999,
+                  aspectRatio: isOpen ? "inherit" : 1,
                 },
                 isOpen
                   ? {
