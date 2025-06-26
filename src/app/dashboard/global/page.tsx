@@ -28,7 +28,7 @@ export default function Page() {
     getLast5Transactions();
     getStatsGlobalPocket();
 
-    if (!pockets.length) {
+    if (!pockets) {
       getAllPockets();
     }
   }, []);

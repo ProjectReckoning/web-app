@@ -13,12 +13,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!pockets.length || !selectedPocket) {
+    if (!selectedPocket) {
+      return
+    }
+
+    if (!pockets && selectedPocket) {
       getAllPockets();
       return;
     }
+
     
-    if (pocket === null || pocket.id !== selectedPocket.id) {
+    if (!pocket || pocket?.id !== selectedPocket.id) {
       getDetailPocket(selectedPocket.id)
     }
 

@@ -48,6 +48,11 @@ export default function Header() {
       }
     } else {
       const fallbackId = availablePocketsMenus[0]?.id ?? '';
+
+      if (!fallbackId) {
+        router.push('/not-found');
+      }
+
       if (fallbackId !== selectedPocketId) {
         setSelectedPocketId(fallbackId);
         selectPocket(fallbackId);
