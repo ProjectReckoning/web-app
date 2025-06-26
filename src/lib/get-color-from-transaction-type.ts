@@ -1,11 +1,11 @@
 import { TransactionCategory } from "@/features/insight/constants/transaction-category.enum";
-import { red, green, purple, tosca, limeGreen, orange, gray } from "./custom-color";
+import { red, green, purple, tosca, limeGreen, orange, gray, pink } from "./custom-color";
 
 export const transactionBackgroundColorMap: Record<TransactionCategory, string> = {
   [TransactionCategory.Sell]: tosca[100],
   [TransactionCategory.Topup]: orange[100],
   [TransactionCategory.Withdrawal]: purple[100],
-  [TransactionCategory.Transfer]: tosca[100],
+  [TransactionCategory.Transfer]: pink[100],
   [TransactionCategory.Payment]: limeGreen[100],
   [TransactionCategory.Other]: gray[100],
 
@@ -20,7 +20,7 @@ export const transactionColorMap: Record<TransactionCategory, string> = {
   [TransactionCategory.Sell]: tosca[500],
   [TransactionCategory.Topup]: orange[500],
   [TransactionCategory.Withdrawal]: purple[500],
-  [TransactionCategory.Transfer]: tosca[500],
+  [TransactionCategory.Transfer]: pink[500],
   [TransactionCategory.Other]: gray[500],
 
   [TransactionCategory.Contribution]: purple[500],
