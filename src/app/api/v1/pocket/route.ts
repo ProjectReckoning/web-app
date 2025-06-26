@@ -83,7 +83,7 @@ const pockets: Pocket[] = [
     icon_name: "Pocket",
     color_hex: "#00BCD4",
     account_number: "950859915",
-    user_role: "owner",
+    user_role: "viewer",
     income: 0,
     outcome: 0
   },

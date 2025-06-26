@@ -5,17 +5,32 @@ import Header from '@/features/shared/components/header.component';
 import pocketStore from '@/features/pocket/stores/pocket.store';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import Loading from '@/features/shared/components/loading.component';
 
 export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
-  const { pockets, getAllPockets } = pocketStore();
+  const { isLoading, pockets, getAllPockets } = pocketStore();
   const pathname = usePathname();
 
   useEffect(() => {
     if (!pockets.length) {
       getAllPockets();
-      return;
     }
   }, [pathname]);
+
+  if (isLoading || !pockets) {
+    return (
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            position: 'relative',
+            minHeight: '100vh',
+          }}
+        >
+          <Loading />
+        </Box>
+      </Container>
+    );
+  }
 
   return (
     <>
