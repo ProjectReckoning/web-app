@@ -19,7 +19,7 @@ export type PocketEntity = {
   icon: string;
   color: string;
   account_number: string;
-  user_role: string;
+  user_role: "owner" | "admin" | "member";
   income: number;
   outcome: number;
 };

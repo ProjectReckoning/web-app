@@ -104,7 +104,6 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
       const transactionOverviews = await Promise.all(promises)
       const allTransactions = transactionOverviews.map((transactionOverview) => transactionOverview.transactions)
       const allPocketsTransactions = allTransactions.flat()
-      console.log('testing', pocketIds)
       set({ allPocketsTransactions, errorMessage: null })
     } catch (error) {
       console.error(error)

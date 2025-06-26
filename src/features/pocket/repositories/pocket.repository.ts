@@ -100,10 +100,21 @@ class PocketRepository {
       icon: data.icon_name,
       color: data.color_hex,
       account_number: data.account_number,
-      user_role: data.user_role as PocketEntity["user_role"],
+      user_role: this.mapUserRole(data.user_role),
       income: data.income,
       outcome: data.outcome,
     };
+  }
+
+  private mapUserRole(role: string): PocketEntity["user_role"] {
+    switch (role) {
+      case "owner":
+        return "owner";
+      case "admin":
+        return "admin";
+      default:
+        return "member";
+    }
   }
 
   private mapApiPocketDetailToEntity(

@@ -33,10 +33,15 @@ export default function Page() {
     }
   }, []);
 
+
+  const nonMemberPockets = useMemo(() => {
+    return pockets.filter((pocket) => pocket.user_role !== 'member');
+  }, [pockets]);
+
   useEffect(() => {
-    const pocketIds = pockets.map((pocket) => pocket.id);
+    const pocketIds = nonMemberPockets.map((pocket) => pocket.id);
     getAllPocketsTransactions({ pocketIds, duration: GetTransactionDurationOption.LAST_1_YEAR });
-  }, [pockets])
+  }, [nonMemberPockets])
 
   return (
     <Box
@@ -49,8 +54,8 @@ export default function Page() {
       }}
     >
       <PocketOverviewList
-        isLoading={isLoading}
-        pockets={pockets}
+        isLoading={isLoading ?? !pockets}
+        pockets={nonMemberPockets ?? []}
         sx={{ gap: 3, overflowX: 'auto', width: '100%', py: 2 }}
       />
 
