@@ -10,14 +10,14 @@ import {
 } from "../entities/detail-pocket.entities";
 import {
   GetPocketDetailResponse,
-  PocketDetailResponseItem as PocketDetailResponseItem,
+  PocketDetailResponseItem,
 } from "../entities/get-pocket-detail-response";
 import { ChangePocketMemberRoleResponse } from "../entities/patch-pocket-change-role";
 
 class PocketRepository {
   async getAllPocket(): Promise<PocketEntity[]> {
     try {
-      const response = await api.get("/pocket");
+      const response = await api.get("/pocket/business");
       const responseData = response.data as PocketResponse;
       const data = responseData.data;
 
