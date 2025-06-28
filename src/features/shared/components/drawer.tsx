@@ -108,12 +108,14 @@ export default function Drawer({
         </IconButton>
       </DrawerHeader>
 
-      <PocketSelect
-        pockets={pockets}
-        selectedPocketId={selectedPocketId}
-        onPocketChange={onPocketChange}
-        isOpen={isOpen}
-      />
+      {!pockets.length && (
+        <PocketSelect
+          pockets={pockets}
+          selectedPocketId={selectedPocketId}
+          onPocketChange={onPocketChange}
+          isOpen={isOpen}
+        />
+      )}
 
       <List sx={{ marginTop: 2 }}>
         {menus.map((menu) => (

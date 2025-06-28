@@ -23,15 +23,24 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const menus: DrawerMenuItem[] = selectedPocketId === "global"
-    ? [
-      { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: `/dashboard/${selectedPocketId}` },
-    ] : [
-      { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: `/dashboard/${selectedPocketId}` },
-      { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: `/dashboard/${selectedPocketId}/transactions` },
-      { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: `/dashboard/${selectedPocketId}/members` },
-      { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: `/dashboard/${selectedPocketId}/settings` },
-    ]
+  let menus: DrawerMenuItem[] = [];
+  switch (selectedPocketId) {
+    case (''):
+      menus = []
+      break;
+    case ('global'):
+      menus = [
+        { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: `/dashboard/${selectedPocketId}` },
+      ]
+      break;
+    default:
+      menus = [
+        { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: `/dashboard/${selectedPocketId}` },
+        { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: `/dashboard/${selectedPocketId}/transactions` },
+        { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: `/dashboard/${selectedPocketId}/members` },
+        { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: `/dashboard/${selectedPocketId}/settings` },
+      ]
+  }
 
   useEffect(() => {
     if (availablePocketsMenus.length === 0 || availablePocketsMenus[0].id === '') {

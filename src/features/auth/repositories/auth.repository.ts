@@ -6,7 +6,7 @@ class AuthRepository {
     phoneNumber: string,
     password: string
   ): Promise<{ phone_number: string; sessionId: string }> {
-    const response = await api.post("/user/request-otp", {
+    const response = await api.post("/user/login/request-otp", {
       phone_number: phoneNumber,
       password,
     });
@@ -23,7 +23,7 @@ class AuthRepository {
     otp: string;
     phoneNumber: string;
   }): Promise<{ token: string }> {
-    const response = await api.post("/user/verify-otp", {
+    const response = await api.post("/user/login/verify-otp", {
       session_id: sessionId,
       otp,
       phone_number: phoneNumber,

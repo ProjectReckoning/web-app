@@ -18,7 +18,7 @@ type AuthStore = {
 	loginWithCredential: (phoneNumber: string, password: string) => Promise<void>;
 	loginWithOtp: ({ sessionId, otp, phoneNumber }: { sessionId: string; otp: string; phoneNumber: string; }) => Promise<void>;
 	logout: () => void;
-	getUser:() => void;
+	getUser: () => void;
 };
 
 const authStore = create<AuthStore>()(
@@ -74,17 +74,17 @@ const authStore = create<AuthStore>()(
 		getUser: async () => {
 			set({ isLoading: true, errorMessage: null });
 			try {
-			  const user = await getMeUseCase();
-			  set({ user });
+				const user = await getMeUseCase();
+				set({ user });
 			} catch (error) {
-			  set({
-				errorMessage: error instanceof AxiosError ? error.response?.data.message : String(error),
-			  });
+				set({
+					errorMessage: error instanceof AxiosError ? error.response?.data.message : String(error),
+				});
 			} finally {
-			  set({ isLoading: false });
+				set({ isLoading: false });
 			}
-		  },
-		  
+		},
+
 
 		logout: () => {
 			set({
