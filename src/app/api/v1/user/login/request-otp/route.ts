@@ -6,7 +6,7 @@ export interface RequestScheme {
 export interface ResponseScheme {
   message: string
   data: {
-    session_id: string
+    sessionId: string
   }
 }
 

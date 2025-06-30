@@ -24,7 +24,7 @@ class AuthRepository {
     phoneNumber: string;
   }): Promise<{ token: string }> {
     const response = await api.post("/user/login/verify-otp", {
-      session_id: sessionId,
+      sessionId: sessionId,
       otp,
       phone_number: phoneNumber,
     });
