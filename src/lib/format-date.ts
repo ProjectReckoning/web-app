@@ -2,10 +2,10 @@ export default function formatDate(
   date: Date,
   {
     locale = "id-ID",
-    weekday = "long",
-    year = "numeric",
-    month = "long",
-    day = "numeric",
+    weekday = undefined,
+    year = undefined,
+    month = undefined,
+    day = undefined,
   }: {
     locale?: string;
     weekday?: "long" | "short" | "narrow";

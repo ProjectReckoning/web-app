@@ -336,9 +336,9 @@ function mapScheduledTransactions(scheduledTransactions: ScheduledTransactionEnt
     const nextDate = new Date(it.nextRunDate);
 
     return {
-      day: formatDate(nextDate, { weekday: "short" }), // e.g. "Sel"
+      day: formatDate(nextDate, { weekday: "long" }),
       date: nextDate.getDate(),
-      title: it.detail.destination,
+      title: it.detail?.destination ?? "-",
       amount: it.recurringAmount,
     };
   });

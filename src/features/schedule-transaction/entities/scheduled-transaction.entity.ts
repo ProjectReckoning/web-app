@@ -5,5 +5,5 @@ export interface ScheduledTransactionEntity {
   recurringAmount: number;
   nextRunDate: Date;
   status: 'active' | 'inactive'; // You can widen this if needed
-  detail: DetailScheduledTransactionEntity;
+  detail: DetailScheduledTransactionEntity | null;
 }

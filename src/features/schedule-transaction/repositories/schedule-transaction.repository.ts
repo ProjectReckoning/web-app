@@ -6,7 +6,7 @@ import { GetAutoBudgetItem, GetAutoBudgetResponse } from "../entities/responses/
 class ScheduleTransactionRepository {
   async getAll(pocketId: string): Promise<ScheduledTransactionEntity[]> {
     try {
-      const response = await api.get(`/transaction/transfer/schedule?pocket_id=${pocketId}`);
+      const response = await api.get(`/transaction/transfer/schedule/${pocketId}`);
       const responseData = response.data as GetAutoBudgetResponse;
       const data = responseData.data;
 
@@ -20,14 +20,15 @@ class ScheduleTransactionRepository {
   }
 
   private mapAutoBudgetToEntity(data: GetAutoBudgetItem): ScheduledTransactionEntity {
-    const detail: DetailScheduledTransactionEntity = {
+    const detail: DetailScheduledTransactionEntity | null = data.detail
+      ? {
       autoBudgetId: data.detail.auto_budget_id,
       destination: data.detail.destination,
       userId: data.detail.user_id,
       pocketId: data.detail.pocket_id,
       startDate: new Date(data.detail.start_date),
       endDate: new Date(data.detail.end_date),
-    };
+      } : null
 
     return {
       id: data.id,
