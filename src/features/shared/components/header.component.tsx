@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
 import authStore from '@/features/auth/stores/auth.store';
@@ -18,7 +18,7 @@ export default function Header() {
   const { logout } = authStore();
   const { pockets, isLoading, selectPocket } = pocketStore();
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
-  const availablePocketsMenus = getAvailablePocketsMenu(pockets);
+  const availablePocketsMenus = useMemo(() => getAvailablePocketsMenu(pockets), [pockets]);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -67,7 +67,7 @@ export default function Header() {
         selectPocket(fallbackId);
       }
     }
-  }, [pathname, availablePocketsMenus.length]);
+  }, [pathname, pockets, availablePocketsMenus.length]);
 
   useEffect(() => {
     if (selectedPocketId === '') {

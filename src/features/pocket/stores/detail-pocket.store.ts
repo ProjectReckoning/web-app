@@ -24,7 +24,7 @@ type DetailPocketStore = {
     color?: string;
     icon?: string;
     targetNominal?: number;
-  }) => void;
+    }) => Promise<void>;
   changePocketMemberRole: (
     userId: string,
     role: PocketMemberRole
@@ -67,7 +67,7 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
     );
   },
 
-  updatePocket: ({
+  updatePocket: async ({
     name,
     color,
     icon,
@@ -77,17 +77,15 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
     color?: string;
     icon?: string;
     targetNominal?: number;
-  }) => {
-    if (!get().pocket || !get().pocket?.id) {
-      return set({ errorMessage: "Pocket not found or ID is missing" });
-    }
+    }): Promise<void> => {
+    set({ isLoading: true, errorMessage: null });
 
     const pocketId = get().pocket?.id;
 
     if (!pocketId) {
-      return set({ errorMessage: "Pocket ID is missing" });
+      return set({ errorMessage: "Pocket not found or ID is missing" });
     }
-    
+
     const updatedPocket: Partial<DetailPocketEntity> = {
       name,
       color,
@@ -95,16 +93,17 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
       targetNominal,
     };
 
-    editPocketUsecase(pocketId, updatedPocket)
-      .then(() => {
-        get().getDetailPocket(pocketId);
-      })
-      .catch((error) => {
-        console.error(error);
-        set({
-          errorMessage: error instanceof Error ? error.message : String(error),
-        });
+    try {
+      await editPocketUsecase(pocketId, updatedPocket)
+      await get().getDetailPocket(pocketId);
+    } catch (error) {
+      console.error(error);
+      set({
+        errorMessage: error instanceof Error ? error.message : String(error),
       });
+    } finally {
+      set({ isLoading: false });
+    }
   },
 
   changePocketMemberRole: async (

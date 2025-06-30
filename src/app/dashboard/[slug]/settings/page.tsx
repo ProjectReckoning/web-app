@@ -1,15 +1,16 @@
 "use client";
 
 import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import PocketCard from "@/features/pocket/components/pocket-card.component";
 import FormEditPocket from "@/features/pocket/components/form-edit-pocket.component";
-import { useState } from "react";
 import Typography from "@mui/material/Typography";
+import pocketStore from "@/features/pocket/stores/pocket.store";
 
 export default function Page() {
-  const { isLoading, pocket } = detailPocketStore();
+  const { isLoading, pocket, updatePocket } = detailPocketStore();
+  const { getAllPockets } = pocketStore();
   const [formData, setFormData] = useState({
     title: pocket?.name,
     color: pocket?.color,
@@ -26,15 +27,16 @@ export default function Page() {
     }
   }, [pocket]);
 
-  const handlePocketUpdate = () => {
+  const handlePocketUpdate = async () => {
     if (!formData.title || !formData.color || !formData.icon) {
       return;
     }
-    detailPocketStore.getState().updatePocket({
+    await updatePocket({
       name: formData.title,
       color: formData.color,
       icon: formData.icon,
     });
+    await getAllPockets()
   }
 
   const handlePocketChange = (data: {
