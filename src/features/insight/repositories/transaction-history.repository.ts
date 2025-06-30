@@ -41,7 +41,7 @@ class TransactionHistoryRepository {
       }
 
       return {
-        transactions: data.transaksi.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)),
+        transactions: data.transaksi ? data.transaksi.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)) : [],
         totalIncome: data.total_pemasukan,
         totalOutcome: data.total_pengeluaran,
         previousBalance: data.saldo_kemarin,
