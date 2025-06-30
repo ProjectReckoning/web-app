@@ -13,7 +13,7 @@ export default function ScheduledTransactionItem({
   date,
   title,
   amount,
-}: ScheduledTransactionItemProps) {
+}: Readonly<ScheduledTransactionItemProps>) {
   return (
     <Box
       sx={{

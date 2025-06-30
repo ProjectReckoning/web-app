@@ -30,10 +30,18 @@ import BEPModalInput from '@/features/insight/components/bep-modal-input.compone
 import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import statsStore from '@/features/insight/stores/stats.store';
 import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
+import scheduledTransactionsStore from '@/features/schedule-transaction/stores/scheduled-transaction.store';
+import formatDate from '@/lib/format-date';
+import { ScheduledTransactionEntity } from '@/features/schedule-transaction/entities/scheduled-transaction.entity';
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
   const { isLoading, pocket, updatePocket } = detailPocketStore();
+  const {
+    isLoading: isScheduledTransactionLoading,
+    scheduledTransactions,
+    getAllScheduledTransactions,
+  } = scheduledTransactionsStore()
   const {
     isLoading: isTransactionLoading,
     last5Transactions,
@@ -54,9 +62,10 @@ export default function Page() {
   useEffect(() => {
     if (
       pocket &&
-      (pocket.id !== selectedPocket?.id || !transactions?.length || !last5Transactions?.length || !bep || !stats)
+      (pocket.id !== selectedPocket?.id || !transactions?.length || !last5Transactions?.length || !bep || !stats || !scheduledTransactions)
     ) {
       getLast5Transactions();
+      getAllScheduledTransactions(pocket.id);
       getAllTransactions({
         pocketId: pocket.id,
         duration: GetTransactionDurationOption.LAST_1_YEAR,
@@ -65,7 +74,9 @@ export default function Page() {
       getStats(pocket.id);
     }
 
-  }, [pocket, selectedPocket, getLast5Transactions]);
+  }, [pocket, selectedPocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStats]);
+
+  const mappedScheduledTransaction = useMemo(() => mapScheduledTransactions(scheduledTransactions), [scheduledTransactions]);
 
   return (
     <Box
@@ -145,11 +156,8 @@ export default function Page() {
         </Box>
         <ScheduledTransactionList
           title="Transaksi terjadwalmu"
-          transactions={[
-            { day: 'Sabtu', date: 21, title: 'PLN - 1234567806', amount: 100000 },
-            { day: 'Sabtu', date: 21, title: 'PLN - 1234567806', amount: 100000 },
-            { day: 'Sabtu', date: 21, title: 'PLN - 1234567806', amount: 100000 },
-          ]}
+          isLoading={isScheduledTransactionLoading || !scheduledTransactions}
+          transactions={mappedScheduledTransaction}
           flex={1}
           minWidth={300}
         />
@@ -245,6 +253,7 @@ function BepInsightSection({
     </Box>
   )
 }
+
 function TransactionInsightSection({
   transactions: inputTransactions,
   isTransactionLoading = false,
@@ -320,4 +329,19 @@ function mapTransactionData(transactions: TransactionEntity[]) {
   });
 
   return result;
+}
+
+function mapScheduledTransactions(scheduledTransactions: ScheduledTransactionEntity[]) {
+  const result = scheduledTransactions.map((it) => {
+    const nextDate = new Date(it.nextRunDate);
+
+    return {
+      day: formatDate(nextDate, { weekday: "short" }), // e.g. "Sel"
+      date: nextDate.getDate(),
+      title: it.detail.destination,
+      amount: it.recurringAmount,
+    };
+  });
+
+  return result
 }
