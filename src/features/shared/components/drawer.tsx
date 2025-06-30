@@ -108,7 +108,7 @@ export default function Drawer({
         </IconButton>
       </DrawerHeader>
 
-      {!pockets.length && (
+      {!!pockets.length && (
         <PocketSelect
           pockets={pockets}
           selectedPocketId={selectedPocketId}
