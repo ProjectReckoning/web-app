@@ -7,7 +7,7 @@ import authStore from "@/features/auth/stores/auth.store";
 export function AuthGuard({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { token, user, getUser } = authStore();
+  const { token, getUser, errorMessage } = authStore();
   const router = useRouter();
   const pathname = usePathname();
   const [hydrated, setHydrated] = useState(false);
@@ -34,20 +34,17 @@ export function AuthGuard({
 
     if (pathname === "/" && token) {
       router.replace("/dashboard");
-      return;
+    }
+
+    if (errorMessage) {
+      router.replace("/auth");
     }
   }, [pathname, token, router, hydrated]);
 
   useEffect(() => {
-    if (token && !user) {
-      try {
-        getUser();
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-        router.replace("/auth");
-      }
-    }
-  }, [token, user, getUser, router]);
+    getUser()
+
+  }, [token, getUser, router]);
 
   return <>{children}</>;
 }
