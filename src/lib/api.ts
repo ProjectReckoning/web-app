@@ -10,7 +10,6 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const { token } = authStore.getState()
-    console.log("testing:", token)
     const tokenHeader = `Bearer ${token}`;
     if (token) {
       config.headers.Authorization = tokenHeader;
