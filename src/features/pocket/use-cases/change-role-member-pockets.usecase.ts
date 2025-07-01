@@ -6,10 +6,18 @@ export async function changePocketMemberRoleUseCase(
   userId: string,
   role: PocketMemberRole
 ): Promise<{ message: string }> {
+  let mappedRole = ""
+
+  if (role === PocketMemberRole.Member) {
+    mappedRole = "spender"
+  } else {
+    mappedRole = role
+  }
+
   const result = await pocketRepository.changePocketMemberRole(
     pocketId,
     userId,
-    role
+    mappedRole
   );
   return result;
 }

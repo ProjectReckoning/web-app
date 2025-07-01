@@ -82,10 +82,31 @@ class PocketRepository {
     role: string
   ): Promise<ChangePocketMemberRoleResponse> {
     const response = await api.patch(
-      `/pocket/${pocketId}/members/${userId}/role`,
-      { role }
+      `/pocket/${pocketId}/members/role`,
+      {
+        user_id: userId,
+        role
+      }
     );
     return response.data as ChangePocketMemberRoleResponse;
+  }
+
+  async deleteMember(
+    pocketId: string,
+    userId: string,
+  ): Promise<void> {
+    await api.post(
+      `/pocket/${pocketId}/members/`,
+      {
+        members: [userId],
+      }
+    );
+  }
+
+  async leavePocket(
+    pocketId: string,
+  ): Promise<void> {
+    await api.delete(`/pocket/${pocketId}/leave/`);
   }
 
   private mapApiPocketToEntity(data: PocketResponseItem): PocketEntity {

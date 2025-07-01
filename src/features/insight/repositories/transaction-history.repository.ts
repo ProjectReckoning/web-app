@@ -57,9 +57,9 @@ class TransactionHistoryRepository {
     return {
       type: getTransactionCateogryFromString(data.type),
       amount: data.amount,
-      purpose: data.purpose,
+      purpose: data.description,
       transactionType: data.transaction_type === 0 ? TransactionType.OUTCOME : TransactionType.INCOME,
-      createdAt: data.created_at,
+      createdAt: data.createdAt,
       initiatorUser: data.initiator_user,
     }
   }
