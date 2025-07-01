@@ -17,7 +17,11 @@ const bepStore = create<BepStore>((set) => ({
   bep: null,
 
   getBep: async (pocketId: string) => {
-    set({ isLoading: true, errorMessage: null })
+    set({
+      isLoading: true,
+      errorMessage: null,
+      bep: null,
+    })
 
     try {
       const bep = await getBep(pocketId)

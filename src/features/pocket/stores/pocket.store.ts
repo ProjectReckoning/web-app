@@ -3,12 +3,12 @@ import { getAllPocketsUsecase } from '../use-cases/get-all-pockets.usecase';
 import { PocketEntity } from '../entities/pocket.entites';
 
 type PocketStore = {
-  pockets: PocketEntity[];
+  pockets: PocketEntity[] | null;
   selectedPocket: PocketEntity | null;
   isLoading: boolean;
   errorMessage: string | null;
   getAllPockets: () => Promise<void>;
-  selectPocket: (pocketId?: string) => void;
+  selectPocket: (pocketId: string) => void;
 };
 
 const pocketStore = create<PocketStore>((set, get) => ({
@@ -19,7 +19,11 @@ const pocketStore = create<PocketStore>((set, get) => ({
 
   getAllPockets: async () => {
     try {
-      set({ isLoading: true, errorMessage: null })
+      set({
+        isLoading: true,
+        errorMessage: null,
+        pockets: null,
+      })
       const pockets = await getAllPocketsUsecase()
       set({ pockets })
     } catch (error) {
@@ -29,15 +33,10 @@ const pocketStore = create<PocketStore>((set, get) => ({
     }
   },
 
-  selectPocket: (pocketId?: string) => {
+  selectPocket: (pocketId: string) => {
     const pockets = get().pockets;
 
-    if (!pocketId) {
-      set({ selectedPocket: pockets[0] })
-      return
-    }
-
-    const selectedPocket = pockets.find(pocket => pocket.id === pocketId)
+    const selectedPocket = pockets?.find(pocket => pocket.id === pocketId)
     if (selectedPocket) {
       set({ selectedPocket })
     }

@@ -34,7 +34,7 @@ export default function PocketSelect({
   onPocketChange,
   sx,
   isOpen,
-}: PocketSelectProps) {
+}: Readonly<PocketSelectProps>) {
   const currentSelectedPocket = pockets.find((p) => p.id === selectedPocketId)
 
   return (

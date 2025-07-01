@@ -17,7 +17,11 @@ const statsStore = create<StatsStore>((set) => ({
   stats: null,
 
   getStatsGlobalPocket: async () => {
-    set({ isLoading: true, errorMessage: null })
+    set({
+      isLoading: true,
+      errorMessage: null,
+      stats: null,
+    })
 
     try {
       const [incomeStats, outcomeStats, overview] = await Promise.all([
@@ -33,8 +37,13 @@ const statsStore = create<StatsStore>((set) => ({
       set({ isLoading: false })
     }
   },
+
   getStatsSpesificPocket: async (pocketId: string) => {
-    set({ isLoading: true, errorMessage: null })
+    set({
+      isLoading: true,
+      errorMessage: null,
+      stats: null,
+    })
 
     try {
       const [monthlyStats, yearlyStats] = await Promise.all([

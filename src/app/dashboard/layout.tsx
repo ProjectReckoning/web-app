@@ -12,7 +12,7 @@ export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!pockets.length) {
+    if (!pockets) {
       getAllPockets();
     }
   }, [pathname]);

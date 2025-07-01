@@ -20,9 +20,6 @@ export type PocketResponseItem = {
   outcome: number;
 };
 
-/**
- * Defines the overall structure of the API response for fetching pockets.
- */
 export type PocketResponse = {
   ok: boolean;
   data: PocketResponseItem[];

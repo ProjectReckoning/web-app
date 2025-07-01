@@ -32,8 +32,13 @@ const authStore = create<AuthStore>()(
 		user: null,
 
 		loginWithCredential: async (phoneNumber: string, password: string) => {
-			set({ isLoading: true })
-			set({ errorMessage: null })
+			set({
+				isLoading: true,
+				errorMessage: null,
+				sessionId: null,
+				sessionExpiresAt: null,
+			})
+
 			try {
 				const { sessionId, expiresAt } = await loginWithCredentialUseCase(phoneNumber, password)
 				set({ sessionId, sessionExpiresAt: expiresAt, phoneNumber })
@@ -61,7 +66,7 @@ const authStore = create<AuthStore>()(
 					otp,
 					phoneNumber,
 				})
-				set({ token })
+				set({ token, sessionId: null })
 			} catch (error) {
 				set({
 					errorMessage: error instanceof AxiosError ? error.response?.data.message : String(error),
@@ -72,7 +77,12 @@ const authStore = create<AuthStore>()(
 		},
 
 		getUser: async () => {
-			set({ isLoading: true, errorMessage: null });
+			set({
+				isLoading: true,
+				errorMessage: null,
+				user: null,
+			});
+
 			try {
 				const user = await getMeUseCase();
 				set({ user });

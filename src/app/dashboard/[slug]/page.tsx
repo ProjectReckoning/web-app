@@ -62,7 +62,7 @@ export default function Page() {
   useEffect(() => {
     if (
       pocket &&
-      (pocket.id !== selectedPocket?.id || !transactions?.length || !last5Transactions?.length || !bep || !stats || !scheduledTransactions)
+      (pocket.id !== selectedPocket?.id)
     ) {
       getLast5Transactions();
       getAllScheduledTransactions(pocket.id);

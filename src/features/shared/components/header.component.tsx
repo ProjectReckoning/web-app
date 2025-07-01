@@ -18,7 +18,7 @@ export default function Header() {
   const { logout } = authStore();
   const { pockets, isLoading, selectPocket } = pocketStore();
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
-  const availablePocketsMenus = useMemo(() => getAvailablePocketsMenu(pockets), [pockets]);
+  const availablePocketsMenus = useMemo(() => getAvailablePocketsMenu(pockets ?? []), [pockets]);
 
   const router = useRouter();
   const pathname = usePathname();
