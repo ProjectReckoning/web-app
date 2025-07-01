@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, TextField, Button, Typography, BoxProps } from "@mui/material";
-import { useState } from "react";
+import { Box, TextField, Button, Typography, BoxProps, Skeleton } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { POCKET_COLOR_OPTIONS } from "../constants/pocket-color-option.constant";
 import { POCKET_ICON_OPTIONS } from "../constants/pocket-icon-option.constant";
@@ -21,6 +21,7 @@ interface FormEditPocketProps {
     color: string;
     icon: string;
   }) => void;
+  isLoading?: boolean;
 }
 
 export default function FormEditPocket({
@@ -29,12 +30,25 @@ export default function FormEditPocket({
   defaultIcon,
   onChange,
   onSave,
+  isLoading = false,
   ...props
 }: Omit<BoxProps, "onChange"> & FormEditPocketProps) {
   const [title, setTitle] = useState(defaultTitle);
   const [color, setColor] = useState(defaultColor);
   const [icon, setIcon] = useState(defaultIcon);
   const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    setTitle(defaultTitle)
+  }, [defaultTitle])
+
+  useEffect(() => {
+    setColor(defaultColor)
+  }, [defaultColor])
+
+  useEffect(() => {
+    setIcon(defaultIcon)
+  }, [defaultIcon])
 
   // If the user clicks the edit button, set the edit mode to true
   const handleEditClick = () => {
@@ -56,6 +70,110 @@ export default function FormEditPocket({
     onChange?.({ title, color, icon });
     setIsEditMode(false);
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+        gap={4}
+        position="relative"
+        overflow="hidden"
+        color="white"
+        {...props}
+      >
+        {/* Title input */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          flexDirection="column"
+          flexWrap="wrap"
+          marginBottom={2}
+          gap={1}
+        >
+          <Skeleton variant="text" width={100} height={24} />
+          <Skeleton variant="rounded" height={56} width="100%" />
+        </Box>
+
+        {/* Color options */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          marginBottom={2}
+          gap={1}
+        >
+          <Skeleton variant="text" width={100} height={24} />
+          <Box
+            display="flex"
+            sx={{
+              alignItems: "center",
+              border: "1px solid #ccc",
+              borderRadius: 5,
+              padding: { xs: 2, sm: 3, md: 5 },
+              width: "100%",
+              minWidth: 300,
+              justifyContent: "space-around",
+            }}
+          >
+            {[...Array(5)].map((_, i) => (
+              <Skeleton
+                key={i}
+                variant="circular"
+                width={48}
+                height={48}
+                sx={{ mx: 1 }}
+              />
+            ))}
+          </Box>
+        </Box>
+
+        {/* Icon options */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          marginBottom={2}
+          gap={1}
+        >
+          <Skeleton variant="text" width={100} height={24} />
+          <Box
+            display="flex"
+            sx={{
+              alignItems: "center",
+              border: "1px solid #ccc",
+              borderRadius: 5,
+              padding: { xs: 2, sm: 3, md: 5 },
+              width: "100%",
+              flexWrap: "wrap",
+              justifyContent: "space-around",
+              overflow: "hidden",
+            }}
+          >
+            {[...Array(5)].map((_, i) => (
+              <Skeleton
+                key={i}
+                variant="circular"
+                width={48}
+                height={48}
+                sx={{ m: 1 }}
+              />
+            ))}
+          </Box>
+        </Box>
+
+        {/* Buttons */}
+        <Box display="flex" gap={2}>
+          <Skeleton variant="rounded" width={100} height={36} />
+          <Skeleton variant="rounded" width={100} height={36} />
+        </Box>
+      </Box>
+    )
+  }
 
   return (
     <Box
@@ -203,10 +321,10 @@ export default function FormEditPocket({
                   icon === option ? "0 0 0 2px rgba(0,0,0,0.3)" : "none",
                 "&:hover": isEditMode
                   ? {
-                      boxShadow: "0 0 0 1px rgba(0,0,0,0.2)",
-                      border: "1px solid black",
-                      transform: "scale(1.2)",
-                    }
+                    boxShadow: "0 0 0 1px rgba(0,0,0,0.2)",
+                    border: "1px solid black",
+                    transform: "scale(1.2)",
+                  }
                   : {},
               }}
             >

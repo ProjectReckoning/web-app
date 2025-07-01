@@ -103,6 +103,7 @@ export default function Page() {
           />
         </Box>
         <FormEditPocket
+          isLoading={isLoading}
           defaultTitle={pocket?.name ?? ""}
           defaultColor={pocket?.color ?? ""}
           defaultIcon={pocket?.icon ?? ""}
