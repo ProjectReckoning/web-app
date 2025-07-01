@@ -7,6 +7,8 @@ import {
 import { getDetailPocketUsecase } from "../use-cases/get-detail-pockets.usecase copy";
 import { editPocketUsecase } from "../use-cases/edit-pocket.usecase";
 import { changePocketMemberRoleUseCase } from "../use-cases/change-role-member-pockets.usecase";
+import { deleteMemberPocketUsecase } from "../use-cases/delete-pocket-member.usecase";
+import { leavePocketUsecase } from "../use-cases/leave-pocket.usecase";
 
 type DetailPocketStore = {
   pocket: DetailPocketEntity | null;
@@ -29,6 +31,8 @@ type DetailPocketStore = {
     userId: string,
     role: PocketMemberRole
   ) => Promise<void>;
+  deleteMember: (userId: string) => Promise<void>;
+  leavePocket: () => Promise<void>;
 };
 
 const detailPocketStore = create<DetailPocketStore>((set, get) => ({
@@ -106,10 +110,7 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
     }
   },
 
-  changePocketMemberRole: async (
-    userId: string,
-    role: PocketMemberRole
-  ) => {
+  changePocketMemberRole: async (userId: string, role: PocketMemberRole) => {
     const pocketId = get().pocket?.id;
     if (!pocketId) {
       return set({ errorMessage: "Pocket ID is missing" });
@@ -117,6 +118,33 @@ const detailPocketStore = create<DetailPocketStore>((set, get) => ({
 
     await changePocketMemberRoleUseCase(pocketId, userId, role)
     await get().getDetailPocket(pocketId);
+  },
+
+  deleteMember: async (userId) => {
+    try {
+      const pocketId = get().pocket?.id;
+      if (!pocketId) {
+        return set({ errorMessage: "Pocket ID is missing" });
+      }
+
+      await deleteMemberPocketUsecase(pocketId, userId)
+      await get().getDetailPocket(pocketId);
+    } catch (error) {
+      set({ errorMessage: error instanceof Error ? error.message : String(error) })
+    }
+  },
+
+  leavePocket: async () => {
+    try {
+      const pocketId = get().pocket?.id;
+      if (!pocketId) {
+        return set({ errorMessage: "Pocket ID is missing" });
+      }
+
+      await leavePocketUsecase(pocketId)
+    } catch (error) {
+      set({ errorMessage: error instanceof Error ? error.message : String(error) })
+    }
   },
 }));
 

@@ -37,7 +37,7 @@ class AuthRepository {
 
     const data = response.data?.data;
     return {
-      id: data.user_id,
+      id: String(data.user_id),
       name: data.name,
     };
   }

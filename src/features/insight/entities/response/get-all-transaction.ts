@@ -13,9 +13,11 @@ export interface GetAllTransactionResponse {
 
 export interface GetAllTransactionResponseItem {
   initiator_user: string;
-  type: string;
+  description: string;
+  type: "Income" | "Expense";
+  destination_acc: string;
+  category: string;
   amount: number;
-  purpose: string;
   transaction_type: 0 | 1;
-  created_at: string;
+  createdAt: string;
 }

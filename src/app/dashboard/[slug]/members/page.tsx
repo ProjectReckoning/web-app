@@ -14,9 +14,19 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { Theme, useMediaQuery } from "@mui/material";
 import { useRouter } from "next/navigation";
+import pocketStore from "@/features/pocket/stores/pocket.store";
 
 export default function Page() {
-  const { pocket, getAllMembers, isLoading, changePocketMemberRole, getDetailPocket } = detailPocketStore();
+  const {
+    pocket,
+    getAllMembers,
+    isLoading,
+    changePocketMemberRole,
+    getDetailPocket,
+    deleteMember,
+    leavePocket,
+  } = detailPocketStore();
+  const { getAllPockets } = pocketStore();
   const { user } = authStore();
   const router = useRouter();
 
@@ -29,10 +39,9 @@ export default function Page() {
       return;
     }
 
-    const onRemoveMemberConfirmed = (memberId: string) => {
-      // TODO: Implement the logic to remove a member from the pocket
-      console.log(`Member with ID ${memberId} removed from the pocket.`);
-      getDetailPocket(pocket.id);
+    const onRemoveMemberConfirmed = async (memberId: string) => {
+      await deleteMember(memberId)
+      await getDetailPocket(pocket.id);
     };
 
     openModal(<RemoveMemberConfirmationModalContent onConfirmed={() => onRemoveMemberConfirmed(memberId)} />);
@@ -43,9 +52,9 @@ export default function Page() {
       return;
     }
 
-    const onLeavePocketConfirmed = () => {
-      // TODO: Implement the logic to remove a member from the pocket
-      console.log(`User with ID ${user?.id} left the pocket.`);
+    const onLeavePocketConfirmed = async () => {
+      await leavePocket()
+      await getAllPockets()
       router.push("/dashboard");
     };
 
