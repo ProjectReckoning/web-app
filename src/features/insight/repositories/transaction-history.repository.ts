@@ -42,10 +42,10 @@ class TransactionHistoryRepository {
 
       return {
         transactions: data.transaksi ? data.transaksi.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)) : [],
-        totalIncome: data.total_pemasukan,
-        totalOutcome: data.total_pengeluaran,
-        previousBalance: data.saldo_kemarin,
-        closingBalance: data.saldo_penutupan,
+        totalIncome: Number.parseFloat(data.pemasukan),
+        totalOutcome: Number.parseFloat(data.pengeluaran),
+        previousBalance: Number.parseFloat(data.saldoKemarin),
+        closingBalance: Number.parseFloat(data.saldoPenutupan),
       }
     } catch (error) {
       console.error("Error fetching transaction:", error)

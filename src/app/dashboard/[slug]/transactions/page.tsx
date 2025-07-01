@@ -60,7 +60,11 @@ export default function Page() {
   }, [pocket]);
 
   const mappedTransactionData = useMemo(() => {
-    return transactions?.map(row => ({
+    if (!transactions) {
+      return []
+    }
+
+    return transactions.map(row => ({
       waktu: <Box key={row.createdAt} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant='body1'>
           {new Date(row.createdAt).toLocaleDateString('id-ID', {
@@ -181,7 +185,7 @@ export default function Page() {
       </Typography>
 
       <FinanceSummaryCard
-        isLoading={isTransactionStoreLoading || !mappedTransactionData?.length}
+        isLoading={isTransactionStoreLoading || !mappedTransactionData}
         items={financeSummaryItems}
         borderRadius={4}
         overflow="hidden"
@@ -191,7 +195,7 @@ export default function Page() {
 
       <TransactionTable
         data={mappedTransactionData ?? []}
-        isLoading={isTransactionStoreLoading || !mappedTransactionData?.length}
+        isLoading={isTransactionStoreLoading || !mappedTransactionData}
         filters={[
           {
             label: 'Kategori',

@@ -3,19 +3,20 @@
 import { Box, Container, Toolbar } from '@mui/material';
 import Header from '@/features/shared/components/header.component';
 import pocketStore from '@/features/pocket/stores/pocket.store';
-import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Loading from '@/features/shared/components/loading.component';
+import notificationStore from '@/features/notification/stores/notification.store';
+import authStore from '@/features/auth/stores/auth.store';
 
 export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
   const { isLoading, pockets, getAllPockets } = pocketStore();
-  const pathname = usePathname();
+  const { token, user } = authStore()
+  const { getAllNotifications } = notificationStore()
 
   useEffect(() => {
-    if (!pockets) {
-      getAllPockets();
-    }
-  }, [pathname]);
+    getAllPockets();
+    getAllNotifications()
+  }, [token, user]);
 
   if (isLoading || !pockets) {
     return (

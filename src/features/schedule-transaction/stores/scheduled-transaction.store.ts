@@ -16,7 +16,11 @@ const scheduledTransactionsStore = create<ScheduledTransactionStore>((set) => ({
 
   getAllScheduledTransactions: async (pocketId: string) => {
     try {
-      set({ isLoading: true, errorMessage: null })
+      set({
+        isLoading: true,
+        errorMessage: null,
+        scheduledTransactions: [],
+      })
       const pockets = await getAllScheduledTransactions(pocketId)
       set({ scheduledTransactions: pockets })
     } catch (error) {

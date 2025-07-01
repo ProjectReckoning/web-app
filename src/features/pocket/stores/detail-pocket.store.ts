@@ -4,7 +4,7 @@ import {
   PocketMember,
   PocketMemberRole,
 } from "../entities/detail-pocket.entities";
-import { getDetailPocketUsecase } from "../use-cases/get-detail-pockets.usecase copy";
+import { getDetailPocketUsecase } from "../use-cases/get-detail-pockets.usecase";
 import { editPocketUsecase } from "../use-cases/edit-pocket.usecase";
 import { changePocketMemberRoleUseCase } from "../use-cases/change-role-member-pockets.usecase";
 import { deleteMemberPocketUsecase } from "../use-cases/delete-pocket-member.usecase";

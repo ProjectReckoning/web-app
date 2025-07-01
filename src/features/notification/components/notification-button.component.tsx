@@ -1,26 +1,11 @@
-import { Divider, IconButton, Popover, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Popover, Typography } from "@mui/material";
 import { useState } from "react";
 import { Icon } from "@iconify/react";
-
-const DATA = [
-  {
-    id: "1",
-    title: "Notifikasi 1",
-    description: "Ini adalah deskripsi notifikasi pertama.",
-  },
-  {
-    id: "2",
-    title: "Notifikasi 2",
-    description: "Ini adalah deskripsi notifikasi kedua.",
-  },
-  {
-    id: "3",
-    title: "Notifikasi 3",
-    description: "Ini adalah deskripsi notifikasi ketiga.",
-  },
-];
+import notificationStore from "../stores/notification.store";
 
 export default function NotificationButton() {
+  const { notifications, unreadNotificationsCount } = notificationStore()
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,11 +23,29 @@ export default function NotificationButton() {
     <>
       <IconButton
         aria-label="notification"
-        sx={{ border: 1, borderColor: "border.main" }}
+        sx={{ border: 1, borderColor: "border.main", position: "relative" }}
         aria-describedby={id}
         onClick={handleClick}
       >
-        <Icon icon="eva:bell-outline" style={{ color: "black" }} />
+        <Icon icon={unreadNotificationsCount > 0 ? "eva:bell-fill" : "eva:bell-outline"} style={{ color: "black" }} />
+        {unreadNotificationsCount > 0 && (
+          <Typography
+            variant="caption"
+            position="absolute"
+            fontWeight="bold"
+            top={0}
+            right={0}
+            sx={{
+              backgroundColor: "purple.main",
+              aspectRatio: 1,
+              borderRadius: "50%",
+              color: "white",
+              height: 24,
+              lineHeight: 2,
+              translate: "25% -25%"
+            }}
+          >{unreadNotificationsCount}</Typography>
+        )}
       </IconButton>
       <Popover
         id={id}
@@ -69,17 +72,25 @@ export default function NotificationButton() {
         <Typography variant="h6" fontWeight={600} gutterBottom>
           Notifikasi
         </Typography>
-        {DATA.map((item) => (
-          <div key={item.id} style={{ marginBottom: 16 }}>
-            <Divider sx={{ backgroundColor: "border.light", my: 2, borderBottomWidth: '1px'  }} />
-            <Typography variant="subtitle1" fontWeight="bold">
-              {item.title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              {item.description}
-            </Typography>
-          </div>
-        ))}
+        {(notifications?.length ?? 0) > 0 ?
+          notifications?.map((item) => (
+            <Box key={`${item.title}-${item.description}-${item.type}`} sx={{ marginBottom: 16 }}>
+              <Divider sx={{ backgroundColor: "border.light", my: 2, borderBottomWidth: '1px' }} />
+              <Typography variant="subtitle1" fontWeight="bold">
+                {item.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {item.description}
+              </Typography>
+            </Box>
+          )) : (
+            <Box sx={{ marginBottom: 16 }}>
+              <Divider sx={{ backgroundColor: "border.light", my: 2, borderBottomWidth: '1px' }} />
+              <Typography variant="subtitle1" fontWeight="bold">
+                Belum ada notifikasi
+              </Typography>
+            </Box>
+          )}
       </Popover>
     </>
   );
