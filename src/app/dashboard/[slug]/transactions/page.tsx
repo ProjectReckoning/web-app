@@ -9,7 +9,7 @@ import TopContributorsCard from '@/features/pocket/components/top-contributor-ca
 import FinanceSummaryCard from '@/features/insight/components/finance-summary-card.component';
 import TransactionTable from '@/features/insight/components/transactions-table.component';
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
 import formatCurrency from '@/lib/format-currency';
 import { gray } from '@/lib/custom-color';
@@ -29,6 +29,9 @@ export default function Page() {
 
   const searchParams = useSearchParams()
   const defaultType = searchParams.get('type')
+
+  const [selectedCategory, setSelectedCategory] = useState(defaultType ?? 'Semua');
+  const [selectedDuration, setSelectedDuration] = useState('30 hari terakhir');
 
   const contributors = useMemo(() => {
     if (!pocket) {
@@ -202,7 +205,8 @@ export default function Page() {
             startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
             options: ['Semua', ...(mappedTransactionData?.length ?? 0) > 0 ? Array.from(new Set((mappedTransactionData ?? []).map(row => row.kategori))) : []],
             onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected,
-            defaultValue: defaultType ?? 'Semua',
+            onChange: (val) => setSelectedCategory(val),
+            defaultValue: selectedCategory ?? 'Semua',
           },
           {
             label: 'Durasi',
@@ -211,11 +215,15 @@ export default function Page() {
             onFilter: () => true,
             onChange: async (selected) => {
               if (!pocket) return;
+
+              setSelectedDuration(selected)
+
               getAllTransactions({
                 pocketId: pocket.id,
                 duration: mapDurationStringToOption(selected),
               });
-            }
+            },
+            defaultValue: selectedDuration
           }
         ]}
         mt={6}

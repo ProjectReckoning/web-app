@@ -19,7 +19,7 @@ class NotificationRepository {
       return result
     } catch (error) {
       console.error(error)
-      throw new Error('Failed to fetch BEP information')
+      throw new Error('Failed to fetch notification')
     }
   }
 
