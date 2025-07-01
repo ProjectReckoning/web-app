@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Tabs, Tab, Typography, Stack, BoxProps, IconButton } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Stack, BoxProps, IconButton, Avatar } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import formatCurrency from "@/lib/format-currency";
 import { gray } from "@/lib/custom-color";
@@ -108,6 +108,7 @@ export default function PieChartWithTabs({
     )
   }
 
+
   return (
     <Box {...props}>
       <Tabs
@@ -147,27 +148,48 @@ export default function PieChartWithTabs({
         ))}
       </Tabs>
 
-      <PieChart
-        series={[
-          {
-            data: currentData.data.map((item, index) => ({
-              id: index,
-              value: item.value,
-              color: item.color,
-            })),
-            innerRadius: 50,
-            outerRadius: 100,
-            cx: "50%",
-            cy: "50%",
-            valueFormatter: (v) => {
-              const value = typeof v === "number" ? v : v?.value ?? 0;
-              return formatCurrency(value);
+      {currentData.data.length ? (
+        <PieChart
+          localeText={{
+            noData: "Belum ada data"
+          }}
+          series={[
+            {
+              data: currentData.data.map((item, index) => ({
+                id: index,
+                value: item.value,
+                color: item.color,
+              })),
+              innerRadius: 50,
+              outerRadius: 100,
+              cx: "50%",
+              cy: "50%",
+              valueFormatter: (v) => {
+                const value = typeof v === "number" ? v : v?.value ?? 0;
+                return formatCurrency(value);
+              },
             },
-          },
-        ]}
-        width={200}
-        height={200}
-      />
+          ]}
+          width={200}
+          height={200}
+        />
+      ) : (
+        <Box
+          padding={4}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Avatar sx={{ bgcolor: 'gray.main', width: 48, height: 48, mt: 1 }}>
+            <Icon icon="mdi:clipboard-text-off-outline" width={32} />
+          </Avatar>
+          <Typography variant="body2" mt={2} color='gray.main' textAlign="center">
+            Belum ada data
+          </Typography>
+        </Box>
+      )}
+
 
       <Stack spacing={2} mt={2}>
         {currentData.data.map((item, index) => (

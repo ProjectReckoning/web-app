@@ -14,7 +14,7 @@ type PocketStore = {
 const pocketStore = create<PocketStore>((set, get) => ({
   isLoading: false,
   errorMessage: null,
-  pockets: [],
+  pockets: null,
   selectedPocket: null,
 
   getAllPockets: async () => {

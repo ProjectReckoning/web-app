@@ -137,7 +137,7 @@ export default function ScheduledTransactionList({
       </Typography>
 
       {!isLoading && !transactions.length && (
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+        <Box position="relative" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
           <Avatar sx={{ bgcolor: 'purple.main', width: 48, height: 48, mt: 1 }}>
             <Icon icon="mdi:calendar-clock-outline" width={32} />
           </Avatar>

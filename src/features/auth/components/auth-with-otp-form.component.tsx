@@ -107,7 +107,7 @@ export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { 
       <Box display="flex" width="100%" gap={2} justifyContent="center" mb={3}>
         {otp.map((digit, index) => (
           <TextField
-            key={digit}
+            key={index}
             name={`otp-${index}`}
             value={digit}
             onChange={(e) => handleChange(index, e.target.value)}

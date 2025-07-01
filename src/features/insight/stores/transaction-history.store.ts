@@ -47,7 +47,11 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
   last5Transactions: null,
 
   getLast5Transactions: async (pocketId?: string) => {
-    set({ isLoading: true, errorMessage: null })
+    set({
+      isLoading: true,
+      errorMessage: null,
+      last5Transactions: null,
+    })
 
     try {
       const transactionSummary = await get5LastTransactionsUsecase(pocketId)
@@ -67,7 +71,15 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
     pocketId: string,
     duration: GetTransactionDurationOption
   }) => {
-    set({ isLoading: true, errorMessage: null })
+    set({
+      isLoading: true,
+      errorMessage: null,
+      transactions: null,
+      previousBalance: null,
+      closingBalance: null,
+      totalIncome: null,
+      totalOutcome: null,
+    })
 
     try {
       const transactionOverview = await getAllTransaction({ pocketId, duration })
@@ -94,7 +106,11 @@ const transactionHistoryStore = create<TransactionHistoryStore>((set) => ({
     pocketIds: string[],
     duration: GetTransactionDurationOption,
   }): Promise<void> => {
-    set({ isLoading: true, errorMessage: null })
+    set({
+      isLoading: true,
+      errorMessage: null,
+      allPocketsTransactions: null,
+    })
 
     try {
       const promises = pocketIds.map((pocketId) => {

@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Tabs, Tab, Box, BoxProps, Typography } from '@mui/material';
+import { Tabs, Tab, Box, BoxProps, Typography, Avatar } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { limeGreen } from '@/lib/custom-color';
 import Skeleton from '@/features/shared/components/skeleton';
 import formatCurrency from '@/lib/format-currency';
+import { Icon } from '@iconify/react';
 
 export interface ChartData {
   x: string[];
@@ -79,9 +80,16 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
   const currentData = data[tab];
 
   if (!currentData) {
-    return (<Box {...props}>
-      <Typography variant="body1" textAlign="center" mt={4}>Belum ada data</Typography>
-    </Box>)
+    return (
+      <Box {...props} height="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+        <Avatar sx={{ bgcolor: 'gray.main', width: 48, height: 48, mt: 1 }}>
+          <Icon icon="mdi:clipboard-text-off-outline" width={32} />
+        </Avatar>
+        <Typography variant="body2" mt={2} color='gray.main' textAlign="center">
+          Belum ada data
+        </Typography>
+      </Box>
+    )
   }
 
   return (
@@ -90,7 +98,6 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
         <Tabs
           value={tab}
           onChange={(_, newValue) => setTab(newValue)}
-          centered
           variant="scrollable"
           allowScrollButtonsMobile
           slotProps={
@@ -131,6 +138,9 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
       )}
 
       <LineChart
+        localeText={{
+          noData: "Belum ada data"
+        }}
         xAxis={[{ data: currentData.x, scaleType: 'band' }]}
         series={
           Object.entries(currentData.series).map(([key, value]) => ({

@@ -33,6 +33,7 @@ import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-ty
 import scheduledTransactionsStore from '@/features/schedule-transaction/stores/scheduled-transaction.store';
 import formatDate from '@/lib/format-date';
 import { ScheduledTransactionEntity } from '@/features/schedule-transaction/entities/scheduled-transaction.entity';
+import { PocketMemberRole } from '@/features/pocket/entities/detail-pocket.entities';
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
@@ -52,6 +53,7 @@ export default function Page() {
   const { isLoading: isBepLoading, getBep, bep } = bepStore()
   const { isLoading: isStatsLoading, getStatsSpesificPocket: getStats, stats } = statsStore()
   const pathname = usePathname();
+  const isPocketAdmin = pocket?.userRole === PocketMemberRole.Admin || pocket?.userRole === PocketMemberRole.Owner
 
   const handleChangeBepModal = (value: number) => {
     if (pocket) {
@@ -60,10 +62,7 @@ export default function Page() {
   }
 
   useEffect(() => {
-    if (
-      pocket &&
-      (pocket.id !== selectedPocket?.id)
-    ) {
+    if (pocket) {
       getLast5Transactions();
       getAllScheduledTransactions(pocket.id);
       getAllTransactions({
@@ -74,7 +73,7 @@ export default function Page() {
       getStats(pocket.id);
     }
 
-  }, [pocket, selectedPocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStats]);
+  }, [pocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStats]);
 
   const mappedScheduledTransaction = useMemo(() => mapScheduledTransactions(scheduledTransactions), [scheduledTransactions]);
 
@@ -198,19 +197,22 @@ export default function Page() {
         <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
           <TransactionInsightSection
+            split={!isPocketAdmin}
             transactions={transactions ?? []}
             isTransactionLoading={isTransactionLoading}
           />
-          <BepInsightSection
-            bep={bep}
-            onChangeBepModal={handleChangeBepModal}
-            pocket={selectedPocket}
-            isLoading={isBepLoading}
-            flex={1}
-            display="flex"
-            flexDirection="column"
-            gap={4}
-          />
+          {isPocketAdmin && (
+            <BepInsightSection
+              bep={bep}
+              onChangeBepModal={handleChangeBepModal}
+              pocket={selectedPocket}
+              isLoading={isBepLoading}
+              flex={1}
+              display="flex"
+              flexDirection="column"
+              gap={4}
+            />
+          )}
         </Box>
       </Stack>
     </Box>
@@ -224,11 +226,11 @@ function BepInsightSection({
   pocket,
   ...props
 }: {
-  bep: BepProfit | BepLoss | null;
+    bep: BepProfit | BepLoss | null;
   pocket: PocketEntity | null;
   isLoading?: boolean;
   onChangeBepModal?: (value: number) => void;
-} & BoxProps) {
+  } & BoxProps) {
   return (
     <Box
       {...props}
@@ -256,10 +258,12 @@ function BepInsightSection({
 
 function TransactionInsightSection({
   transactions: inputTransactions,
+  split = false,
   isTransactionLoading = false,
   ...props
 }: {
   transactions: TransactionEntity[];
+    split?: boolean;
   isTransactionLoading?: boolean;
 } & BoxProps) {
   const [showedTransactions, setShowedTransactions] = useState<TransactionEntity[] | null>(null);
@@ -276,6 +280,26 @@ function TransactionInsightSection({
   useEffect(() => {
     setShowedTransactions(inputTransactions);
   }, [inputTransactions]);
+
+  if (split) {
+    return (
+      <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
+        <DateRangeSelector onChange={handleDateRangeChange} mx={4} maxWidth={320} />
+
+        <Box flex={1} display={"flex"} flexWrap="wrap" justifyContent="stretch" gap={4} {...props}>
+          {transactionOverviewData.map((it) => (
+            <PieChartWithTabs
+              flex={1}
+              key={`${it.label}-${it.data}`}
+              isLoading={isTransactionLoading || !showedTransactions}
+              data={[it]}
+              sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            />
+          ))}
+        </Box>
+      </Box>
+    )
+  }
 
   return (
     <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
