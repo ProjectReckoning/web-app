@@ -67,13 +67,13 @@ export default function Page() {
     }
 
     getLast5Transactions();
-    getAllScheduledTransactions(pocket.id);
     getAllTransactions({
       pocketId: pocket.id,
       duration: GetTransactionDurationOption.LAST_1_YEAR,
     });
 
     if (isPocketAdmin) {
+      getAllScheduledTransactions(pocket.id);
       getBep(pocket.id)
     }
 
@@ -107,6 +107,7 @@ export default function Page() {
           },
           gap: 2,
           flex: 1,
+          maxWidth: 640,
         }}
         >
           <PocketCard
@@ -157,13 +158,15 @@ export default function Page() {
             flex={1}
           />
         </Box>
-        <ScheduledTransactionList
-          title="Transaksi terjadwalmu"
-          isLoading={isScheduledTransactionLoading || !scheduledTransactions}
-          transactions={mappedScheduledTransaction}
-          flex={1}
-          minWidth={300}
-        />
+        {isPocketAdmin && (
+          <ScheduledTransactionList
+            title="Transaksi terjadwalmu"
+            isLoading={isScheduledTransactionLoading || !scheduledTransactions}
+            transactions={mappedScheduledTransaction}
+            flex={1}
+            minWidth={300}
+          />
+        )}
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
