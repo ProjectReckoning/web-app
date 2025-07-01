@@ -91,12 +91,14 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
           value={tab}
           onChange={(_, newValue) => setTab(newValue)}
           centered
-          variant='standard'
+          variant="scrollable"
+          allowScrollButtonsMobile
           slotProps={
             {
               root: {
                 sx: {
-                  width: 'fit-content',
+                  width: "100%",
+                  maxWidth: "fit-content",
                   mx: 'auto',
                   backgroundColor: '#f5f5f5',
                   borderRadius: 999,

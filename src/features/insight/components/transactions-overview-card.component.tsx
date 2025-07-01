@@ -82,8 +82,8 @@ export default function TransactionOverviewCard({
                 fontSize={24}
               />
             </Avatar>
-            <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" rowGap={2}>
-              <Box flex={1} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+            <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" gap={2}>
+              <Box flex={1} overflow="hidden" width={0} textOverflow="ellipsis">
                 <Typography variant="body2" fontWeight={500} whiteSpace="nowrap">
                   {getLabelFromTransactionType(tx.type)}
                 </Typography>
@@ -96,6 +96,7 @@ export default function TransactionOverviewCard({
                 variant="body2"
                 fontWeight={700}
                 textAlign="right"
+                whiteSpace="nowrap"
                 color={tx.amount > 0 ? 'success.main' : 'text.primary'}
               >
                 {tx.amount > 0 && '+'}{formatCurrency(tx.amount)}
