@@ -65,7 +65,7 @@ export default function TransactionOverviewCard({
       </Box>
 
       <Box display="flex" flexDirection="column" gap={2}>
-        {transactions?.map((tx, idx) => (
+        {transactions?.map((tx) => (
           <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}`} display="flex" alignItems="center" gap={2}>
             <Avatar
               sx={{
@@ -82,7 +82,7 @@ export default function TransactionOverviewCard({
                 fontSize={24}
               />
             </Avatar>
-            <Box key={idx} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" gap={2}>
+            <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}`} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" gap={2}>
               <Box flex={1} overflow="hidden" width={0} textOverflow="ellipsis">
                 <Typography variant="body2" fontWeight={500} whiteSpace="nowrap">
                   {getLabelFromTransactionType(tx.type)}
