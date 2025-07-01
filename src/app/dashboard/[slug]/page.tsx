@@ -62,15 +62,19 @@ export default function Page() {
   }
 
   useEffect(() => {
-    if (pocket) {
-      getLast5Transactions();
-      getAllScheduledTransactions(pocket.id);
-      getAllTransactions({
-        pocketId: pocket.id,
-        duration: GetTransactionDurationOption.LAST_1_YEAR,
-      });
-      getBep(pocket.id);
-      getStats(pocket.id);
+    if (!pocket) {
+      return
+    }
+
+    getLast5Transactions();
+    getAllScheduledTransactions(pocket.id);
+    getAllTransactions({
+      pocketId: pocket.id,
+      duration: GetTransactionDurationOption.LAST_1_YEAR,
+    });
+
+    if (isPocketAdmin) {
+      getBep(pocket.id)
     }
 
   }, [pocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStats]);
