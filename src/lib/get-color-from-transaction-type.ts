@@ -1,28 +1,43 @@
 import { TransactionCategory } from "@/features/insight/constants/transaction-category.enum";
-import { red, green, purple, tosca, limeGreen, orange, gray, pink } from "./custom-color";
+import { red, green, purple, tosca, limeGreen, orange, gray, pink, yellow } from "./custom-color";
 
 export const transactionBackgroundColorMap: Record<TransactionCategory, string> = {
-  [TransactionCategory.Sell]: tosca[100],
-  [TransactionCategory.Topup]: orange[100],
+  // Income Categories
+  [TransactionCategory.Sell]: purple[100],
+  [TransactionCategory.Topup]: tosca[100],
+
+  // Expense Categories
+  [TransactionCategory.Salary]: orange[100],
   [TransactionCategory.Withdrawal]: purple[100],
+  [TransactionCategory.Purchase]: yellow[100],
   [TransactionCategory.Transfer]: pink[100],
-  [TransactionCategory.Payment]: limeGreen[100],
+
   [TransactionCategory.Other]: gray[100],
 
+  // Deprecated
+  [TransactionCategory.Payment]: limeGreen[100],
   [TransactionCategory.Contribution]: purple[500],
   [TransactionCategory.AutoTopUp]: tosca[500],
   [TransactionCategory.AutoRecurring]: purple[400],
   [TransactionCategory.Income]: green[400],
   [TransactionCategory.Expense]: red[300],
+
 };
 
 export const transactionColorMap: Record<TransactionCategory, string> = {
-  [TransactionCategory.Sell]: tosca[500],
-  [TransactionCategory.Topup]: orange[500],
+  // Income Categories
+  [TransactionCategory.Sell]: purple[500],
+  [TransactionCategory.Topup]: tosca[500],
+
+  // Expense Categories
+  [TransactionCategory.Salary]: orange[500],
   [TransactionCategory.Withdrawal]: purple[500],
+  [TransactionCategory.Purchase]: yellow[500],
   [TransactionCategory.Transfer]: pink[500],
+
   [TransactionCategory.Other]: gray[500],
 
+  // Deprecated
   [TransactionCategory.Contribution]: purple[500],
   [TransactionCategory.Payment]: limeGreen[500],
   [TransactionCategory.AutoTopUp]: tosca[500],

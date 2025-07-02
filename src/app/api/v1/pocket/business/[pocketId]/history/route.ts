@@ -33,7 +33,7 @@ const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) 
     time: pastDate.toISOString(),
     name: names[i % names.length],
     type: i % 2 === 0 ? "Income" : "Expense",
-    amount,
+    amount: amount.toString(),
     category: category.type, // just to mock category name
     createdAt: pastDate.toISOString(),
     initiator_user: initiators[i % initiators.length],
@@ -122,7 +122,7 @@ export async function GET(req: Request): Promise<Response> {
       saldoPenutupan: "5678",
       pemasukan: "91011",
       pengeluaran: "121314",
-      transaksi: dataResult,
+      transactions: dataResult,
     },
   };
 

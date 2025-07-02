@@ -24,20 +24,36 @@ export default function CustomIcon({
     scissors: "mingcute:scissors-line",
     plant: "akar-icons:plant",
     motorcycle: 'pepicons-pop:motorcycle',
+
+    // Deprecated Icons for specific pockets
     group: "material-symbols:group",
 
-    // Transaction enums
+    /**
+     * Transaction categories
+     * income
+     */
+    sell: 'lucide:hand-coins',
+    topup: 'lucide:banknote-arrow-up',
+
+    /**
+     * Transaction categories
+     * expense
+     */
+    salary: 'lucide:wallet',
     withdrawal: 'lucide:banknote-arrow-down',
+    purchase: 'lucide:package',
     transfer: 'lucide:send',
+
     other: 'lucide:wallet-cards',
 
-    sell: 'lucide:hand-coins',
+    /**
+     * Transaction categories
+     * deprecated
+     */
     autorecurring: 'material-symbols:schedule',
-
     contribution: 'material-symbols:volunteer-activism',
     payment: 'material-symbols:credit-card',
     autotopup: 'material-symbols:autorenew',
-    topup: 'lucide:banknote-arrow-up',
     income: 'material-symbols:attach-money',
     expense: 'material-symbols:money-off',
   };
