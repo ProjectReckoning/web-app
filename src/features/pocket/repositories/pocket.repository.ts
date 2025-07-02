@@ -96,9 +96,9 @@ class PocketRepository {
     userId: string,
   ): Promise<void> {
     await api.post(
-      `/pocket/${pocketId}/members/`,
+      `/pocket/${pocketId}/member/kick`,
       {
-        members: [userId],
+        members: [Number.parseInt(userId)],
       }
     );
   }
