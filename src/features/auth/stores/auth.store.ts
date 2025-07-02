@@ -19,6 +19,7 @@ type AuthStore = {
 	loginWithOtp: ({ sessionId, otp, phoneNumber }: { sessionId: string; otp: string; phoneNumber: string; }) => Promise<void>;
 	logout: () => void;
 	getUser: () => Promise<void>;
+	clearErrorMessage: () => void
 };
 
 const authStore = create<AuthStore>()(
@@ -98,7 +99,6 @@ const authStore = create<AuthStore>()(
 			}
 		},
 
-
 		logout: () => {
 			set({
 				sessionId: null,
@@ -107,6 +107,12 @@ const authStore = create<AuthStore>()(
 				phoneNumber: null,
 				isLoading: false,
 				user: null,
+				errorMessage: null,
+			});
+		},
+
+		clearErrorMessage: () => {
+			set({
 				errorMessage: null,
 			});
 		},

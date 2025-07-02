@@ -9,12 +9,12 @@ import { Box } from "@mui/material";
 import AuthWithQrCode from "@/features/auth/components/auth-with-qr.component";
 
 export default function Page() {
-  const { phoneNumber: phoneNumberStore, sessionId, logout } = authStore();
+  const { phoneNumber: phoneNumberStore, sessionId, clearErrorMessage } = authStore();
   const [phoneNumber, setPhoneNumber] = useState(phoneNumberStore ?? "");
   const [isLoginWithQr, setIsLoginWithQr] = useState(false);
 
   useEffect(() => {
-    logout()
+    clearErrorMessage()
   }, [])
 
   useEffect(() => {
