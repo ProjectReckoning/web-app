@@ -6,7 +6,7 @@ import ChartWithTabs from '@/features/insight/components/chart-with-tabs.compone
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs from '@/features/insight/components/pie-chart-with-tabs.component';
-import { Stack } from '@mui/material';
+import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import pocketStore from '@/features/pocket/stores/pocket.store';
 import { useEffect, useMemo, useState } from 'react';
 import PocketOverviewList from '@/features/pocket/components/pocket-overview-list.component';
@@ -44,6 +44,14 @@ export default function Page() {
     getAllPocketsTransactions({ pocketIds, duration: GetTransactionDurationOption.LAST_1_YEAR });
   }, [nonMemberPockets])
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const pocketCount = pockets?.length ?? 1;
+
+  const chartHeight = isMobile
+    ? Math.min(400, 200 + pocketCount * 100)
+    : 250;
+
   return (
     <Box
       sx={{
@@ -67,7 +75,7 @@ export default function Page() {
             isLoading={isStatsLoading || !stats}
             data={stats || []}
             sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
-            height={250}
+            height={chartHeight}
           />
         </Box>
 

@@ -5,7 +5,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import ChartWithTabs from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import PieChartWithTabs from '@/features/insight/components/pie-chart-with-tabs.component';
-import { Link, Stack } from '@mui/material';
+import { Link, Stack, useMediaQuery, useTheme } from '@mui/material';
 import PocketCard from '@/features/pocket/components/pocket-card.component';
 import IncomeOutcomeCard from '@/features/insight/components/income-outcome-card.component';
 import ScheduledTransactionList from '@/features/schedule-transaction/components/scheduled-transactions-list.component';
@@ -54,6 +54,14 @@ export default function Page() {
   const { isLoading: isStatsLoading, getStatsSpesificPocket: getStats, stats } = statsStore()
   const pathname = usePathname();
   const isPocketAdmin = pocket?.userRole === PocketMemberRole.Admin || pocket?.userRole === PocketMemberRole.Owner
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const pocketCount = stats?.length ?? 1;
+
+  const chartHeight = isMobile
+    ? Math.min(400, 200 + pocketCount * 100)
+    : 250;
 
   const handleChangeBepModal = (value: number) => {
     if (pocket) {
@@ -176,7 +184,7 @@ export default function Page() {
             isLoading={isStatsLoading}
             data={stats ?? []}
             sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
-            height={250}
+            height={chartHeight}
           />
         </Box>
 
