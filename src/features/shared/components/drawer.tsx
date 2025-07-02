@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { Box, SelectChangeEvent } from '@mui/material';
 import PocketSelect, { PocketMenuItem } from './pocket-select.component';
 import { Icon } from '@iconify/react';
-import { orange } from '@/lib/custom-color';
+import { purple } from '@/lib/custom-color';
 
 export interface DrawerMenuItem {
   name: string;
@@ -90,6 +90,8 @@ export default function Drawer({
   pathname,
   onNavigate,
 }: Readonly<DrawerComponentProps>) {
+  const currentPocket = pockets.find(p => p.id === selectedPocketId);
+
   return (
     <StyledDrawer variant="permanent" open={isOpen}>
       <DrawerHeader sx={{ justifyContent: isOpen ? "space-between" : "center", height: 84 }}>
@@ -127,7 +129,7 @@ export default function Drawer({
               paddingX: isOpen ? 2 : 0,
               paddingY: 0.5,
               '& .Mui-selected': {
-                backgroundColor: `${orange[500]} !important`,
+                backgroundColor: `${currentPocket?.color ?? purple[500]} !important`,
                 color: 'white',
               },
               '.Mui-selected .MuiListItemIcon-root': {
