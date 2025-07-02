@@ -164,7 +164,7 @@ export default function BEPInsightCard({
           }}
         >
           <Box>
-            <Typography variant="body1" fontWeight="bold">
+            <Typography variant="body1" fontWeight="bold" textOverflow="ellipsis" overflow="hidden" width={64}>
               {Math.round(progressPercent)}%
             </Typography>
             {'\n'}
@@ -189,7 +189,16 @@ export default function BEPInsightCard({
           Keuntungan bersih
         </Typography>
 
-        <Typography fontWeight="bold" mb={1} sx={{ color: isLoss ? 'red.main' : 'purple.main' }}>
+        <Typography
+          fontWeight="bold"
+          mb={1}
+          sx={{
+            color: isLoss ? 'red.main' : 'purple.main'
+          }}
+          maxWidth={300}
+          overflow="hidden"
+          textOverflow="ellipsis"
+        >
           {formatCurrency(currentProfit)}
         </Typography>
 

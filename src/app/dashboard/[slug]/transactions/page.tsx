@@ -14,6 +14,7 @@ import { GetTransactionDurationOption } from '@/features/insight/constants/get-t
 import formatCurrency from '@/lib/format-currency';
 import { gray } from '@/lib/custom-color';
 import { useSearchParams } from 'next/navigation';
+import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
@@ -28,10 +29,7 @@ export default function Page() {
   } = transactionHistoryStore()
 
   const searchParams = useSearchParams()
-  const defaultType = searchParams.get('type')
-
-  const [selectedCategory, setSelectedCategory] = useState(defaultType ?? 'Semua');
-  const [selectedDuration, setSelectedDuration] = useState('30 hari terakhir');
+  const queryType = searchParams.get('type')
 
   const contributors = useMemo(() => {
     if (!pocket) {
@@ -85,11 +83,17 @@ export default function Page() {
         </Typography>
       </Box>,
       transaksi: row.initiatorUser,
-      tipe: row.type,
+      tipe: row.transactionType.charAt(0).toUpperCase() + row.transactionType.slice(1),
       jumlah: formatCurrency(row.amount),
-      kategori: row.transactionType,
+      kategori: getLabelFromTransactionType(row.type),
     }));
   }, [transactions]);
+
+  const transactionCategories = Array.from(new Set((mappedTransactionData ?? []).map(row => row.kategori)))
+
+  const defaultSelectedCategory = transactionCategories.find((it) => it.toLowerCase() === queryType?.toLowerCase())
+  const [selectedCategory, setSelectedCategory] = useState(defaultSelectedCategory ?? 'Semua');
+  const [selectedDuration, setSelectedDuration] = useState('30 hari terakhir');
 
   const financeSummaryItems = useMemo(() => {
     return [
@@ -204,7 +208,7 @@ export default function Page() {
             label: 'Kategori',
             startAdornment: <Typography mr={1} variant='body2' sx={{ color: "gray.main" }}>Kategori:</Typography>,
             options: ['Semua', ...(mappedTransactionData?.length ?? 0) > 0 ? Array.from(new Set((mappedTransactionData ?? []).map(row => row.kategori))) : []],
-            onFilter: (row, selected) => selected === 'Semua' || row.kategori === selected,
+            onFilter: (row, selected) => selected === 'Semua' || (row.kategori as string).toLowerCase() === selected.toLowerCase(),
             onChange: (val) => setSelectedCategory(val),
             defaultValue: selectedCategory ?? 'Semua',
           },

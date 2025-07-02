@@ -204,6 +204,7 @@ export default function Page() {
         <Typography variant='h5'>Rekap Keuanganmu</Typography>
         <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
           <TransactionInsightSection
+            flex={1}
             split={!isPocketAdmin}
             transactions={transactions ?? []}
             isTransactionLoading={isTransactionLoading}
@@ -290,7 +291,7 @@ function TransactionInsightSection({
 
   if (split) {
     return (
-      <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
+      <Box display={"flex"} flexDirection="column" gap={4} {...props}>
         <DateRangeSelector onChange={handleDateRangeChange} mx={4} maxWidth={320} />
 
         <Box flex={1} display={"flex"} flexWrap="wrap" justifyContent="stretch" gap={4} {...props}>

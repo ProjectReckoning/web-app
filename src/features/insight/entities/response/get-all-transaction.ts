@@ -3,7 +3,7 @@ export interface GetAllTransactionResponse {
   data: {
     saldoKemarin: string;
     saldoPenutupan: string;
-    transaksi: GetAllTransactionResponseItem[];
+    transactions: GetAllTransactionResponseItem[];
     pemasukan: string;
     pengeluaran: string;
   }
@@ -17,7 +17,7 @@ export interface GetAllTransactionResponseItem {
   type: "Income" | "Expense";
   destination_acc: string;
   category: string;
-  amount: number;
+  amount: string;
   transaction_type: 0 | 1;
   createdAt: string;
 }

@@ -1,15 +1,23 @@
 export enum TransactionCategory {
-  Contribution = 'Contribution',
-  Withdrawal = 'Withdrawal',
-  Payment = 'Payment',
-  AutoTopUp = 'AutoTopUp',
-  AutoRecurring = 'AutoRecurring',
+  // Income Category
+  Sell = 'Sell',
   Topup = 'Topup',
+
+  // Expense Category
+  Salary = 'Salary',
+  Withdrawal = 'Withdrawal',
+  Purchase = 'Purchase',
   Transfer = 'Transfer',
+
+  Other = 'Other',
+
+  // Deprecated
+  AutoTopUp = 'AutoTopUp',
+  Contribution = 'Contribution',
+  Payment = 'Payment',
+  AutoRecurring = 'AutoRecurring',
   Income = 'Income',
   Expense = 'Expense',
-  Sell = 'Sell',
-  Other = 'Other',
 }
 
 export function getTransactionCateogryFromString(
@@ -25,25 +33,32 @@ export function getTransactionCateogryFromString(
    * 5. Lainnya : itu yg income sama expense masuknya ke lainnya
    */
   switch (normalizedCategory) {
+    case 'penjualan':
     case 'payment':
     case 'sell':
       return TransactionCategory.Sell;
 
     case 'topup':
+    case 'top up':
     case 'autotopup':
     case 'autorecurring':
     case 'contribution':
       return TransactionCategory.Topup;
 
+    case 'withdraw':
     case 'withdrawal':
       return TransactionCategory.Withdrawal;
 
     case 'transfer':
+    case 'autobudget':
+    case 'pemindahan dana':
       return TransactionCategory.Transfer;
 
-    case 'income':
-    case 'expense':
-      return TransactionCategory.Other;
+    case 'gaji':
+      return TransactionCategory.Salary;
+
+    case 'pembelian':
+      return TransactionCategory.Purchase;
     default:
       return TransactionCategory.Other;
   }

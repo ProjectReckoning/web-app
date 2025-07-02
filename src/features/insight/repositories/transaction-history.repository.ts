@@ -41,7 +41,7 @@ class TransactionHistoryRepository {
       }
 
       return {
-        transactions: data.transaksi ? data.transaksi.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)) : [],
+        transactions: data.transactions ? data.transactions.map((item: GetAllTransactionResponseItem) => this.mapTransactionToEntity(item)) : [],
         totalIncome: Number.parseFloat(data.pemasukan),
         totalOutcome: Number.parseFloat(data.pengeluaran),
         previousBalance: Number.parseFloat(data.saldoKemarin),
@@ -55,8 +55,8 @@ class TransactionHistoryRepository {
 
   private mapTransactionToEntity(data: GetAllTransactionResponseItem): TransactionEntity {
     return {
-      type: getTransactionCateogryFromString(data.type),
-      amount: data.amount,
+      type: getTransactionCateogryFromString(data.category),
+      amount: Number.parseFloat(data.amount),
       purpose: data.description,
       transactionType: data.transaction_type === 0 ? TransactionType.OUTCOME : TransactionType.INCOME,
       createdAt: data.createdAt,
