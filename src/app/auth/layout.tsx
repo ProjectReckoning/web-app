@@ -5,7 +5,7 @@ import { purple } from '@/lib/custom-color';
 export default function RootLayout(props: Readonly<{ children: React.ReactNode }>) {
   return (
     <Box sx={{ display: "flex", alignItems: "center", backgroundColor: purple[500] }}>
-      <Box component="div" sx={{
+      <Box sx={{
         flex: 2,
         borderTopRightRadius: {
           xs: 0,
@@ -13,15 +13,22 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
         }, borderBottomRightRadius: {
           xs: 0,
           md: 70,
-        }, 
-        backgroundColor: "white", 
-        height: "100vh", 
+        },
+        backgroundColor: "white",
+        height: "100vh",
         padding: {
           xs: 2,
           lg: 4,
         },
         display: "flex",
         flexDirection: "column",
+        overflow: "auto",
+        scrollbarWidth: "none", // Firefox
+        msOverflowStyle: "none", // Internet Explorer 10+
+
+        "&::-webkit-scrollbar": {
+          display: "none", // Chrome, Safari, Opera
+        },
       }}>
         <Box
           flex={0}
@@ -30,10 +37,10 @@ export default function RootLayout(props: Readonly<{ children: React.ReactNode }
           src="/images/logo.png"
           alt="Logo"
         />
-        <Container 
-          maxWidth="sm" 
-          sx={{ 
-            display: "flex", 
+        <Container
+          maxWidth="sm"
+          sx={{
+            display: "flex",
             flexDirection: "column",
             alignItems: "stretch",
             justifyContent: "center",
