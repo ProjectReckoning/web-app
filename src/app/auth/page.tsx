@@ -66,12 +66,6 @@ export default function Page() {
         component="h2"
         fontWeight={600}
         textAlign="center"
-        sx={{
-          fontSize: {
-            xs: 16,
-            sm: 24,
-          }
-        }}
       >
         Masuk{" "}
         <Box
