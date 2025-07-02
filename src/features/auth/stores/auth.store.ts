@@ -107,6 +107,7 @@ const authStore = create<AuthStore>()(
 				phoneNumber: null,
 				isLoading: false,
 				user: null,
+				errorMessage: null,
 			});
 		},
 	}), {
