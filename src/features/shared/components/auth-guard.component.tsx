@@ -8,6 +8,7 @@ export function AuthGuard({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { token, getUser, errorMessage } = authStore();
+
   const router = useRouter();
   const pathname = usePathname();
   const [hydrated, setHydrated] = useState(false);
@@ -42,9 +43,11 @@ export function AuthGuard({
   }, [pathname, token, router, hydrated]);
 
   useEffect(() => {
-    getUser()
+    if (token) {
+      getUser()
+    }
 
   }, [token, getUser, router]);
 
-  return <>{children}</>;
+  return children;
 }

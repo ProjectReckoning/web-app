@@ -19,6 +19,42 @@ export default function Page() {
     }
   }, [phoneNumberStore]);
 
+  let authComponent;
+
+  if (isLoginWithQr) {
+    authComponent = (
+      <AuthWithQrCode setLoginWithQr={setIsLoginWithQr} />
+    );
+  } else if (sessionId === null) {
+    authComponent = (
+      <AuthWithCredentialForm
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        flexDirection="column"
+        justifyContent="center"
+        setLoginWithQr={setIsLoginWithQr}
+        sx={{
+          mt: {
+            xs: 3,
+            md: 4,
+          },
+        }}
+      />
+    );
+  } else {
+    authComponent = (
+      <AuthWIthOtpForm
+        phoneNumber={phoneNumber}
+        sx={{
+          mt: {
+            xs: 3,
+            md: 4,
+          },
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <Typography
@@ -40,33 +76,7 @@ export default function Page() {
         </Box>
       </Typography>
 
-      {isLoginWithQr ? (
-        <AuthWithQrCode setLoginWithQr={setIsLoginWithQr} />
-      ) : sessionId === null ? (
-        <AuthWithCredentialForm
-          phoneNumber={phoneNumber}
-          setPhoneNumber={setPhoneNumber}
-          flexDirection="column"
-          justifyContent="center"
-          setLoginWithQr={setIsLoginWithQr}
-          sx={{
-            mt: {
-              xs: 3,
-              md: 4,
-            },
-          }}
-        />
-      ) : (
-        <AuthWIthOtpForm
-          phoneNumber={phoneNumber}
-          sx={{
-            mt: {
-              xs: 3,
-              md: 4,
-            },
-          }}
-        />
-      )}
+      {authComponent}
     </>
   );
 }
