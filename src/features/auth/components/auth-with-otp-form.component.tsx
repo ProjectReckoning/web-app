@@ -1,16 +1,19 @@
 'use client';
 
-import { Box, TextField, Typography, Button, BoxProps } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Typography, Button, BoxProps } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import authStore from "../stores/auth.store";
 import { useRouter } from "next/navigation";
+import { gray } from "@/lib/custom-color";
 
 export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { phoneNumber: string }) {
   const { sessionId, sessionExpiresAt, logout, loginWithOtp, errorMessage, token, isLoading } = authStore();
   const [timer, setTimer] = useState(0);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const route = useRouter();
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
 
   useEffect(() => {
     if (sessionExpiresAt) {
@@ -54,42 +57,41 @@ export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { 
       const updatedOtp = [...otp];
       updatedOtp[index] = value;
       setOtp(updatedOtp);
-    }
 
-    if (value && index < otp.length - 1) {
-      const nextInput = document.querySelector(`input[name="otp-${index + 1}"]`);
-      if (nextInput) {
-        setOtp((prev) => {
-          const newOtp = [...prev];
-          newOtp[index + 1] = '';
-          return newOtp;
-        });
-        (nextInput as HTMLInputElement).focus();
+      if (value && index < otp.length - 1) {
+        inputRefs.current[index + 1]?.focus();
       }
     }
   };
 
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && otp[index] === "" && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+
   return (
     <Box
-    {...props}
-    sx={{
-      borderRadius: 4,
-      border: {
-        xs: 0,
-        lg: 1,
-      },
-      borderColor: {
-        xs: 'transparent',
-        lg: 'border.main',
-      },
-      p: {
-        xs: 0,
-        lg: 4,
-      },
-      width: '100%',
-      mx: 'auto',
-      ...props.sx,
-    }}
+      {...props}
+      sx={{
+        borderRadius: 4,
+        border: {
+          xs: 0,
+          lg: 1,
+        },
+        borderColor: {
+          xs: 'transparent',
+          lg: 'border.main',
+        },
+        p: {
+          xs: 0,
+          lg: 4,
+        },
+        width: '100%',
+        mx: 'auto',
+        ...props.sx,
+      }}
     >
       <Typography variant="h5" fontWeight={600} mb={1}>
         Verifikasi Kode OTP
@@ -104,31 +106,32 @@ export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { 
         Masukan 6 digit kode di bawah ini untuk melanjutkan.
       </Typography>
 
-      <Box display="flex" width="100%" gap={2} justifyContent="center" mb={3}>
+      <Box display="flex" width="100%" gap={1} justifyContent="space-between" mb={3}>
         {otp.map((digit, index) => (
-          <TextField
+          <input
             key={index}
             name={`otp-${index}`}
+            ref={(el) => {
+              inputRefs.current[index] = el;
+            }}
             value={digit}
             onChange={(e) => handleChange(index, e.target.value)}
-            variant="outlined"
-            slotProps={{
-              htmlInput: {
-                maxLength: 1,
-                style: { textAlign: 'center' },
-              }
-            }}
-            sx={{
-              borderRadius: 2,
-
-              backgroundColor: "gray.light",
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-                aspectRatio: 1,
-              },
+            onKeyDown={(e) => handleKeyDown(index, e)}
+            maxLength={1}
+            inputMode="numeric"
+            pattern="\d*"
+            style={{
+              width: "100%",
+              aspectRatio: 0.9,
+              borderRadius: 8,
+              outlineColor: gray[500],
+              textAlign: "center",
+              fontSize: "1.5rem",
+              margin: "0 0.25rem",
             }}
           />
         ))}
+
       </Box>
 
       {isLoading ? (
