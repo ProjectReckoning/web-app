@@ -32,13 +32,14 @@ const rows: GetAllTransactionResponseItem[] = Array.from({ length: 50 }, (_, i) 
     id: (i + 1).toString(),
     time: pastDate.toISOString(),
     name: names[i % names.length],
-    type: category.type,
+    type: i % 2 === 0 ? "Income" : "Expense",
     amount,
-    category: category.type.charAt(0).toUpperCase() + category.type.slice(1), // just to mock category name
-    created_at: pastDate.toISOString(),
+    category: category.type, // just to mock category name
+    createdAt: pastDate.toISOString(),
     initiator_user: initiators[i % initiators.length],
     transaction_type: category.transaction_type,
-    purpose: "Generated purpose",
+    description: "Generated purpose",
+    destination_acc: "",
   };
 });
 
@@ -64,7 +65,7 @@ export async function GET(req: Request): Promise<Response> {
 
   if (durationParam === "30d") {
     dataResult = rows.filter(row => {
-      const transactionDate = new Date(row.created_at);
+      const transactionDate = new Date(row.createdAt);
       const now = new Date();
       const thirtyDaysAgo = new Date(now);
       thirtyDaysAgo.setDate(now.getDate() - 30);
@@ -74,7 +75,7 @@ export async function GET(req: Request): Promise<Response> {
 
   if (durationParam === "7d") {
     dataResult = rows.filter(row => {
-      const transactionDate = new Date(row.created_at);
+      const transactionDate = new Date(row.createdAt);
       const now = new Date();
       const sevenDaysAgo = new Date(now);
       sevenDaysAgo.setDate(now.getDate() - 7);
@@ -84,7 +85,7 @@ export async function GET(req: Request): Promise<Response> {
 
   if (durationParam === "3m") {
     dataResult = rows.filter(row => {
-      const transactionDate = new Date(row.created_at);
+      const transactionDate = new Date(row.createdAt);
       const now = new Date();
       const threeMonthsAgo = new Date(now);
       threeMonthsAgo.setMonth(now.getMonth() - 3);
@@ -94,7 +95,7 @@ export async function GET(req: Request): Promise<Response> {
 
   if (durationParam === "6m") {
     dataResult = rows.filter(row => {
-      const transactionDate = new Date(row.created_at);
+      const transactionDate = new Date(row.createdAt);
       const now = new Date();
       const sixMonthsAgo = new Date(now);
       sixMonthsAgo.setMonth(now.getMonth() - 6);
@@ -104,7 +105,7 @@ export async function GET(req: Request): Promise<Response> {
 
   if (durationParam === "1y") {
     dataResult = rows.filter(row => {
-      const transactionDate = new Date(row.created_at);
+      const transactionDate = new Date(row.createdAt);
       const now = new Date();
       const oneYearAgo = new Date(now);
       oneYearAgo.setFullYear(now.getFullYear() - 1);
@@ -117,10 +118,10 @@ export async function GET(req: Request): Promise<Response> {
     message: "Pocket's transaction history has been fetched",
     code: 200,
     data: {
-      saldo_kemarin: 1234,
-      saldo_penutupan: 5678,
-      total_pemasukan: 91011,
-      total_pengeluaran: 121314,
+      saldoKemarin: "1234",
+      saldoPenutupan: "5678",
+      pemasukan: "91011",
+      pengeluaran: "121314",
       transaksi: dataResult,
     },
   };
