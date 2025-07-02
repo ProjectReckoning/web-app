@@ -12,11 +12,14 @@ import { Icon } from '@iconify/react';
 import { PocketMenuItem } from '../entities/pocket-menu-item';
 import { PocketEntity } from '@/features/pocket/entities/pocket.entites';
 import { purple } from '@/lib/custom-color';
+import detailPocketStore from '@/features/pocket/stores/detail-pocket.store';
+import { PocketMemberRole } from '@/features/pocket/entities/detail-pocket.entities';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const { logout } = authStore();
   const { pockets, isLoading, selectPocket } = pocketStore();
+  const { pocket } = detailPocketStore()
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
   const availablePocketsMenus = useMemo(() => getAvailablePocketsMenu(pockets ?? []), [pockets]);
 
@@ -38,7 +41,13 @@ export default function Header() {
         { name: 'Beranda', icon: <Icon fontSize={24} icon="eva:home-outline" />, href: `/dashboard/${selectedPocketId}` },
         { name: 'Transaksi', icon: <Icon fontSize={24} icon="fontisto:paper-plane" />, href: `/dashboard/${selectedPocketId}/transactions` },
         { name: 'Anggota', icon: <Icon fontSize={24} icon="octicon:people-16" />, href: `/dashboard/${selectedPocketId}/members` },
-        { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: `/dashboard/${selectedPocketId}/settings` },
+
+        ...(pocket?.userRole === PocketMemberRole.Owner
+          ? [
+            { name: 'Pengaturan', icon: <Icon fontSize={24} icon="uil:setting" />, href: `/dashboard/${selectedPocketId}/settings` },
+          ]
+          : []
+        )
       ]
   }
 
