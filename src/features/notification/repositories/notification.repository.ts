@@ -24,31 +24,11 @@ class NotificationRepository {
   }
 
   private mapNotificationToEntity(data: GetNotificationResponseItem): NotificationEntity {
-    let type: NotificationType;
-    let title: string;
-    let description: string;
-
-    if ("data" in data && typeof data.data === "object" && "type" in data.data) {
-      // PushNotificationWithData
-      if (data.data.type === "member_approval_needed") {
-        type = NotificationType.MEMBER_APPROVAL_NEEDED;
-      } else {
-        type = NotificationType.INFORMATION;
-      }
-
-      title = data.title ?? "No Title";
-      description = data.body ?? data.data?.message ?? "No description";
-    } else {
-      // PocketInvite (does not have title/body)
-      type = NotificationType.INFORMATION;
-      title = "Invitation Update";
-      description = "You have a new invitation.";
-    }
-
     return {
-      title,
-      description,
-      type,
+      id: data._id,
+      title: data.title,
+      description: data.body,
+      type: data.data.type as NotificationType,
       isRead: false
     };
   }

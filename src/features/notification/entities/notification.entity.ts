@@ -5,6 +5,7 @@ export enum NotificationType {
 }
 
 export type NotificationEntity = {
+  id: string
   title: string
   description: string
   type: NotificationType

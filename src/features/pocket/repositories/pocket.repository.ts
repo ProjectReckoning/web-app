@@ -122,8 +122,8 @@ class PocketRepository {
       color: data.color_hex,
       accountNumber: data.account_number,
       userRole: this.mapUserRole(data.user_role),
-      income: data.income,
-      outcome: data.outcome,
+      income: Number.parseFloat(data.pemasukan),
+      outcome: Number.parseFloat(data.pengeluaran),
     };
   }
 

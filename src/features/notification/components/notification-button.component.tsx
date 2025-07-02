@@ -61,6 +61,7 @@ export default function NotificationButton() {
             sx: {
               maxWidth: 300,
               padding: 2,
+              mt: 1,
               maxHeight: "80vh",
               overflowY: "auto",
               borderRadius: 6,
@@ -84,9 +85,9 @@ export default function NotificationButton() {
               </Typography>
             </Box>
           )) : (
-            <Box sx={{ marginBottom: 16 }}>
+            <Box sx={{ marginBottom: 4 }}>
               <Divider sx={{ backgroundColor: "border.light", my: 2, borderBottomWidth: '1px' }} />
-              <Typography variant="subtitle1" fontWeight="bold">
+              <Typography variant="subtitle1">
                 Belum ada notifikasi
               </Typography>
             </Box>
