@@ -65,8 +65,8 @@ export default function TransactionOverviewCard({
       </Box>
 
       <Box display="flex" flexDirection="column" gap={2}>
-        {transactions?.map((tx) => (
-          <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}`} display="flex" alignItems="center" gap={2}>
+        {transactions?.map((tx, idx) => (
+          <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}-${idx}`} display="flex" alignItems="center" gap={2}>
             <Avatar
               sx={{
                 bgcolor: gray[50],
