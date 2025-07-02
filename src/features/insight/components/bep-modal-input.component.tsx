@@ -7,14 +7,15 @@ import { TextField, Typography, Divider, IconButton, TextFieldProps } from "@mui
 import { useMemo, useRef, useState } from "react";
 
 export default function BEPModalInput({
-  defaultValue,
+  defaultValue: placeholder,
   onSubmitChange,
   ...props
 }: {
   defaultValue: number;
   onSubmitChange?: (value: number) => void;
 } & TextFieldProps) {
-  const [value, setValue] = useState(defaultValue);
+  const [previousValue, setPreviousValue] = useState(placeholder);
+  const [value, setValue] = useState(placeholder);
   const [isEditing, setIsEditing] = useState(false);
   const textFieldRef = useRef<HTMLInputElement>(null);
 
@@ -27,15 +28,16 @@ export default function BEPModalInput({
   const handleEditClick = () => {
     setIsEditing(prev => !prev);
 
-    if (isEditing) {
+    if (!isEditing) {
       textFieldRef.current?.focus();
       textFieldRef.current?.select();
     }
 
-    if (!isEditing && textFieldRef.current) {
-      const value = parseFloat(textFieldRef.current.value.replace(/[^0-9]+/g, ""));
-      if (!isNaN(value) && onSubmitChange) {
-        onSubmitChange(value);
+    if (isEditing && textFieldRef.current) {
+      const newValue = parseFloat(textFieldRef.current.value.replace(/[^0-9]+/g, ""));
+      if (!isNaN(newValue) && onSubmitChange && (newValue !== previousValue)) {
+        onSubmitChange(newValue);
+        setPreviousValue(newValue)
       }
     }
   };
