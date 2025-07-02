@@ -1,20 +1,34 @@
 import { Box, Divider, IconButton, Popover, Typography } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import notificationStore from "../stores/notification.store";
+import { orange, purple } from "@/lib/custom-color";
+import generateShades from "@/lib/generate-shades";
 
-export default function NotificationButton() {
-  const { notifications, unreadNotificationsCount } = notificationStore()
+export default function NotificationButton({
+  color
+}: Readonly<{
+  color?: string
+}>) {
+  const {
+    notifications,
+    unreadNotificationsCount,
+    readAllNotifications,
+    updateNotifications
+  } = notificationStore()
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    readAllNotifications()
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(null)
+    setTimeout(updateNotifications, 300)
   };
+  const colorShades = generateShades(color ?? purple[500])
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -36,7 +50,7 @@ export default function NotificationButton() {
             top={0}
             right={0}
             sx={{
-              backgroundColor: "purple.main",
+              backgroundColor: colorShades[500],
               aspectRatio: 1,
               borderRadius: "50%",
               color: "white",
@@ -60,7 +74,7 @@ export default function NotificationButton() {
           paper: {
             sx: {
               maxWidth: 300,
-              padding: 2,
+              paddingY: 2,
               mt: 1,
               maxHeight: "80vh",
               overflowY: "auto",
@@ -70,29 +84,56 @@ export default function NotificationButton() {
           },
         }}
       >
-        <Typography variant="h6" fontWeight={600} gutterBottom>
+        <Typography variant="h6" fontWeight={600} gutterBottom px={2}>
           Notifikasi
         </Typography>
         {(notifications?.length ?? 0) > 0 ?
-          notifications?.map((item) => (
-            <Box key={`${item.title}-${item.description}-${item.type}`} sx={{ marginBottom: 16 }}>
-              <Divider sx={{ backgroundColor: "border.light", my: 2, borderBottomWidth: '1px' }} />
-              <Typography variant="subtitle1" fontWeight="bold">
-                {item.title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                {item.description}
-              </Typography>
-            </Box>
-          )) : (
-            <Box sx={{ marginBottom: 4 }}>
-              <Divider sx={{ backgroundColor: "border.light", my: 2, borderBottomWidth: '1px' }} />
-              <Typography variant="subtitle1">
-                Belum ada notifikasi
-              </Typography>
-            </Box>
+          notifications?.map((item) => {
+            const hasAction = item.type.includes("need")
+
+            return (
+              (
+                <React.Fragment key={`${item.title}-${item.description}-${item.type}`}>
+                  <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: '1px' }} />
+                  <Box
+                    sx={{
+                      bgcolor: item.isRead ? "inherit" : getNonWhiteColor(colorShades),
+                      padding: 2,
+                    }}
+                  >
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" mt={1}>
+                      {item.description}
+                    </Typography>
+                    {hasAction && (
+                      <Typography variant="caption" color="textSecondary" display="block" mt={2}>
+                        Buka <Box component="span" fontWeight="bold" color={orange[500]}>Wondr</Box> untuk selengkapnya
+                      </Typography>
+                    )}
+                  </Box>
+                </React.Fragment>
+              )
+            )
+          }) : (
+            <React.Fragment>
+              <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: '1px' }} />
+              <Box sx={{
+                p: 2,
+              }}>
+                <Typography variant="subtitle1">
+                  Belum ada notifikasi
+                </Typography>
+              </Box>
+            </React.Fragment>
           )}
       </Popover>
     </>
   );
+}
+
+function getNonWhiteColor(colorShades: Record<number, string>, fallback = "#f0f0f0") {
+  const color = Object.values(colorShades).find((value) => value.toLowerCase() !== "#ffffff");
+  return color ?? fallback;
 }

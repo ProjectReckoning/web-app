@@ -72,7 +72,7 @@ const Appbar: React.FC<AppbarComponentProps> = ({
           </Box>
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <NotificationButton />
+          <NotificationButton color={currentPocket?.color} />
 
           <Button
             startIcon={<Icon icon="eva:log-out-fill" style={{ color: 'black' }} />}
