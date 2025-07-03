@@ -116,7 +116,7 @@ export default function Page() {
           },
           gap: 2,
           flex: 1,
-          maxWidth: 640,
+          maxWidth: theme.breakpoints.only("md"),
         }}
         >
           <PocketCard
