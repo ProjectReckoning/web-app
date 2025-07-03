@@ -8,7 +8,7 @@ import { PocketMemberRole } from "@/features/pocket/entities/detail-pocket.entit
 import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
 import Modal from "@/features/shared/components/modal";
 import { modalStore } from "@/features/shared/store/modal.store";
-import { limeGreen, orange, red, tosca } from "@/lib/custom-color";
+import { limeGreen, orange, purple, red, tosca } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
@@ -141,6 +141,9 @@ export default function Page() {
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              "&:hover": {
+                color: purple[500],
+              }
             }}
             onClick={() => editEditableKey(member.id.toString())}
           >
@@ -220,6 +223,9 @@ export default function Page() {
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              "&:hover": {
+                color: purple[500],
+              }
             }}
             onClick={() => editEditableKey(member.id.toString())}
           >
