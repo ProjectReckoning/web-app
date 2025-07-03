@@ -127,9 +127,7 @@ export default function Page() {
               borderColor: "border.main",
               borderRadius: 2,
               "&:hover": {
-                backgroundColor: red[500],
-                color: "white",
-                borderColor: "transparent"
+                color: red[500],
               }
             }}
           >
@@ -171,9 +169,7 @@ export default function Page() {
             borderColor: "border.main",
             borderRadius: 2,
             "&:hover": {
-              backgroundColor: red[500],
-              color: "white",
-              borderColor: "transparent"
+              color: red[500],
             }
           }}
           onClick={onLeavePocketClicked}
@@ -210,9 +206,7 @@ export default function Page() {
               borderColor: "border.main",
               borderRadius: 2,
               "&:hover": {
-                backgroundColor: red[500],
-                color: "white",
-                borderColor: "transparent"
+                color: red[500],
               }
             }}
           >
@@ -252,9 +246,7 @@ export default function Page() {
               justifyContent: "center",
             }),
             "&:hover": {
-              backgroundColor: red[500],
-              color: "white",
-              borderColor: "transparent"
+              color: red[500],
             }
           }}
           onClick={onLeavePocketClicked}
