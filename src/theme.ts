@@ -1,9 +1,10 @@
 'use client';
 import { createTheme } from '@mui/material/styles';
 import { Poppins } from 'next/font/google';
+import { gray, limeGreen, orange, purple, red, tosca, yellow } from './lib/custom-color';
 
 const poppins = Poppins({
-  weight: ['300', '400', '500', '700'],
+  weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
 });
@@ -13,10 +14,73 @@ const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'class',
   },
+  palette: {
+    tosca: {
+      main: tosca[500],
+      light: tosca[50],
+      dark: '#00DDD8',
+      contrastText: '#000',
+    },
+    limeGreen: {
+      main: '#d9f634',
+      light: '#d9f634',
+      dark: '#d9f634',
+      contrastText: '#000',
+    },
+    green: {
+      main: '#02C694',
+      light: '#02C694',
+      dark: '#02C694',
+      contrastText: '#000',
+    },
+    gray: {
+      main: gray[500],
+      light: gray[50],
+      dark: gray[700],
+      contrastText: '#000',
+    },
+    border: {
+      main: gray[200],
+      light: gray[200],
+      dark: gray[200],
+      contrastText: '#000',
+    },
+    purple: {
+      main: purple[500],
+      light: purple[50],
+      dark: '#a471e1',
+      contrastText: '#000',
+    },
+    orange: {
+      main: orange[500],
+      light: orange[50],
+      dark: '#FF7F00',
+      contrastText: '#000',
+    },
+    red: {
+      main: red[500],
+      light: red[50],
+      dark: red[700],
+      contrastText: '#000',
+    },
+    yellow: {
+      main: yellow[500],
+      light: yellow[50],
+      dark: yellow[700],
+      contrastText: '#000',
+    },
+  },
   typography: {
     fontFamily: poppins.style.fontFamily,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        hr: {
+          height: 1,
+        },
+      },
+    },
     MuiAlert: {
       styleOverrides: {
         root: {
@@ -35,8 +99,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: "white",
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          borderBottomRightRadius: 30,
           color: "black",
           padding: "10px 0"
         }
@@ -45,13 +108,64 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: "none"
+          textTransform: "none",
+          boxShadow: 'none',
+          borderRadius: 999,
+          padding: "8px 16px"
         }
       }
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16
+        }
+      }
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: limeGreen[500],
+          },
+        },
+      },
+    },
     MuiSelect: {
       styleOverrides: {
-        
+        root: {
+          borderRadius: 999,
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          borderRadius: 20,
+          padding: 16,
+        },
+      },
+    },
+    MuiIcon: {
+      defaultProps: {
+        baseClassName: 'material-symbols-rounded',
+      },
+    },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 999,
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          ".MuiOutlinedInput-input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0 999px background inset !important",
+            WebkitTextFillColor: "inherit !important",
+          },
+        }
       }
     }
   },
