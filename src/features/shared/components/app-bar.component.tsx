@@ -65,9 +65,9 @@ const Appbar: React.FC<AppbarComponentProps> = ({
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box display="flex" alignItems="start" flexDirection="column" gap={0} px={2}>
           {isMobile && (
-            <Box fontWeight="600" component="p" margin={0} display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
-              Hai, <Typography color={orange[500]} fontWeight="bold">{loggedUserName}</Typography>
-            </Box>
+            <Typography fontWeight="600" variant='body1' margin={0} display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
+              Hai, <Box component="span" color={orange[500]} fontWeight="bold">{loggedUserName}</Box>
+            </Typography>
           )}
           <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2">
             <Box sx={{ display: { xs: "none", sm: "inline" } }} fontWeight="600" component="span">
@@ -83,9 +83,9 @@ const Appbar: React.FC<AppbarComponentProps> = ({
 
         <Box display="flex" gap={3}>
           {!isMobile && (
-            <Box fontWeight="600" component="p" margin={0} display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
-              Hai, <Typography color={orange[500]} fontWeight="bold">{loggedUserName}</Typography>
-            </Box>
+            <Typography fontWeight="600" variant='body1' margin={0} display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
+              Hai, <Box component="span" color={orange[500]} fontWeight="bold">{loggedUserName}</Box>
+            </Typography>
           )}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <NotificationButton color={currentPocket?.color} />
