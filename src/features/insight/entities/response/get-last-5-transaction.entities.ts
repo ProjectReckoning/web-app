@@ -10,4 +10,5 @@ export interface GetLast5TransactionResponseItem {
   amount: number;
   description: string;
   transaction_type: 0 | 1;
+  category: string;
 }

@@ -66,7 +66,7 @@ class TransactionHistoryRepository {
 
   private mapTransactionSummaryToEntity(data: GetLast5TransactionResponseItem): TransactionSummaryEntity {
     return {
-      type: getTransactionCateogryFromString(data.type),
+      type: getTransactionCateogryFromString(data.category),
       amount: data.amount,
       description: data.description,
       transactionType: data.transaction_type === 0 ? TransactionType.OUTCOME : TransactionType.INCOME,
