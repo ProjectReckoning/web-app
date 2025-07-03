@@ -17,7 +17,7 @@ import { PocketMemberRole } from '@/features/pocket/entities/detail-pocket.entit
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { logout } = authStore();
+  const { logout, user } = authStore();
   const { pockets, isLoading, selectPocket } = pocketStore();
   const { pocket } = detailPocketStore()
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
@@ -119,6 +119,7 @@ export default function Header() {
         selectedPocketId={selectedPocketId}
         pockets={availablePocketsMenus}
         onLogout={handleLogout}
+        loggedUserName={user?.name ?? ""}
       />
       <Drawer
         isOpen={open}
