@@ -51,7 +51,7 @@ export default function Page() {
     getAllTransactions
   } = transactionHistoryStore();
   const { isLoading: isBepLoading, getBep, bep } = bepStore()
-  const { isLoading: isStatsLoading, getStatsSpesificPocket: getStats, stats } = statsStore()
+  const { isLoading: isStatsLoading, getStatsSpesificPocket, stats } = statsStore()
   const pathname = usePathname();
   const isPocketAdmin = pocket?.userRole === PocketMemberRole.Admin || pocket?.userRole === PocketMemberRole.Owner
 
@@ -75,6 +75,7 @@ export default function Page() {
     }
 
     getLast5Transactions();
+    getStatsSpesificPocket(pocket.id);
     getAllTransactions({
       pocketId: pocket.id,
       duration: GetTransactionDurationOption.LAST_1_YEAR,
@@ -85,7 +86,7 @@ export default function Page() {
       getBep(pocket.id)
     }
 
-  }, [pocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStats]);
+  }, [pocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStatsSpesificPocket]);
 
   const mappedScheduledTransaction = useMemo(() => mapScheduledTransactions(scheduledTransactions), [scheduledTransactions]);
 
