@@ -4,6 +4,7 @@ export interface ScheduledTransactionEntity {
   id: number;
   recurringAmount: number;
   nextRunDate: Date;
-  status: 'active' | 'inactive'; // You can widen this if needed
+  status: 'active' | 'inactive';
   detail: DetailScheduledTransactionEntity | null;
+  category: string;
 }

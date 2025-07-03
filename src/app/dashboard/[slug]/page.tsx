@@ -379,7 +379,7 @@ function mapScheduledTransactions(scheduledTransactions: ScheduledTransactionEnt
     return {
       day: formatDate(nextDate, { weekday: "long" }),
       date: nextDate.getDate(),
-      title: it.detail?.destination ?? "-",
+      title: it.category ? it.category.charAt(0).toUpperCase() + it.category.slice(1) : "-",
       amount: it.recurringAmount,
     };
   });
