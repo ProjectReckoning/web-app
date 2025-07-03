@@ -11,6 +11,7 @@ import formatCurrency from '@/lib/format-currency';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import generateShades from '@/lib/generate-shades';
 import { useRouter } from 'next/navigation';
+import { getNonWhiteShades } from '@/lib/get-non-white-shades';
 
 export default function PocketOverviewCard({
   pocket,
@@ -24,7 +25,7 @@ export default function PocketOverviewCard({
   return (
     <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined' style={{ cursor: "pointer" }} onClick={() => route.push(`/dashboard/${pocket.id}`)} {...props}>
       <CardContent sx={{ padding: 0 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: pocketColorShades[100] }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: getNonWhiteShades(pocketColorShades) }}>
           <Box padding={1.5} sx={{ backgroundColor: pocket.color, color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <CustomIcon name={pocket.icon} style={{ fontSize: 36, color: 'white' }} />
           </Box>

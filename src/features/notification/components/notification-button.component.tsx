@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import notificationStore from "../stores/notification.store";
 import { orange, purple } from "@/lib/custom-color";
 import generateShades from "@/lib/generate-shades";
+import { getNonWhiteShades } from "@/lib/get-non-white-shades";
 
 export default function NotificationButton({
   color
@@ -97,7 +98,7 @@ export default function NotificationButton({
                   <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: '1px' }} />
                   <Box
                     sx={{
-                      bgcolor: item.isRead ? "inherit" : getNonWhiteColor(colorShades),
+                      bgcolor: item.isRead ? "inherit" : getNonWhiteShades(colorShades),
                       padding: 2,
                     }}
                   >
@@ -131,9 +132,4 @@ export default function NotificationButton({
       </Popover>
     </>
   );
-}
-
-function getNonWhiteColor(colorShades: Record<number, string>, fallback = "#f0f0f0") {
-  const color = Object.values(colorShades).find((value) => value.toLowerCase() !== "#ffffff");
-  return color ?? fallback;
 }
