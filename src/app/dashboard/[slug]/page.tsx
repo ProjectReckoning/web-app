@@ -167,7 +167,7 @@ export default function Page() {
             flex={1}
           />
         </Box>
-        {isPocketAdmin && (
+        {isPocketAdmin ? (
           <ScheduledTransactionList
             title="Transaksi terjadwalmu"
             isLoading={isScheduledTransactionLoading || !scheduledTransactions}
@@ -175,6 +175,8 @@ export default function Page() {
             flex={1}
             minWidth={300}
           />
+        ) : (
+          <Box flex={1} minWidth={300}></Box>
         )}
       </Box>
 
