@@ -41,8 +41,14 @@ export default function Page() {
       ...(pocket.members ?? []),
     ]
 
-    const totalContribution = members.reduce((sum, member) => {
-      return sum + (member.metadata?.contributionAmount ?? 0);
+    const totalContribution: number = members.reduce((sum, member) => {
+      const contribution = member.metadata?.contributionAmount ?? 0
+
+      if (contribution >= 0) {
+        return sum + contribution;
+      }
+
+      return 0
     }, 0);
 
     if (totalContribution === 0) {
