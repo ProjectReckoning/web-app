@@ -7,10 +7,13 @@ import PocketCard from "@/features/pocket/components/pocket-card.component";
 import FormEditPocket from "@/features/pocket/components/form-edit-pocket.component";
 import Typography from "@mui/material/Typography";
 import pocketStore from "@/features/pocket/stores/pocket.store";
+import { PocketMemberRole } from "@/features/pocket/entities/detail-pocket.entities";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { isLoading, pocket, updatePocket } = detailPocketStore();
   const { getAllPockets } = pocketStore();
+  const router = useRouter()
   const [formData, setFormData] = useState({
     title: pocket?.name,
     color: pocket?.color,
@@ -18,13 +21,20 @@ export default function Page() {
   });
 
   useEffect(() => {
-    if (pocket) {
-      setFormData({
-        title: pocket.name,
-        color: pocket.color,
-        icon: pocket.icon,
-      });
+    if (!pocket) {
+      return
     }
+
+    setFormData({
+      title: pocket.name,
+      color: pocket.color,
+      icon: pocket.icon,
+    });
+
+    if (pocket.userRole !== PocketMemberRole.Owner) {
+      router.push(`/dashboard/${pocket.id}`)
+    }
+
   }, [pocket]);
 
   const handlePocketUpdate = async () => {
