@@ -110,7 +110,7 @@ export default function NotificationButton({
                     </Typography>
                     {hasAction && (
                       <Typography variant="caption" color="textSecondary" display="block" mt={2}>
-                        Buka <Box component="span" fontWeight="bold" color={orange[500]}>Wondr</Box> untuk selengkapnya
+                        Buka <Box component="span" fontWeight="bold" color={orange[500]}>wondr</Box> untuk selengkapnya
                       </Typography>
                     )}
                   </Box>
