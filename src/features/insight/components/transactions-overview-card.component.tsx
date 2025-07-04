@@ -84,7 +84,7 @@ export default function TransactionOverviewCard({
             </Avatar>
             <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}`} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" gap={2}>
               <Box flex={1} overflow="hidden" width={0} textOverflow="ellipsis">
-                <Typography variant="body2" fontWeight={500} whiteSpace="nowrap">
+                <Typography variant="body2" fontWeight={500} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
                   {getLabelFromTransactionType(tx.type)}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" whiteSpace="nowrap">
