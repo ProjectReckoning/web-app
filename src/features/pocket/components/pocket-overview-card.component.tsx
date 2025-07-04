@@ -23,14 +23,14 @@ export default function PocketOverviewCard({
   const route = useRouter();
 
   return (
-    <Card sx={{ minWidth: 275, borderRadius: 8 }} variant='outlined' style={{ cursor: "pointer" }} onClick={() => route.push(`/dashboard/${pocket.id}`)} {...props}>
+    <Card sx={{ minWidth: "fit-content", borderRadius: 8 }} variant='outlined' style={{ cursor: "pointer" }} onClick={() => route.push(`/dashboard/${pocket.id}`)} {...props}>
       <CardContent sx={{ padding: 0 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, backgroundColor: getNonWhiteShades(pocketColorShades) }}>
           <Box padding={1.5} sx={{ backgroundColor: pocket.color, color: 'white', width: 'fit-content', borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <CustomIcon name={pocket.icon} style={{ fontSize: 36, color: 'white' }} />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, marginTop: 2 }}>
-            <Typography variant="body1" fontWeight={600} component="p">
+            <Typography variant="body1" fontWeight={600} component="p" width={240} textOverflow="ellipsis" whiteSpace="nowrap" overflow="hidden">
               {pocket.name}
             </Typography>
 
@@ -44,7 +44,7 @@ export default function PocketOverviewCard({
           </Box>
         </Box>
 
-        <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', px: 2 }}>
+        <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', px: 2, gap: 2 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }} color="green.main">
             <Typography variant="body2">
               <Icon icon="lets-icons:in" style={{ fontSize: 16, verticalAlign: 'middle', marginRight: 2 }} />
