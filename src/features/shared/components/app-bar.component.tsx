@@ -62,18 +62,14 @@ const Appbar: React.FC<AppbarComponentProps> = ({
 
   return (
     <StyledAppBar position="fixed" open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Box display="flex" alignItems="start" flexDirection="column" gap={0} px={2}>
-          {isMobile && (
-            <Typography fontWeight="600" variant='body1' margin={0} display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
-              Hai, <Box component="span" color={orange[500]} fontWeight="bold">{loggedUserName}</Box>
-            </Typography>
-          )}
-          <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2">
-            <Box sx={{ display: { xs: "none", sm: "inline" } }} fontWeight="600" component="span">
+      <Toolbar sx={{ justifyContent: "space-between", display: "flex", gap: 2 }}>
+        <Box flex={1} display="flex" alignItems="start" flexDirection="column" gap={0} px={{ xs: 0, md: 2 }} overflow="hidden" textOverflow="ellipsis" minWidth={0}>
+          {isMobile && <GreetingComponent name={loggedUserName} />}
+          <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" display="flex" gap={1}>
+            <Box sx={{ display: { xs: "none", md: "inline" } }} fontWeight="600" component="span" display="block" whiteSpace="nowrap">
               Pocket Saat Ini : {' '}
             </Box>
-            <Box color={displayPocketColor} fontWeight="600" component="span">
+            <Box color={displayPocketColor} fontWeight="600" component="span" display="block" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" minWidth={0}>
               {isLoading ? (
                 <Skeleton sx={{ display: "inline-block" }} width={150} />
               ) : displayPocketName}
@@ -81,12 +77,8 @@ const Appbar: React.FC<AppbarComponentProps> = ({
           </Typography>
         </Box>
 
-        <Box display="flex" gap={3}>
-          {!isMobile && (
-            <Typography fontWeight="600" variant='body1' margin={0} display="flex" alignItems="center" flexWrap="wrap" gap={0.5}>
-              Hai, <Box component="span" color={orange[500]} fontWeight="bold">{loggedUserName}</Box>
-            </Typography>
-          )}
+        <Box flex={1} display="flex" justifyContent="end" gap={3}>
+          {!isMobile && <GreetingComponent name={loggedUserName} />}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <NotificationButton color={currentPocket?.color} />
 
@@ -107,5 +99,13 @@ const Appbar: React.FC<AppbarComponentProps> = ({
     </StyledAppBar>
   );
 };
+
+function GreetingComponent({ name }: { name: string }) {
+  return (
+    <Typography fontWeight="600" variant='body1' margin={0} display="flex" alignItems="center" gap={0.5}>
+      Hai, <Box component="span" color={orange[500]} fontWeight="bold">{name}</Box>
+    </Typography>
+  )
+}
 
 export default Appbar;
