@@ -7,6 +7,7 @@ import { TransactionSummaryEntity } from '../entities/transaction-summary.entiti
 import Skeleton from '@/features/shared/components/skeleton';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
+import { Icon } from '@iconify/react';
 
 const DEFAULT_COUNT = 5;
 
@@ -48,9 +49,12 @@ export default function TransactionOverviewCard({
 
   if (!transactions?.length) {
     return (
-      <Box {...props}>
-        <Typography variant="body2" textAlign="center" py={2}>
-          Tidak ada transaksi
+      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" {...props}>
+        <Avatar sx={{ bgcolor: 'gray.main', width: 48, height: 48, mt: 1 }}>
+          <Icon icon="mdi:clipboard-text-off-outline" width={32} />
+        </Avatar>
+        <Typography variant="body2" mt={2} color='gray.main'>
+          Belum ada transaksi
         </Typography>
       </Box>
     )

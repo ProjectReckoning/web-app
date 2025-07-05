@@ -194,7 +194,7 @@ export default function Page() {
         <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
-            isLoading={isTransactionLoading || !last5Transactions?.length}
+            isLoading={isTransactionLoading || !last5Transactions}
             transactions={last5Transactions ?? []}
             actions={
               <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
