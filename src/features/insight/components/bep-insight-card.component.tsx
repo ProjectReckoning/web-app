@@ -142,7 +142,7 @@ export default function BEPInsightCard({
               cy: '50%',
               valueFormatter: (v) => {
                 const value = typeof v === "number" ? v : v?.value ?? 0;
-                return formatCurrency(value);
+                return `${value}%`;
               },
             },
           ]}
@@ -236,10 +236,12 @@ function AdditionalInformation({ bep }: Readonly<{ bep: BepProfit | BepLoss }>) 
           dan <b>rata-rata keuntungan harian</b>{' '}
           <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(bep.averageDailyCleanProfit, { maximumFractionDigits: 0 })}</Typography>
         </Typography>
-        <Typography variant="body2">
-          kamu butuh{' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{bep.estimatedDaysToBEP} hari</Typography> lagi untuk mencapai BEP!
-        </Typography>
+        {!!bep.estimatedDaysToBEP && (
+          <Typography variant="body2">
+            kamu butuh{' '}
+            <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{bep.estimatedDaysToBEP} hari</Typography> lagi untuk mencapai BEP!
+          </Typography>
+        )}
       </Stack>
     );
   }

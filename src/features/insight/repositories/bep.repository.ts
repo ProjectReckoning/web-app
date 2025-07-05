@@ -21,7 +21,7 @@ class BepRepository {
           cleanProfit: data.data.cleanProfit,
           profitPercentage: data.data.profitPercentage,
           averageDailyCleanProfit: data.data.averageDailyCleanProfit,
-          estimatedDaysToBEP: data.data.estimatedDaysToBEP,
+          estimatedDaysToBEP: data.data.estimatedDaysToBEP ?? 0,
         } as BepProfit
       } else {
         return {
