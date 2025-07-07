@@ -15,7 +15,7 @@ export default function BEPInsightCard({
   bep,
   isLoading = false,
   ...props
-}: BEPInsightCardProps) {
+}: Readonly<BEPInsightCardProps>) {
   if (isLoading || !bep) {
     return (
       <Box {...props}>
@@ -256,13 +256,19 @@ function AdditionalInformation({ bep }: Readonly<{ bep: BepProfit | BepLoss }>) 
         dengan <b>rata-rata penjualan</b>{' '}
         <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(bep.averageDailyCleanProfit, { maximumFractionDigits: 0 })}</Typography>
       </Typography>
-      {bep.projections.map((projection) => (
-        <Typography key={projection.estimatedDaysToCoverLoss} variant="body2">
-          Kamu butuh{' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{projection.estimatedDaysToCoverLoss} hari</Typography>{' '} kedepan dengan target harian {' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(projection.increasedIncome, { maximumFractionDigits: 0 })}</Typography> buat tutup kerugian
-        </Typography>
-      ))}
+      {bep.projections.map((projection) => {
+        if (projection.estimatedDaysToCoverLoss) {
+          return (
+            (
+              <Typography key={projection.estimatedDaysToCoverLoss} variant="body2">
+                Kamu butuh{' '}
+                <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{projection.estimatedDaysToCoverLoss} hari</Typography>{' '} kedepan dengan target harian {' '}
+                <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(projection.increasedIncome, { maximumFractionDigits: 0 })}</Typography> buat tutup kerugian
+              </Typography>
+            )
+          )
+        }
+      })}
     </Stack>
   )
 }
