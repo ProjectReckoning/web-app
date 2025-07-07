@@ -63,13 +63,13 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   return (
     <StyledAppBar position="fixed" open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
       <Toolbar sx={{ justifyContent: "space-between", display: "flex", gap: 2 }}>
-        <Box flex={1} display="flex" alignItems="start" flexDirection="column" gap={0} px={{ xs: 0, md: 2 }} overflow="hidden" textOverflow="ellipsis" minWidth={0}>
+        <Box flex={1} display="flex" alignItems="start" flexDirection="column" gap={0} px={{ xs: 0, md: 2 }} minWidth={0}>
           {isMobile && <GreetingComponent name={loggedUserName} />}
-          <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" display="flex" gap={1}>
+          <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" display="flex" gap={1} width="100%">
             <Box sx={{ display: { xs: "none", md: "inline" } }} fontWeight="600" component="span" display="block" whiteSpace="nowrap">
               Pocket Saat Ini : {' '}
             </Box>
-            <Box color={displayPocketColor} fontWeight="600" component="span" display="block" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" minWidth={0}>
+            <Box color={displayPocketColor} fontWeight="600" component="span" display="block" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" width="100%" minWidth={0}>
               {isLoading ? (
                 <Skeleton sx={{ display: "inline-block" }} width={150} />
               ) : displayPocketName}
@@ -100,7 +100,7 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   );
 };
 
-function GreetingComponent({ name, ...props }: Readonly<{ name: string, props: TypographyProps }>) {
+function GreetingComponent({ name, ...props }: Readonly<{ name: string } & TypographyProps>) {
   return (
     <Typography
       fontWeight="600"
@@ -109,6 +109,9 @@ function GreetingComponent({ name, ...props }: Readonly<{ name: string, props: T
       display="flex"
       alignItems="center"
       gap={0.5}
+      overflow="hidden"
+      textOverflow="ellipsis"
+      width="100%"
       {...props}
     >
       Hai, <Box
