@@ -19,7 +19,7 @@ export default function BEPModalInput({
   const [isEditing, setIsEditing] = useState(false);
   const textFieldRef = useRef<HTMLInputElement>(null);
   const theme = useTheme()
-  const isMdUp = useMediaQuery(theme.breakpoints.up("md"))
+  const isMdUp = useMediaQuery(theme.breakpoints.up("sm"))
 
   const formatedValue = useMemo(() => {
     return formatCurrency(value, {

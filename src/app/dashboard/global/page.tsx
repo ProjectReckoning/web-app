@@ -159,7 +159,7 @@ function TransactionInsightSection({
   return (
     <Box display="flex" flexDirection="column" gap={4} {...props}>
       <Box width="fit-content">
-        <DateRangeSelector onChange={handleDateRangeChange} />
+        <DateRangeSelector onChange={handleDateRangeChange} maxWidth="100%" />
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>

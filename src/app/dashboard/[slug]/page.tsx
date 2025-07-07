@@ -349,7 +349,7 @@ function TransactionInsightSection({
   if (split) {
     return (
       <Box display={"flex"} flexDirection="column" gap={4} {...props}>
-        <DateRangeSelector onChange={handleDateRangeChange} maxWidth={320} sx={{ mx: { xs: 0, md: 4 } }} />
+        <DateRangeSelector onChange={handleDateRangeChange} maxWidth="100%" sx={{ mx: { xs: 0, sm: 4 } }} />
 
         <Box flex={1} display={"flex"} flexWrap="wrap" justifyContent="stretch" gap={4} {...props}>
           {transactionOverviewData.map((it) => (
@@ -368,7 +368,7 @@ function TransactionInsightSection({
 
   return (
     <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
-      <DateRangeSelector onChange={handleDateRangeChange} maxWidth={320} mx="auto" />
+      <DateRangeSelector onChange={handleDateRangeChange} maxWidth="100%" sx={{ mx: { xs: 0, sm: 4 } }} />
       <PieChartWithTabs
         isLoading={isTransactionLoading || !showedTransactions}
         data={transactionOverviewData}

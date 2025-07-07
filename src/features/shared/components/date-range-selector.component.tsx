@@ -65,6 +65,9 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
         variant="outlined"
         slotProps={{
           input: {
+            sx: {
+              cursor: "pointer"
+            },
             readOnly: true,
             endAdornment: <Icon icon="mdi:calendar-month" style={{ marginLeft: 8, fontSize: 32, color: orange[500] }} />,
           }
@@ -79,6 +82,7 @@ export default function DateRangeSelector({ onChange, ...props }: DateRangeSelec
               borderColor: 'border.main',
             },
           },
+          cursor: "pointer"
         }}
       />
 
