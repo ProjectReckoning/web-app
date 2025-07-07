@@ -15,7 +15,7 @@ import formatCurrency from '@/lib/format-currency';
 import { gray } from '@/lib/custom-color';
 import { useSearchParams } from 'next/navigation';
 import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
-import { useTheme } from '@emotion/react';
+import { useTheme } from '@mui/material';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
