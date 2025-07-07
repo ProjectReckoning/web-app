@@ -206,7 +206,7 @@ export default function Page() {
         <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
           <ChartWithTabs
-            // isDemo={!stats?.length}
+            isDemo={!stats?.length}
             isLoading={isStatsLoading || !stats}
             data={stats?.length ? stats : StatsSampleData}
             sx={{
