@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Tabs, Tab, Box, BoxProps, Typography, Avatar } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { limeGreen } from '@/lib/custom-color';
+import { gray, limeGreen } from '@/lib/custom-color';
 import Skeleton from '@/features/shared/components/skeleton';
 import formatCurrency from '@/lib/format-currency';
 import { Icon } from '@iconify/react';
@@ -23,9 +23,16 @@ export interface ChartData {
 export interface ChartWithTabsProps {
   data: ChartData[];
   isLoading?: boolean;
+  isDemo?: boolean;
 }
 
-export default function ChartWithTabs({ data, height, isLoading = false, ...props }: Omit<BoxProps, 'children'> & ChartWithTabsProps) {
+export default function ChartWithTabs({
+  data,
+  height,
+  isLoading = false,
+  isDemo = false,
+  ...props
+}: Omit<BoxProps, 'children'> & ChartWithTabsProps) {
   const [tab, setTab] = useState(0);
 
   if (isLoading || !data) {
@@ -93,7 +100,9 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
   }
 
   return (
-    <Box {...props}>
+    <Box
+      {...props}
+    >
       {data.length > 1 && (
         <Tabs
           value={tab}
@@ -110,6 +119,11 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
                   backgroundColor: '#f5f5f5',
                   borderRadius: 999,
                   mb: 4,
+                  ...(isDemo && {
+                    filter: "blur(1px)",
+                    opacity: 0.6,
+                    pointerEvents: "none",
+                  }),
                 },
               },
               indicator: { style: { display: 'none' } },
@@ -161,10 +175,19 @@ export default function ChartWithTabs({ data, height, isLoading = false, ...prop
           },
         }}
         sx={{
+          ...(isDemo && {
+            filter: "blur(1px)",
+            opacity: 0.6,
+            pointerEvents: "none",
+          }),
           width: '100%',
           height: height ?? 300,
         }}
       />
+
+      {isDemo && (
+        <Typography variant="caption" fontStyle="italic" display="block" width="100%" textAlign="center" color={gray[500]} mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
+      )}
     </Box>
   );
 }

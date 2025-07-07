@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     });
   }
 
-  if (phone_number !== "+628123456789" || password !== "testing") {
+  if (phone_number !== "628123456789" || password !== "testing") {
     return new Response(JSON.stringify({ message: 'Nomor HP atau Password salah' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' }
