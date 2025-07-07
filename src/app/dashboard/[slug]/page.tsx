@@ -175,7 +175,7 @@ export default function Page() {
                 lg: 24,
               }
             }}
-            minWidth={300}
+            minWidth={240}
             height="100%"
             flex={1}
           />
@@ -207,15 +207,15 @@ export default function Page() {
             isLoading={isScheduledTransactionLoading || !scheduledTransactions}
             transactions={mappedScheduledTransaction}
             flex={1}
-            minWidth={300}
+            minWidth={240}
           />
         ) : (
-          <Box flex={1} minWidth={300}></Box>
+            <Box flex={1} minWidth={240}></Box>
         )}
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-        <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 2, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
           <ChartWithTabs
             isDemo={!stats?.length}
@@ -231,7 +231,7 @@ export default function Page() {
           />
         </Box>
 
-        <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 1, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
             isLoading={isTransactionLoading || !last5Transactions}
@@ -296,7 +296,7 @@ function BepInsightSection({
     >
       <BEPModalInput
         onSubmitChange={onChangeBepModal}
-        sx={{ mx: 4 }} defaultValue={pocket?.targetNominal ?? 0}
+        sx={{ mx: { xs: 0, md: 4 } }} defaultValue={pocket?.targetNominal ?? 0}
       />
       <BEPInsightCard
         isLoading={isLoading || !bep || !pocket}
@@ -343,7 +343,7 @@ function TransactionInsightSection({
   if (split) {
     return (
       <Box display={"flex"} flexDirection="column" gap={4} {...props}>
-        <DateRangeSelector onChange={handleDateRangeChange} mx={4} maxWidth={320} />
+        <DateRangeSelector onChange={handleDateRangeChange} maxWidth={320} sx={{ mx: { xs: 0, md: 4 } }} />
 
         <Box flex={1} display={"flex"} flexWrap="wrap" justifyContent="stretch" gap={4} {...props}>
           {transactionOverviewData.map((it) => (
@@ -362,7 +362,7 @@ function TransactionInsightSection({
 
   return (
     <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
-      <DateRangeSelector onChange={handleDateRangeChange} mx={4} />
+      <DateRangeSelector onChange={handleDateRangeChange} maxWidth={320} mx="auto" />
       <PieChartWithTabs
         isLoading={isTransactionLoading || !showedTransactions}
         data={transactionOverviewData}

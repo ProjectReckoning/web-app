@@ -160,7 +160,7 @@ export default function Page() {
                 lg: 24,
               }
             }}
-            minWidth={300}
+            minWidth={240}
             height="100%"
             flex={1}
           />
@@ -186,7 +186,7 @@ export default function Page() {
           isLoading={isLoading || !pocket}
           flex={1}
           sx={{
-            minWidth: 300,
+            minWidth: 240,
           }}
           contributors={contributors}
           href={`/dashboard/${pocket?.id}/members`}

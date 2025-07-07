@@ -108,7 +108,7 @@ export default function Page() {
                 lg: 16,
               },
             }}
-            minWidth={300}
+            minWidth={240}
             flex={1}
           />
         </Box>
@@ -121,7 +121,7 @@ export default function Page() {
           onSave={handlePocketUpdate}
           sx={{
             flex: 1,
-            minWidth: 300,
+            minWidth: 240,
           }}
         />
       </Box>

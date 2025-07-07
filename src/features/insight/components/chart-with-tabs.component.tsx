@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Tabs, Tab, Box, BoxProps, Typography, Avatar } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { limeGreen } from '@/lib/custom-color';
+import { gray, limeGreen } from '@/lib/custom-color';
 import Skeleton from '@/features/shared/components/skeleton';
 import formatCurrency from '@/lib/format-currency';
 import { Icon } from '@iconify/react';
@@ -116,7 +116,7 @@ export default function ChartWithTabs({
                   width: "100%",
                   maxWidth: "fit-content",
                   mx: 'auto',
-                  backgroundColor: '#f5f5f5',
+                  backgroundColor: gray[50],
                   borderRadius: 999,
                   mb: 4,
                   ...(isDemo && {

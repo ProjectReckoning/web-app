@@ -91,7 +91,7 @@ export default function Page() {
       />
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-        <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 2, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h5'>Grafik Keuanganmu</Typography>
           <ChartWithTabs
             isDemo={!stats?.length}
@@ -107,7 +107,7 @@ export default function Page() {
           />
         </Box>
 
-        <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 1, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h5'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
             transactions={last5Transactions ?? []}
