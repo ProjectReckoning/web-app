@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Tabs, Tab, Box, BoxProps, Typography, Avatar } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { gray, limeGreen } from '@/lib/custom-color';
+import { limeGreen } from '@/lib/custom-color';
 import Skeleton from '@/features/shared/components/skeleton';
 import formatCurrency from '@/lib/format-currency';
 import { Icon } from '@iconify/react';
@@ -186,7 +186,7 @@ export default function ChartWithTabs({
       />
 
       {isDemo && (
-        <Typography variant="caption" fontStyle="italic" display="block" width="100%" textAlign="center" color={gray[500]} mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
+        <Typography variant="caption" fontStyle="italic" display="block" width="100%" textAlign="center" mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
       )}
     </Box>
   );
