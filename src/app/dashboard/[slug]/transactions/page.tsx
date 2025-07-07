@@ -15,6 +15,7 @@ import formatCurrency from '@/lib/format-currency';
 import { gray } from '@/lib/custom-color';
 import { useSearchParams } from 'next/navigation';
 import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
+import { useTheme } from '@emotion/react';
 
 export default function Page() {
   const { isLoading, pocket } = detailPocketStore();
@@ -30,6 +31,7 @@ export default function Page() {
 
   const searchParams = useSearchParams()
   const queryType = searchParams.get('type')
+  const theme = useTheme()
 
   const contributors = useMemo(() => {
     if (!pocket) {
@@ -137,6 +139,8 @@ export default function Page() {
           },
           gap: 2,
           flex: 1,
+          width: "100%",
+          maxWidth: theme.breakpoints.only("md"),
         }}>
           <PocketCard
             title={pocket?.name ?? ""}

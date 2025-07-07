@@ -150,6 +150,7 @@ export default function Page() {
           },
           gap: 2,
           flex: 1,
+          width: "100%",
           maxWidth: theme.breakpoints.only("md"),
         }}
         >
@@ -165,9 +166,12 @@ export default function Page() {
               border: isLoading ? 1 : 0,
               borderColor: isLoading ? "border.main" : 'transparent',
               borderRadius: 4,
-              padding: 3,
+              padding: {
+                xs: 1,
+                sm: 3,
+              },
               paddingRight: {
-                xs: 8,
+                xs: 0,
                 lg: 16,
               },
               marginRight: {
