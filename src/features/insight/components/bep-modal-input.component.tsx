@@ -50,6 +50,8 @@ export default function BEPModalInput({
     const newValue = parseFloat(formatedStringValue);
     if (!isNaN(newValue)) {
       setValue(newValue);
+    } else {
+      setValue(0);
     }
   }
 
