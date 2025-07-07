@@ -20,7 +20,7 @@ export enum TransactionCategory {
   Expense = 'Expense',
 }
 
-export function getTransactionCateogryFromString(
+export function getTransactionCategoryFromString(
   category: string
 ): TransactionCategory {
   const normalizedCategory = category.toLowerCase();
@@ -55,6 +55,7 @@ export function getTransactionCateogryFromString(
       return TransactionCategory.Transfer;
 
     case 'gaji':
+    case 'salary':
       return TransactionCategory.Salary;
 
     case 'pembelian':

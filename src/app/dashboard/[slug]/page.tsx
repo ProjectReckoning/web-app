@@ -23,7 +23,7 @@ import { TransactionType } from '@/features/insight/constants/transaction-type.e
 import { TransactionEntity } from '@/features/insight/entities/transaction.entities';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getBackgroundColorFromTransactionType, getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
-import { getTransactionCateogryFromString } from '@/features/insight/constants/transaction-category.enum';
+import { getTransactionCategoryFromString, TransactionCategory } from '@/features/insight/constants/transaction-category.enum';
 import { BepProfit } from '@/features/insight/entities/bep-profit.entities';
 import { BepLoss } from '@/features/insight/entities/bep-loss.entities';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
@@ -339,7 +339,7 @@ function mapTransactionData(transactions: TransactionEntity[]) {
   };
 
   for (const transaction of transactions) {
-    const category = transaction.type;
+    const category = getTransactionCategoryFromString(transaction.type);
     const type = transaction.transactionType;
 
     if (!grouped[type][category]) {
@@ -355,7 +355,7 @@ function mapTransactionData(transactions: TransactionEntity[]) {
     return {
       label: type === TransactionType.OUTCOME ? 'Pengeluaran' : 'Pemasukan',
       data: Object.entries(data).map(([category, { value, transactionCount }]) => {
-        const categoryEnum = getTransactionCateogryFromString(category)
+        const categoryEnum = category as TransactionCategory
         const backgroundColor = getBackgroundColorFromTransactionType(categoryEnum);
         const color = getColorFromTransactionType(categoryEnum)
 
