@@ -111,7 +111,12 @@ function GreetingComponent({ name, ...props }: Readonly<{ name: string } & Typog
       gap={0.5}
       overflow="hidden"
       textOverflow="ellipsis"
-      width="100%"
+      sx={{
+        width: {
+          xs: "100%",
+          sm: "inherit",
+        }
+      }}
       {...props}
     >
       Hai, <Box
