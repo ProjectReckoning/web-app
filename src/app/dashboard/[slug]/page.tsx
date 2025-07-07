@@ -37,25 +37,37 @@ import { PocketMemberRole } from '@/features/pocket/entities/detail-pocket.entit
 
 const StatsSampleData: ChartData[] = [
   {
-    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    label: 'Pengeluaran',
+    x: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    label: 'Mingguan',
     series: {
-      makanan: { data: [1_200_000, 1_500_000, 1_450_000, 1_600_000, 1_700_000, 1_750_000], color: '#ff6384' },
-      transportasi: { data: [300_000, 350_000, 330_000, 400_000, 420_000, 450_000], color: '#36a2eb' },
-      hiburan: { data: [500_000, 600_000, 550_000, 700_000, 800_000, 900_000], color: '#ffce56' },
-      tagihan: { data: [900_000, 950_000, 1_000_000, 1_050_000, 1_100_000, 1_150_000], color: '#4bc0c0' },
+      gaji: { data: [300_000, 320_000, 310_000, 330_000], color: '#ff6384' },
+      transportasi: { data: [80_000, 75_000, 85_000, 90_000], color: '#36a2eb' },
+      pemasukan: { data: [100_000, 120_000, 90_000, 150_000], color: '#ffce56' },
+      tagihan: { data: [200_000, 200_000, 200_000, 200_000], color: '#4bc0c0' },
     },
   },
   {
     x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    label: 'Pemasukan',
+    label: 'Bulanan',
     series: {
-      gaji: { data: [7_000_000, 7_000_000, 7_000_000, 7_500_000, 8_000_000, 8_000_000], color: '#81c784' },
-      freelance: { data: [1_000_000, 1_200_000, 1_000_000, 1_500_000, 1_600_000, 1_800_000], color: '#9575cd' },
-      investasi: { data: [250_000, 300_000, 320_000, 350_000, 370_000, 400_000], color: '#ffb74d' },
+      gaji: { data: [1_200_000, 1_500_000, 1_450_000, 1_600_000, 1_700_000, 1_750_000], color: '#ff6384' },
+      transportasi: { data: [300_000, 350_000, 330_000, 400_000, 420_000, 450_000], color: '#36a2eb' },
+      pemasukan: { data: [500_000, 600_000, 550_000, 700_000, 800_000, 900_000], color: '#ffce56' },
+      tagihan: { data: [900_000, 950_000, 1_000_000, 1_050_000, 1_100_000, 1_150_000], color: '#4bc0c0' },
+    },
+  },
+  {
+    x: ['2020', '2021', '2022', '2023', '2024'],
+    label: 'Tahunan',
+    series: {
+      gaji: { data: [14_000_000, 15_500_000, 16_200_000, 17_000_000, 18_000_000], color: '#ff6384' },
+      transportasi: { data: [3_600_000, 4_200_000, 4_500_000, 4_800_000, 5_000_000], color: '#36a2eb' },
+      pemasukan: { data: [6_000_000, 6_500_000, 7_200_000, 7_800_000, 8_500_000], color: '#ffce56' },
+      tagihan: { data: [10_800_000, 11_400_000, 12_000_000, 12_600_000, 13_200_000], color: '#4bc0c0' },
     },
   },
 ];
+
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
