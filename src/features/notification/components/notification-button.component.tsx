@@ -74,13 +74,14 @@ export default function NotificationButton({
         slotProps={{
           paper: {
             sx: {
-              maxWidth: 300,
+              width: 460,
+              maxWidth: "80%",
               paddingY: 2,
               mt: 1,
               maxHeight: "80vh",
               overflowY: "auto",
               borderRadius: 6,
-              boxShadow: (theme) => theme.shadows[3],
+              boxShadow: (theme) => theme.shadows[2],
             },
           },
         }}
