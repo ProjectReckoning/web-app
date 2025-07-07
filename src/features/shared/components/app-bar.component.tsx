@@ -4,7 +4,7 @@ import React from 'react';
 import { styled, Theme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { Box, Button, Skeleton, useMediaQuery } from '@mui/material';
 import { orange, purple } from '@/lib/custom-color';
 import { Icon } from '@iconify/react';
@@ -100,10 +100,26 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   );
 };
 
-function GreetingComponent({ name }: { name: string }) {
+function GreetingComponent({ name, ...props }: Readonly<{ name: string, props: TypographyProps }>) {
   return (
-    <Typography fontWeight="600" variant='body1' margin={0} display="flex" alignItems="center" gap={0.5}>
-      Hai, <Box component="span" color={orange[500]} fontWeight="bold">{name}</Box>
+    <Typography
+      fontWeight="600"
+      variant='body1'
+      margin={0}
+      display="flex"
+      alignItems="center"
+      gap={0.5}
+      {...props}
+    >
+      Hai, <Box
+        component="span"
+        color={orange[500]}
+        fontWeight="bold"
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        width="100%"
+      >{name}</Box>
     </Typography>
   )
 }

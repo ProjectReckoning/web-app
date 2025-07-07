@@ -123,7 +123,11 @@ export default function Page() {
 
       <Stack spacing={4}>
         <Typography variant='h6'>Rekap Keuanganmu</Typography>
-        <TransactionInsightSection isTransactionLoading={isTransactionLoading || !allPocketsTransactions} transactions={allPocketsTransactions ?? []} />
+        <TransactionInsightSection
+          isTransactionLoading={isTransactionLoading || !allPocketsTransactions}
+          transactions={allPocketsTransactions ?? []}
+          width="100%"
+        />
       </Stack>
     </Box>
   );
@@ -169,7 +173,7 @@ function TransactionInsightSection({
           />
         </Box>
 
-        <Box display="flex" flexDirection="column" gap={2} flex={1}>
+        <Box display="flex" flexDirection="column" gap={2} flex={1} width="100%">
           <PieChartWithTabs
             isLoading={isTransactionLoading || !showedTransactions}
             flex={1}

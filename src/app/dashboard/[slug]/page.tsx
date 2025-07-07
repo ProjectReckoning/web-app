@@ -259,6 +259,7 @@ export default function Page() {
             split={!isPocketAdmin}
             transactions={transactions ?? []}
             isTransactionLoading={isTransactionLoading}
+            width="100%"
           />
           {isPocketAdmin && (
             <BepInsightSection
@@ -270,6 +271,7 @@ export default function Page() {
               display="flex"
               flexDirection="column"
               gap={4}
+              width="100%"
             />
           )}
         </Box>
