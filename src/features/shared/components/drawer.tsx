@@ -143,7 +143,7 @@ export default function Drawer({
                 {
                   height: 48,
                   px: 2.5,
-                  mx: 1,
+                  mx: "auto",
                   borderRadius: 999,
                   aspectRatio: isOpen ? "inherit" : 1,
                 },
