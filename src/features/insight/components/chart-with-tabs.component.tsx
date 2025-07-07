@@ -186,7 +186,7 @@ export default function ChartWithTabs({
       />
 
       {isDemo && (
-        <Typography variant="caption" fontStyle="italic" display="block" width="100%" textAlign="center" mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
+        <Typography variant="caption" fontStyle="italic" display="block" width="100%" textAlign="center" mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" whiteSpace="nowrap" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
       )}
     </Box>
   );
