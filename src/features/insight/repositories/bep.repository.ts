@@ -19,7 +19,7 @@ class BepRepository {
         return {
           status: 'profit',
           cleanProfit: data.data.cleanProfit,
-          profitPercentage: data.data.profitPercentage,
+          profitPercentage: data.data.profitPercentage * 100,
           averageDailyCleanProfit: data.data.averageDailyCleanProfit,
           estimatedDaysToBEP: data.data.estimatedDaysToBEP ?? 0,
         } as BepProfit
