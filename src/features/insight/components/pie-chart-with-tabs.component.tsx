@@ -114,12 +114,13 @@ export default function PieChartWithTabs({
       <Tabs
         value={tab}
         onChange={(_, newValue) => setTab(newValue)}
-        centered
-        variant="standard"
+        allowScrollButtonsMobile
+        variant="scrollable"
         slotProps={{
           root: {
             sx: {
-              width: "fit-content",
+              width: "100%",
+              maxWidth: "fit-content",
               mx: "auto",
               backgroundColor: gray[50],
               borderRadius: 999,
@@ -132,7 +133,7 @@ export default function PieChartWithTabs({
         {data.map((tabItem, index) => (
           <Tab
             key={tabItem.label}
-            label={tabItem.label}
+            label={tabItem.label.charAt(0).toUpperCase() + tabItem.label.slice(1)}
             value={index}
             sx={{
               color: "black",
@@ -170,6 +171,9 @@ export default function PieChartWithTabs({
               },
             },
           ]}
+          sx={{
+            maxWidth: "100%"
+          }}
           width={200}
           height={200}
         />

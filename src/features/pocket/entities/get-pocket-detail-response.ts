@@ -19,7 +19,7 @@ export interface PocketOwner {
     user_id: number;
     pocket_id: number;
     role: string;
-    contribution_amount: number | null;
+    contribution_amount: string | null;
     joined_at: string | null;
     is_active: boolean | null;
     createdAt: string;
@@ -36,7 +36,7 @@ export interface PocketMember {
     user_id: number;
     pocket_id: number;
     role: string;
-    contribution_amount: number | null;
+    contribution_amount: string | null;
     joined_at: string | null;
     is_active: boolean | null;
     createdAt: string;

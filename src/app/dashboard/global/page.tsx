@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import Box, { BoxProps } from '@mui/material/Box';
-import ChartWithTabs from '@/features/insight/components/chart-with-tabs.component';
+import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import DateRangeSelector from '@/features/shared/components/date-range-selector.component';
 import PieChartWithTabs from '@/features/insight/components/pie-chart-with-tabs.component';
@@ -13,12 +13,34 @@ import PocketOverviewList from '@/features/pocket/components/pocket-overview-lis
 import transactionHistoryStore from '@/features/insight/stores/transaction-history.store';
 import statsStore from '@/features/insight/stores/stats.store';
 import { GetTransactionDurationOption } from '@/features/insight/constants/get-transaction-history-duration-option.enum';
-import { getTransactionCateogryFromString } from '@/features/insight/constants/transaction-category.enum';
+import { getTransactionCategoryFromString, TransactionCategory } from '@/features/insight/constants/transaction-category.enum';
 import { TransactionType } from '@/features/insight/constants/transaction-type.enum';
 import { TransactionEntity } from '@/features/insight/entities/transaction.entities';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getBackgroundColorFromTransactionType, getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
 import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
+
+const StatsSampleData: ChartData[] = [
+  {
+    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    label: 'Pengeluaran',
+    series: {
+      makanan: { data: [1_200_000, 1_500_000, 1_450_000, 1_600_000, 1_700_000, 1_750_000], color: '#ff6384' },
+      transportasi: { data: [300_000, 350_000, 330_000, 400_000, 420_000, 450_000], color: '#36a2eb' },
+      hiburan: { data: [500_000, 600_000, 550_000, 700_000, 800_000, 900_000], color: '#ffce56' },
+      tagihan: { data: [900_000, 950_000, 1_000_000, 1_050_000, 1_100_000, 1_150_000], color: '#4bc0c0' },
+    },
+  },
+  {
+    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    label: 'Pemasukan',
+    series: {
+      gaji: { data: [7_000_000, 7_000_000, 7_000_000, 7_500_000, 8_000_000, 8_000_000], color: '#81c784' },
+      freelance: { data: [1_000_000, 1_200_000, 1_000_000, 1_500_000, 1_600_000, 1_800_000], color: '#9575cd' },
+      investasi: { data: [250_000, 300_000, 320_000, 350_000, 370_000, 400_000], color: '#ffb74d' },
+    },
+  },
+];
 
 export default function Page() {
   const { pockets, isLoading, getAllPockets } = pocketStore()
@@ -69,17 +91,23 @@ export default function Page() {
       />
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-        <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 2, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h5'>Grafik Keuanganmu</Typography>
           <ChartWithTabs
+            isDemo={!stats?.length}
             isLoading={isStatsLoading || !stats}
-            data={stats || []}
-            sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            data={stats?.length ? stats : StatsSampleData}
+            sx={{
+              border: 1,
+              padding: 4,
+              borderRadius: 10,
+              borderColor: "border.main"
+            }}
             height={chartHeight}
           />
         </Box>
 
-        <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 1, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h5'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
             transactions={last5Transactions ?? []}
@@ -95,7 +123,11 @@ export default function Page() {
 
       <Stack spacing={4}>
         <Typography variant='h6'>Rekap Keuanganmu</Typography>
-        <TransactionInsightSection isTransactionLoading={isTransactionLoading || !allPocketsTransactions} transactions={allPocketsTransactions ?? []} />
+        <TransactionInsightSection
+          isTransactionLoading={isTransactionLoading || !allPocketsTransactions}
+          transactions={allPocketsTransactions ?? []}
+          width="100%"
+        />
       </Stack>
     </Box>
   );
@@ -127,7 +159,7 @@ function TransactionInsightSection({
   return (
     <Box display="flex" flexDirection="column" gap={4} {...props}>
       <Box width="fit-content">
-        <DateRangeSelector onChange={handleDateRangeChange} />
+        <DateRangeSelector onChange={handleDateRangeChange} maxWidth="100%" />
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
@@ -141,7 +173,7 @@ function TransactionInsightSection({
           />
         </Box>
 
-        <Box display="flex" flexDirection="column" gap={2} flex={1}>
+        <Box display="flex" flexDirection="column" gap={2} flex={1} width="100%">
           <PieChartWithTabs
             isLoading={isTransactionLoading || !showedTransactions}
             flex={1}
@@ -162,7 +194,7 @@ function mapTransactionData(transactions: TransactionEntity[]) {
   };
 
   for (const transaction of transactions) {
-    const category = transaction.type;
+    const category = getTransactionCategoryFromString(transaction.type);
     const type = transaction.transactionType;
 
     if (!grouped[type][category]) {
@@ -178,7 +210,7 @@ function mapTransactionData(transactions: TransactionEntity[]) {
     return {
       label: type === TransactionType.OUTCOME ? 'Pengeluaran' : 'Pemasukan',
       data: Object.entries(data).map(([category, { value, transactionCount }]) => {
-        const categoryEnum = getTransactionCateogryFromString(category)
+        const categoryEnum = category as TransactionCategory
         const backgroundColor = getBackgroundColorFromTransactionType(categoryEnum);
         const color = getColorFromTransactionType(categoryEnum)
 

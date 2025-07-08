@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
+import MuiDrawer, { DrawerProps } from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -29,6 +29,8 @@ const openedMixin = (theme: Theme): CSSObject => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
+  borderTopRightRadius: 16,
+  borderBottomRightRadius: 16,
   overflowX: 'hidden',
 });
 
@@ -71,6 +73,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 
 interface DrawerComponentProps {
   isOpen: boolean;
+  isMobile?: boolean;
   onToggleDrawer: () => void;
   pockets: PocketMenuItem[];
   selectedPocketId: string;
@@ -82,6 +85,7 @@ interface DrawerComponentProps {
 
 export default function Drawer({
   isOpen,
+  isMobile = false,
   onToggleDrawer,
   pockets,
   selectedPocketId,
@@ -89,106 +93,125 @@ export default function Drawer({
   menus,
   pathname,
   onNavigate,
-}: Readonly<DrawerComponentProps>) {
+  ...props
+}: Readonly<DrawerComponentProps & DrawerProps>) {
   const currentPocket = pockets.find(p => p.id === selectedPocketId);
 
   return (
-    <StyledDrawer variant="permanent" open={isOpen}>
-      <DrawerHeader sx={{ justifyContent: isOpen ? "space-between" : "center", height: 84 }}>
-        <Box
-          component="img"
-          src="/images/logo.png"
-          alt="Logo"
-          height={64}
-          sx={{ display: isOpen ? "block" : "none" }}
-        />
-        <IconButton onClick={onToggleDrawer} color='purple'>
-          {isOpen
-            ? <Icon icon="mdi:chevron-left" style={{ fontSize: 24 }} />
-            : <Icon icon="mdi:menu" style={{ fontSize: 24 }} />
-          }
-        </IconButton>
-      </DrawerHeader>
-
-      {!!pockets.length && (
-        <PocketSelect
-          pockets={pockets}
-          selectedPocketId={selectedPocketId}
-          onPocketChange={onPocketChange}
-          isOpen={isOpen}
-        />
-      )}
-
-      <List sx={{ marginTop: 2 }}>
-        {menus.map((menu) => (
-          <ListItem
-            key={menu.name}
-            disablePadding
+    <>
+      {
+        isOpen && isMobile && (
+          <Box
+            onClick={onToggleDrawer}
             sx={{
-              display: 'block',
-              paddingX: isOpen ? 2 : 0,
-              paddingY: 0.5,
-              '& .Mui-selected': {
-                backgroundColor: `${currentPocket?.color ?? purple[500]} !important`,
-                color: 'white',
-              },
-              '.Mui-selected .MuiListItemIcon-root': {
-                color: 'white',
-              },
-            }}>
-            <ListItemButton
-              onClick={() => onNavigate(menu.href)}
-              selected={pathname === menu.href}
-              sx={[
-                {
-                  height: 48,
-                  px: 2.5,
-                  mx: 1,
-                  borderRadius: 999,
-                  aspectRatio: isOpen ? "inherit" : 1,
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              zIndex: (theme) => theme.zIndex.drawer,
+            }}
+          />
+        )
+      }
+      <StyledDrawer variant="permanent" open={isOpen} {...props}>
+        <DrawerHeader sx={{ justifyContent: isOpen ? "space-between" : "center", height: 84 }}>
+          <Box
+            component="img"
+            src="/images/logo.png"
+            alt="Logo"
+            height={64}
+            sx={{ display: isOpen ? "block" : "none" }}
+          />
+          <IconButton onClick={onToggleDrawer} color='purple'>
+            {isOpen
+              ? <Icon icon="mdi:chevron-left" style={{ fontSize: 24 }} />
+              : <Icon icon="mdi:menu" style={{ fontSize: 24 }} />
+            }
+          </IconButton>
+        </DrawerHeader>
+
+        {!!pockets.length && (
+          <PocketSelect
+            pockets={pockets}
+            selectedPocketId={selectedPocketId}
+            onPocketChange={onPocketChange}
+            isOpen={isOpen}
+          />
+        )}
+
+        <List sx={{ marginTop: 2 }}>
+          {menus.map((menu) => (
+            <ListItem
+              key={menu.name}
+              disablePadding
+              sx={{
+                display: 'block',
+                paddingX: isOpen ? 2 : 0,
+                paddingY: 0.5,
+                '& .Mui-selected': {
+                  backgroundColor: `${currentPocket?.color ?? purple[500]} !important`,
+                  color: 'white',
                 },
-                isOpen
-                  ? {
-                    justifyContent: 'initial',
-                  }
-                  : {
-                    justifyContent: 'center',
-                  },
-              ]}
-            >
-              <ListItemIcon
+                '.Mui-selected .MuiListItemIcon-root': {
+                  color: 'white',
+                },
+              }}>
+              <ListItemButton
+                onClick={() => onNavigate(menu.href)}
+                selected={pathname === menu.href}
                 sx={[
                   {
-                    minWidth: 0,
-                    justifyContent: 'center',
+                    height: 48,
+                    px: 2.5,
+                    mx: "auto",
+                    borderRadius: 999,
+                    aspectRatio: isOpen ? "inherit" : 1,
                   },
                   isOpen
                     ? {
-                      mr: 3,
+                      justifyContent: 'initial',
                     }
                     : {
-                      mr: 'auto',
+                      justifyContent: 'center',
                     },
                 ]}
               >
-                {menu.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={menu.name}
-                sx={[
-                  isOpen
-                    ? {
-                      opacity: 1,
-                    }
-                    : {
-                      opacity: 0,
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: 'center',
                     },
-                ]}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </StyledDrawer>
+                    isOpen
+                      ? {
+                        mr: 3,
+                      }
+                      : {
+                        mr: 'auto',
+                      },
+                  ]}
+                >
+                  {menu.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={menu.name}
+                  sx={[
+                    isOpen
+                      ? {
+                        opacity: 1,
+                      }
+                      : {
+                        opacity: 0,
+                      },
+                  ]}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </StyledDrawer>
+    </>
   );
 };

@@ -20,8 +20,8 @@ export default function CustomIcon({
     // Icons for specific pockets
     pocket: "material-symbols:money-bag-outline",
     food: "fluent:food-32-regular",
-    hanger: "tabler:hanger",
-    scissors: "mingcute:scissors-line",
+    fashion: "tabler:hanger",
+    barber: "mingcute:scissors-line",
     plant: "akar-icons:plant",
     motorcycle: 'pepicons-pop:motorcycle',
 

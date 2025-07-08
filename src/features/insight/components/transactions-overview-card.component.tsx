@@ -7,6 +7,7 @@ import { TransactionSummaryEntity } from '../entities/transaction-summary.entiti
 import Skeleton from '@/features/shared/components/skeleton';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getLabelFromTransactionType } from '@/lib/get-label-from-transaction-type';
+import { Icon } from '@iconify/react';
 
 const DEFAULT_COUNT = 5;
 
@@ -48,9 +49,12 @@ export default function TransactionOverviewCard({
 
   if (!transactions?.length) {
     return (
-      <Box {...props}>
-        <Typography variant="body2" textAlign="center" py={2}>
-          Tidak ada transaksi
+      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" {...props}>
+        <Avatar sx={{ bgcolor: 'gray.main', width: 48, height: 48, mt: 1 }}>
+          <Icon icon="mdi:clipboard-text-off-outline" width={32} />
+        </Avatar>
+        <Typography variant="body2" mt={2} color='gray.main'>
+          Belum ada transaksi
         </Typography>
       </Box>
     )
@@ -84,7 +88,7 @@ export default function TransactionOverviewCard({
             </Avatar>
             <Box key={`${tx.type}-${tx.description}-${tx.transactionType}-${tx.amount}`} flex={1} display="flex" flexWrap="wrap" alignItems="center" justifyContent="space-between" gap={2}>
               <Box flex={1} overflow="hidden" width={0} textOverflow="ellipsis">
-                <Typography variant="body2" fontWeight={500} whiteSpace="nowrap">
+                <Typography variant="body2" fontWeight={500} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
                   {getLabelFromTransactionType(tx.type)}
                 </Typography>
                 <Typography variant="caption" color="text.secondary" whiteSpace="nowrap">

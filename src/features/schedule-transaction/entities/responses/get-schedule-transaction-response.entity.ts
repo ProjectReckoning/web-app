@@ -12,6 +12,7 @@ export interface GetAutoBudgetItem {
   recurring_amount: number;
   next_run_date: Date;
   status: 'active' | 'inactive';
+  category: string;
   detail: GetAutoBudgetDetail;
 }
 

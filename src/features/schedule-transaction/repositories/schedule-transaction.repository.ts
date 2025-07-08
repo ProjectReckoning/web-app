@@ -35,7 +35,8 @@ class ScheduleTransactionRepository {
       recurringAmount: data.recurring_amount,
       nextRunDate: data.next_run_date,
       status: data.status,
-      detail: detail
+      category: data.category,
+      detail: detail,
     }
   }
 }

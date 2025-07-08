@@ -115,7 +115,7 @@ export default function FormEditPocket({
               borderRadius: 5,
               padding: { xs: 2, sm: 3, md: 5 },
               width: "100%",
-              minWidth: 300,
+              minWidth: 240,
               justifyContent: "space-around",
             }}
           >
@@ -231,7 +231,7 @@ export default function FormEditPocket({
             borderRadius: 5,
             padding: { xs: 2, sm: 3, md: 5 },
             width: "100%",
-            minWidth: 300,
+            minWidth: 240,
             justifyContent: "space-around",
           }}
         >

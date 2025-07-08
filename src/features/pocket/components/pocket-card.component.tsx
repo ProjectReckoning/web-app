@@ -54,6 +54,7 @@ export default function PocketCard({
               bgcolor: "gray.main",
               width: 64,
               height: 64,
+              aspectRatio: 1,
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',

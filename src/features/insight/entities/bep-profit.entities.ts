@@ -3,5 +3,5 @@ export interface BepProfit {
   cleanProfit: number;
   profitPercentage: number;
   averageDailyCleanProfit: number;
-  estimatedDaysToBEP: number;
+  estimatedDaysToBEP: number | null;
 }

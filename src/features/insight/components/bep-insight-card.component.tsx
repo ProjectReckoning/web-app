@@ -15,7 +15,7 @@ export default function BEPInsightCard({
   bep,
   isLoading = false,
   ...props
-}: BEPInsightCardProps) {
+}: Readonly<BEPInsightCardProps>) {
   if (isLoading || !bep) {
     return (
       <Box {...props}>
@@ -142,7 +142,7 @@ export default function BEPInsightCard({
               cy: '50%',
               valueFormatter: (v) => {
                 const value = typeof v === "number" ? v : v?.value ?? 0;
-                return formatCurrency(value);
+                return `${value}%`;
               },
             },
           ]}
@@ -165,7 +165,7 @@ export default function BEPInsightCard({
         >
           <Box>
             <Typography variant="body1" fontWeight="bold" textOverflow="ellipsis" overflow="hidden" width={64}>
-              {Math.round(progressPercent)}%
+              {progressPercent}%
             </Typography>
             {'\n'}
             <Typography variant='body2' color="text.secondary">
@@ -230,16 +230,18 @@ function AdditionalInformation({ bep }: Readonly<{ bep: BepProfit | BepLoss }>) 
       <Stack spacing={1} mt={4} textAlign="center">
         <Typography variant="body2" mt={3}>
           Yeay! kamu sudah mencapai{' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{Math.round(progressPercent)}%</Typography> dari BEP
+          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{progressPercent}%</Typography> dari BEP
         </Typography>
         <Typography variant="body2">
           dan <b>rata-rata keuntungan harian</b>{' '}
           <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(bep.averageDailyCleanProfit, { maximumFractionDigits: 0 })}</Typography>
         </Typography>
-        <Typography variant="body2">
-          kamu butuh{' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{bep.estimatedDaysToBEP} hari</Typography> lagi untuk mencapai BEP!
-        </Typography>
+        {!!bep.estimatedDaysToBEP && (
+          <Typography variant="body2">
+            kamu butuh{' '}
+            <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{bep.estimatedDaysToBEP} hari</Typography> lagi untuk mencapai BEP!
+          </Typography>
+        )}
       </Stack>
     );
   }
@@ -254,13 +256,19 @@ function AdditionalInformation({ bep }: Readonly<{ bep: BepProfit | BepLoss }>) 
         dengan <b>rata-rata penjualan</b>{' '}
         <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(bep.averageDailyCleanProfit, { maximumFractionDigits: 0 })}</Typography>
       </Typography>
-      {bep.projections.map((projection) => (
-        <Typography key={projection.estimatedDaysToCoverLoss} variant="body2">
-          Kamu butuh{' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{projection.estimatedDaysToCoverLoss} hari</Typography>{' '} kedepan dengan target harian {' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(projection.increasedIncome, { maximumFractionDigits: 0 })}</Typography> buat tutup kerugian
-        </Typography>
-      ))}
+      {bep.projections.map((projection) => {
+        if (projection.estimatedDaysToCoverLoss) {
+          return (
+            (
+              <Typography key={projection.estimatedDaysToCoverLoss} variant="body2">
+                Kamu butuh{' '}
+                <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{projection.estimatedDaysToCoverLoss} hari</Typography>{' '} kedepan dengan target harian {' '}
+                <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{formatCurrency(projection.increasedIncome, { maximumFractionDigits: 0 })}</Typography> buat tutup kerugian
+              </Typography>
+            )
+          )
+        }
+      })}
     </Stack>
   )
 }

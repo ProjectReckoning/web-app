@@ -141,7 +141,7 @@ export default function ScheduledTransactionList({
           <Avatar sx={{ bgcolor: 'purple.main', width: 48, height: 48, mt: 1 }}>
             <Icon icon="mdi:calendar-clock-outline" width={32} />
           </Avatar>
-          <Typography variant="body1" mt={2} color='gray.main'>
+          <Typography variant="body1" mt={2} textAlign='center' color='gray.main'>
             Belum ada transaksi terjadwal
           </Typography>
         </Box>

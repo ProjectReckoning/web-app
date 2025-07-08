@@ -34,15 +34,24 @@ export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        display: {
+          xs: "block",
+          sm: "flex",
+        },
+        justifyContent: "stretch"
+      }}
+    >
       <Header />
 
       <Box
+        flex={1}
         component="main"
         sx={{
           ml: {
-            xs: 7,
-            sm: 8,
+            xs: 6,
+            sm: 0,
           }
         }}
       >
@@ -51,7 +60,7 @@ export default function Layout(props: Readonly<{ children: React.ReactNode }>) {
           {props.children}
         </Container>
       </Box>
-    </>
+    </Box>
   );
 }
 

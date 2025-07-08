@@ -44,7 +44,11 @@ const authStore = create<AuthStore>()(
 				const { sessionId, expiresAt } = await loginWithCredentialUseCase(phoneNumber, password)
 				set({ sessionId, sessionExpiresAt: expiresAt, phoneNumber })
 			} catch (error) {
-				set({ errorMessage: error instanceof AxiosError ? error.response?.data.message : String(error) })
+				if (error instanceof AxiosError) {
+					set({ errorMessage: "Nomor hp atau password tidak sesuai" });
+				} else {
+					set({ errorMessage: "Terdapat kesalahan" });
+				}
 			} finally {
 				set({ isLoading: false })
 			}

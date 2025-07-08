@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import authStore from "../stores/auth.store";
 import { useRouter } from "next/navigation";
-import { gray } from "@/lib/custom-color";
+import { gray, purple } from "@/lib/custom-color";
 
 export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { phoneNumber: string }) {
   const { sessionId, sessionExpiresAt, logout, loginWithOtp, errorMessage, token, isLoading } = authStore();
@@ -155,7 +155,7 @@ export default function AuthWIthOtpForm({ phoneNumber, ...props }: BoxProps & { 
         startIcon={<Icon icon="mdi:arrow-left" width={24} height={24} />}
         onClick={logout}
         variant="text"
-        sx={{ mt: 2, textTransform: 'none' }}
+        sx={{ mt: 2, textTransform: 'none', color: purple[500] }}
         disabled={timer > 0}
       >
         Kembali

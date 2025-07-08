@@ -2,7 +2,7 @@
 
 import Typography from '@mui/material/Typography';
 import Box, { BoxProps } from '@mui/material/Box';
-import ChartWithTabs from '@/features/insight/components/chart-with-tabs.component';
+import ChartWithTabs, { ChartData } from '@/features/insight/components/chart-with-tabs.component';
 import TransactionOverviewCard from '@/features/insight/components/transactions-overview-card.component';
 import PieChartWithTabs from '@/features/insight/components/pie-chart-with-tabs.component';
 import { Link, Stack, useMediaQuery, useTheme } from '@mui/material';
@@ -23,7 +23,7 @@ import { TransactionType } from '@/features/insight/constants/transaction-type.e
 import { TransactionEntity } from '@/features/insight/entities/transaction.entities';
 import CustomIcon from '@/features/shared/components/custom-icon.component';
 import { getBackgroundColorFromTransactionType, getColorFromTransactionType } from '@/lib/get-color-from-transaction-type';
-import { getTransactionCateogryFromString } from '@/features/insight/constants/transaction-category.enum';
+import { getTransactionCategoryFromString, TransactionCategory } from '@/features/insight/constants/transaction-category.enum';
 import { BepProfit } from '@/features/insight/entities/bep-profit.entities';
 import { BepLoss } from '@/features/insight/entities/bep-loss.entities';
 import BEPModalInput from '@/features/insight/components/bep-modal-input.component';
@@ -34,6 +34,40 @@ import scheduledTransactionsStore from '@/features/schedule-transaction/stores/s
 import formatDate from '@/lib/format-date';
 import { ScheduledTransactionEntity } from '@/features/schedule-transaction/entities/scheduled-transaction.entity';
 import { PocketMemberRole } from '@/features/pocket/entities/detail-pocket.entities';
+
+const StatsSampleData: ChartData[] = [
+  {
+    x: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    label: 'Mingguan',
+    series: {
+      gaji: { data: [300_000, 320_000, 310_000, 330_000], color: '#ff6384' },
+      transportasi: { data: [80_000, 75_000, 85_000, 90_000], color: '#36a2eb' },
+      pemasukan: { data: [100_000, 120_000, 90_000, 150_000], color: '#ffce56' },
+      tagihan: { data: [200_000, 200_000, 200_000, 200_000], color: '#4bc0c0' },
+    },
+  },
+  {
+    x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    label: 'Bulanan',
+    series: {
+      gaji: { data: [1_200_000, 1_500_000, 1_450_000, 1_600_000, 1_700_000, 1_750_000], color: '#ff6384' },
+      transportasi: { data: [300_000, 350_000, 330_000, 400_000, 420_000, 450_000], color: '#36a2eb' },
+      pemasukan: { data: [500_000, 600_000, 550_000, 700_000, 800_000, 900_000], color: '#ffce56' },
+      tagihan: { data: [900_000, 950_000, 1_000_000, 1_050_000, 1_100_000, 1_150_000], color: '#4bc0c0' },
+    },
+  },
+  {
+    x: ['2020', '2021', '2022', '2023', '2024'],
+    label: 'Tahunan',
+    series: {
+      gaji: { data: [14_000_000, 15_500_000, 16_200_000, 17_000_000, 18_000_000], color: '#ff6384' },
+      transportasi: { data: [3_600_000, 4_200_000, 4_500_000, 4_800_000, 5_000_000], color: '#36a2eb' },
+      pemasukan: { data: [6_000_000, 6_500_000, 7_200_000, 7_800_000, 8_500_000], color: '#ffce56' },
+      tagihan: { data: [10_800_000, 11_400_000, 12_000_000, 12_600_000, 13_200_000], color: '#4bc0c0' },
+    },
+  },
+];
+
 
 export default function Page() {
   const { selectedPocket } = pocketStore();
@@ -51,7 +85,7 @@ export default function Page() {
     getAllTransactions
   } = transactionHistoryStore();
   const { isLoading: isBepLoading, getBep, bep } = bepStore()
-  const { isLoading: isStatsLoading, getStatsSpesificPocket: getStats, stats } = statsStore()
+  const { isLoading: isStatsLoading, getStatsSpesificPocket, stats } = statsStore()
   const pathname = usePathname();
   const isPocketAdmin = pocket?.userRole === PocketMemberRole.Admin || pocket?.userRole === PocketMemberRole.Owner
 
@@ -75,6 +109,7 @@ export default function Page() {
     }
 
     getLast5Transactions();
+    getStatsSpesificPocket(pocket.id);
     getAllTransactions({
       pocketId: pocket.id,
       duration: GetTransactionDurationOption.LAST_1_YEAR,
@@ -85,7 +120,7 @@ export default function Page() {
       getBep(pocket.id)
     }
 
-  }, [pocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStats]);
+  }, [pocket, getLast5Transactions, getAllScheduledTransactions, getAllTransactions, getBep, getStatsSpesificPocket]);
 
   const mappedScheduledTransaction = useMemo(() => mapScheduledTransactions(scheduledTransactions), [scheduledTransactions]);
 
@@ -115,7 +150,8 @@ export default function Page() {
           },
           gap: 2,
           flex: 1,
-          maxWidth: 640,
+          width: "100%",
+          maxWidth: theme.breakpoints.only("md"),
         }}
         >
           <PocketCard
@@ -130,9 +166,12 @@ export default function Page() {
               border: isLoading ? 1 : 0,
               borderColor: isLoading ? "border.main" : 'transparent',
               borderRadius: 4,
-              padding: 3,
+              padding: {
+                xs: 1,
+                sm: 3,
+              },
               paddingRight: {
-                xs: 8,
+                xs: 0,
                 lg: 16,
               },
               marginRight: {
@@ -140,7 +179,7 @@ export default function Page() {
                 lg: 24,
               }
             }}
-            minWidth={300}
+            minWidth={240}
             height="100%"
             flex={1}
           />
@@ -166,32 +205,40 @@ export default function Page() {
             flex={1}
           />
         </Box>
-        {isPocketAdmin && (
+        {isPocketAdmin ? (
           <ScheduledTransactionList
             title="Transaksi terjadwalmu"
             isLoading={isScheduledTransactionLoading || !scheduledTransactions}
             transactions={mappedScheduledTransaction}
             flex={1}
-            minWidth={300}
+            minWidth={240}
           />
+        ) : (
+            <Box flex={1} minWidth={240}></Box>
         )}
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', gap: 4 }}>
-        <Box sx={{ flex: 2, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 2, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Grafik Keuanganmu</Typography>
           <ChartWithTabs
-            isLoading={isStatsLoading}
-            data={stats ?? []}
-            sx={{ border: 1, padding: 4, borderRadius: 10, borderColor: "border.main" }}
+            isDemo={!stats?.length}
+            isLoading={isStatsLoading || !stats}
+            data={stats?.length ? stats : StatsSampleData}
+            sx={{
+              border: 1,
+              padding: 4,
+              borderRadius: 10,
+              borderColor: "border.main"
+            }}
             height={chartHeight}
           />
         </Box>
 
-        <Box sx={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ flex: 1, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant='h6'>Transaksi terakhir</Typography>
           <TransactionOverviewCard
-            isLoading={isTransactionLoading || !last5Transactions?.length}
+            isLoading={isTransactionLoading || !last5Transactions}
             transactions={last5Transactions ?? []}
             actions={
               <Link href={`${pathname}/transactions`} underline="always" color="orange.main">
@@ -216,6 +263,7 @@ export default function Page() {
             split={!isPocketAdmin}
             transactions={transactions ?? []}
             isTransactionLoading={isTransactionLoading}
+            width="100%"
           />
           {isPocketAdmin && (
             <BepInsightSection
@@ -227,6 +275,7 @@ export default function Page() {
               display="flex"
               flexDirection="column"
               gap={4}
+              width="100%"
             />
           )}
         </Box>
@@ -253,7 +302,7 @@ function BepInsightSection({
     >
       <BEPModalInput
         onSubmitChange={onChangeBepModal}
-        sx={{ mx: 4 }} defaultValue={pocket?.targetNominal ?? 0}
+        sx={{ mx: { xs: 0, md: 4 } }} defaultValue={pocket?.targetNominal ?? 0}
       />
       <BEPInsightCard
         isLoading={isLoading || !bep || !pocket}
@@ -300,7 +349,7 @@ function TransactionInsightSection({
   if (split) {
     return (
       <Box display={"flex"} flexDirection="column" gap={4} {...props}>
-        <DateRangeSelector onChange={handleDateRangeChange} mx={4} maxWidth={320} />
+        <DateRangeSelector onChange={handleDateRangeChange} maxWidth="100%" sx={{ mx: { xs: 0, sm: 4 } }} />
 
         <Box flex={1} display={"flex"} flexWrap="wrap" justifyContent="stretch" gap={4} {...props}>
           {transactionOverviewData.map((it) => (
@@ -319,7 +368,7 @@ function TransactionInsightSection({
 
   return (
     <Box flex={1} display={"flex"} flexDirection="column" gap={4} {...props}>
-      <DateRangeSelector onChange={handleDateRangeChange} mx={4} />
+      <DateRangeSelector onChange={handleDateRangeChange} maxWidth="100%" sx={{ mx: { xs: 0, sm: 4 } }} />
       <PieChartWithTabs
         isLoading={isTransactionLoading || !showedTransactions}
         data={transactionOverviewData}
@@ -336,7 +385,7 @@ function mapTransactionData(transactions: TransactionEntity[]) {
   };
 
   for (const transaction of transactions) {
-    const category = transaction.type;
+    const category = getTransactionCategoryFromString(transaction.type);
     const type = transaction.transactionType;
 
     if (!grouped[type][category]) {
@@ -352,7 +401,7 @@ function mapTransactionData(transactions: TransactionEntity[]) {
     return {
       label: type === TransactionType.OUTCOME ? 'Pengeluaran' : 'Pemasukan',
       data: Object.entries(data).map(([category, { value, transactionCount }]) => {
-        const categoryEnum = getTransactionCateogryFromString(category)
+        const categoryEnum = category as TransactionCategory
         const backgroundColor = getBackgroundColorFromTransactionType(categoryEnum);
         const color = getColorFromTransactionType(categoryEnum)
 
@@ -378,7 +427,7 @@ function mapScheduledTransactions(scheduledTransactions: ScheduledTransactionEnt
     return {
       day: formatDate(nextDate, { weekday: "long" }),
       date: nextDate.getDate(),
-      title: it.detail?.destination ?? "-",
+      title: it.category ? it.category.charAt(0).toUpperCase() + it.category.slice(1) : "-",
       amount: it.recurringAmount,
     };
   });

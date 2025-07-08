@@ -1,6 +1,6 @@
 export interface RequestScheme {
   phone_number: string;
-  session_id: string;
+  sessionId: string;
   otp: string;
 }
 
@@ -12,11 +12,11 @@ export interface ResponseScheme {
 }
 
 export async function POST(req: Request) {
-  const { session_id, otp, phone_number } = await req.json();
+  const { sessionId, otp, phone_number } = await req.json();
 
-  if (!session_id || !otp || !phone_number) {
+  if (!sessionId || !otp || !phone_number) {
     return new Response(
-      JSON.stringify({ message: "Missing session_id, otp or phone_number" }),
+      JSON.stringify({ message: "Missing sessionId, otp or phone_number" }),
       {
         status: 400,
         headers: { "Content-Type": "application/json" },

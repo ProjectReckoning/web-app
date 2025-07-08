@@ -96,7 +96,7 @@ class PocketRepository {
     userId: string,
   ): Promise<void> {
     await api.post(
-      `/pocket/${pocketId}/member/kick`,
+      `/pocket/${pocketId}/members/kick`,
       {
         members: [Number.parseInt(userId)],
       }
@@ -168,7 +168,7 @@ class PocketRepository {
           userId: data.owner.PocketMember.user_id,
           pocketId: data.owner.PocketMember.pocket_id,
           role: this.mapApiPocketMemberRole(data.owner.PocketMember.role),
-          contributionAmount: data.owner.PocketMember.contribution_amount,
+          contributionAmount: Number.parseFloat(data.owner.PocketMember.contribution_amount ?? "0"),
           joinedAt: data.owner.PocketMember.joined_at ?? null,
           isActive: data.owner.PocketMember.is_active ?? null,
           createdAt: data.owner.PocketMember.createdAt,
@@ -184,7 +184,7 @@ class PocketRepository {
           userId: member.PocketMember.user_id,
           pocketId: member.PocketMember.pocket_id,
           role: this.mapApiPocketMemberRole(member.PocketMember.role),
-          contributionAmount: member.PocketMember.contribution_amount,
+          contributionAmount: Number.parseFloat(data.owner.PocketMember.contribution_amount ?? "0"),
           joinedAt: member.PocketMember.joined_at ?? null,
           isActive: member.PocketMember.is_active ?? null,
           createdAt: member.PocketMember.createdAt,

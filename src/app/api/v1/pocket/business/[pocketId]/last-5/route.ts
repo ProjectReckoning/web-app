@@ -20,31 +20,36 @@ export async function GET(req: Request): Promise<Response> {
       "type": "topup",
       "description": "Monthly funding",
       "amount": 1000000,
-      "transaction_type": 1
+      "transaction_type": 1,
+      category: "test",
     },
     {
       "type": "contribution",
       "description": "Office supplies",
       "amount": 250000,
-      "transaction_type": 0
+      "transaction_type": 0,
+      category: "test",
     },
     {
       "type": "withdrawal",
       "description": "ATM withdrawal",
       "amount": 500000,
-      "transaction_type": 0
+      "transaction_type": 0,
+      category: "test",
     },
     {
       "type": "payment",
       "description": "Business lunch",
       "amount": 150000,
-      "transaction_type": 1
+      "transaction_type": 1,
+      category: "test",
     },
     {
       "type": "payment",
       "description": "Software subscription",
       "amount": 200000,
-      "transaction_type": 0
+      "transaction_type": 0,
+      category: "test",
     }
   ]
 

@@ -8,7 +8,7 @@ import { PocketMemberRole } from "@/features/pocket/entities/detail-pocket.entit
 import detailPocketStore from "@/features/pocket/stores/detail-pocket.store";
 import Modal from "@/features/shared/components/modal";
 import { modalStore } from "@/features/shared/store/modal.store";
-import { limeGreen, orange, tosca } from "@/lib/custom-color";
+import { limeGreen, orange, purple, red, tosca } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
@@ -126,6 +126,9 @@ export default function Page() {
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              "&:hover": {
+                color: red[500],
+              }
             }}
           >
             <Icon icon="bi:trash" onClick={() => onRemoveMemberClicked(member.id.toString())} />
@@ -138,6 +141,9 @@ export default function Page() {
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              "&:hover": {
+                color: purple[500],
+              }
             }}
             onClick={() => editEditableKey(member.id.toString())}
           >
@@ -165,6 +171,9 @@ export default function Page() {
             border: 2,
             borderColor: "border.main",
             borderRadius: 2,
+            "&:hover": {
+              color: red[500],
+            }
           }}
           onClick={onLeavePocketClicked}
         >
@@ -199,6 +208,9 @@ export default function Page() {
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              "&:hover": {
+                color: red[500],
+              }
             }}
           >
             <Icon icon="bi:trash" onClick={() => onRemoveMemberClicked(member.id.toString())} />
@@ -211,6 +223,9 @@ export default function Page() {
               border: 2,
               borderColor: "border.main",
               borderRadius: 2,
+              "&:hover": {
+                color: purple[500],
+              }
             }}
             onClick={() => editEditableKey(member.id.toString())}
           >
@@ -225,7 +240,6 @@ export default function Page() {
         <Button
           color="gray"
           startIcon={<Icon icon="material-symbols:door-open-outline" />}
-          // make the icon is center
           size="small"
           sx={{
             textTransform: "none",
@@ -237,6 +251,9 @@ export default function Page() {
               alignItems: "center",
               justifyContent: "center",
             }),
+            "&:hover": {
+              color: red[500],
+            }
           }}
           onClick={onLeavePocketClicked}
         >

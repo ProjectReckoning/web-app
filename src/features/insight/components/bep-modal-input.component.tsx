@@ -3,7 +3,7 @@
 import { green, orange } from "@/lib/custom-color";
 import formatCurrency from "@/lib/format-currency";
 import { Icon } from "@iconify/react";
-import { TextField, Typography, Divider, IconButton, TextFieldProps } from "@mui/material";
+import { TextField, Typography, Divider, IconButton, TextFieldProps, useTheme, useMediaQuery } from "@mui/material";
 import { useMemo, useRef, useState } from "react";
 
 export default function BEPModalInput({
@@ -18,6 +18,8 @@ export default function BEPModalInput({
   const [value, setValue] = useState(placeholder);
   const [isEditing, setIsEditing] = useState(false);
   const textFieldRef = useRef<HTMLInputElement>(null);
+  const theme = useTheme()
+  const isMdUp = useMediaQuery(theme.breakpoints.up("sm"))
 
   const formatedValue = useMemo(() => {
     return formatCurrency(value, {
@@ -48,6 +50,8 @@ export default function BEPModalInput({
     const newValue = parseFloat(formatedStringValue);
     if (!isNaN(newValue)) {
       setValue(newValue);
+    } else {
+      setValue(0);
     }
   }
 
@@ -55,6 +59,7 @@ export default function BEPModalInput({
     <TextField
       inputRef={textFieldRef}
       disabled={!isEditing}
+      label={!isMdUp ? "Modal" : undefined}
       inputMode="numeric"
       value={formatedValue}
       onChange={handleChange}
@@ -77,18 +82,21 @@ export default function BEPModalInput({
       slotProps={{
         ...props.slotProps,
         input: {
-          startAdornment: (
-            <Typography sx={{
-              mr: 1,
-              px: 3,
-              fontWeight: 600,
-              backgroundColor: "limeGreen.light",
-              height: "100%",
-              display: "flex",
-              alignItems: "center"
-            }}>Modal
+          startAdornment: isMdUp ? (
+            <Typography
+              sx={{
+                mr: 1,
+                px: 3,
+                fontWeight: 600,
+                backgroundColor: "limeGreen.light",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              Modal
             </Typography>
-          ),
+          ) : undefined,
           endAdornment: (
             <>
               <Divider orientation="vertical" flexItem sx={{ mr: 1 }} />

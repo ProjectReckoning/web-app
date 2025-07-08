@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { styled, Theme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { Box, Button, Skeleton, useMediaQuery } from '@mui/material';
-import { purple } from '@/lib/custom-color';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import { Box, Button, Skeleton } from '@mui/material';
+import { orange, purple } from '@/lib/custom-color';
 import { Icon } from '@iconify/react';
 import { PocketMenuItem } from '../entities/pocket-menu-item';
 import NotificationButton from '@/features/notification/components/notification-button.component';
@@ -15,11 +15,12 @@ const drawerWidth = 300;
 
 interface CustomAppBarProps extends MuiAppBarProps {
   open?: boolean;
+  isMobile?: boolean;
 }
 
 const StyledAppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<CustomAppBarProps>(({ theme, open }) => ({
+  shouldForwardProp: (prop) => prop !== 'open' && prop !== "isMobile",
+})<CustomAppBarProps>(({ theme, open, isMobile }) => ({
   zIndex: theme.zIndex.drawer + 0,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -29,7 +30,7 @@ const StyledAppBar = styled(MuiAppBar, {
   width: `calc(100% - 48px)`,
   ...(open && {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    width: isMobile ? 'inherit' : `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -38,11 +39,13 @@ const StyledAppBar = styled(MuiAppBar, {
 }));
 
 interface AppbarComponentProps {
+  isMobile?: boolean;
   isOpen: boolean;
   selectedPocketId: string;
   pockets: PocketMenuItem[];
   isLoading: boolean;
   onLogout: () => void;
+  loggedUserName: string;
 }
 
 const Appbar: React.FC<AppbarComponentProps> = ({
@@ -50,45 +53,85 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   selectedPocketId,
   isLoading = false,
   pockets,
-  onLogout
+  onLogout,
+  loggedUserName,
+  isMobile = false,
 }) => {
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const currentPocket = pockets.find(p => p.id === selectedPocketId);
   const displayPocketName = currentPocket?.name ?? '';
   const displayPocketColor = currentPocket?.color ?? purple[500];
 
   return (
-    <StyledAppBar position="fixed" open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" paddingX={2}>
-          <Box sx={{ display: { xs: "none", sm: "inline" } }} fontWeight="600" component="span">
-            Pocket Saat Ini : {' '}
-          </Box>
-          <Box color={displayPocketColor} fontWeight="600" component="span">
-            {isLoading ? (
-              <Skeleton sx={{ display: "inline-block" }} width={150} />
-            ) : displayPocketName}
-          </Box>
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <NotificationButton color={currentPocket?.color} />
+    <StyledAppBar position="fixed" isMobile={isMobile} open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
+      <Toolbar sx={{ justifyContent: "space-between", display: "flex", gap: 2 }}>
+        <Box flex={1} display="flex" alignItems="start" flexDirection="column" gap={0} px={{ xs: 0, md: 2 }} minWidth={0}>
+          {isMobile && <GreetingComponent name={loggedUserName} />}
+          <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight="600" component="h2" display="flex" gap={1} width="100%">
+            <Box sx={{ display: { xs: "none", md: "inline" } }} fontWeight="600" component="span" display="block" whiteSpace="nowrap">
+              Pocket Saat Ini : {' '}
+            </Box>
+            <Box color={displayPocketColor} fontWeight="600" component="span" display="block" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" width="100%" minWidth={0}>
+              {isLoading ? (
+                <Skeleton sx={{ display: "inline-block" }} width={150} />
+              ) : displayPocketName}
+            </Box>
+          </Typography>
+        </Box>
 
-          <Button
-            startIcon={<Icon icon="eva:log-out-fill" style={{ color: 'black' }} />}
-            aria-label="Keluar"
-            variant="text"
-            onClick={onLogout}
-            sx={{ color: "MenuText", border: 1, borderColor: "border.main" }}
-          >
-            <Typography variant="body2" sx={{ mt: 0.25 }}>
-              Keluar
-            </Typography>
-          </Button>
+        <Box flex={1} display="flex" justifyContent="end" gap={3}>
+          {!isMobile && <GreetingComponent name={loggedUserName} />}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <NotificationButton color={currentPocket?.color} />
+
+            <Button
+              startIcon={<Icon icon="eva:log-out-fill" style={{ color: 'black' }} />}
+              aria-label="Keluar"
+              variant="text"
+              onClick={onLogout}
+              sx={{ color: "MenuText", border: 1, borderColor: "border.main" }}
+            >
+              <Typography variant="body2" sx={{ mt: 0.25 }}>
+                Keluar
+              </Typography>
+            </Button>
+          </Box>
         </Box>
       </Toolbar>
     </StyledAppBar>
   );
 };
+
+function GreetingComponent({ name, ...props }: Readonly<{ name: string } & TypographyProps>) {
+  return (
+    <Typography
+      fontWeight="600"
+      variant='body1'
+      margin={0}
+      display="flex"
+      alignItems="center"
+      gap={0.5}
+      overflow="hidden"
+      textOverflow="ellipsis"
+      sx={{
+        width: {
+          xs: "100%",
+          sm: "inherit",
+        }
+      }}
+      {...props}
+    >
+      Hai, <Box
+        component="span"
+        color={orange[500]}
+        fontWeight="bold"
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        width="100%"
+      >{name}</Box>
+    </Typography>
+  )
+}
 
 export default Appbar;

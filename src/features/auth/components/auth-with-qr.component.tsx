@@ -1,4 +1,4 @@
-import { gray } from "@/lib/custom-color";
+import { purple } from "@/lib/custom-color";
 import { Icon } from "@iconify/react";
 import {
   Button,
@@ -85,7 +85,7 @@ export default function AuthWithQrCode({
           size="small"
           onClick={() => setLoginWithQr(false)}
           startIcon={<Icon icon="mdi:arrow-left-thin" />}
-          sx={{ textTransform: "none", color: gray[400] }}
+          sx={{ textTransform: "none", color: purple[500] }}
         >
           Kembali
         </Button>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { SelectChangeEvent } from '@mui/material';
+import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material';
 
 import authStore from '@/features/auth/stores/auth.store';
 import pocketStore from '@/features/pocket/stores/pocket.store';
@@ -17,7 +17,7 @@ import { PocketMemberRole } from '@/features/pocket/entities/detail-pocket.entit
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { logout } = authStore();
+  const { logout, user } = authStore();
   const { pockets, isLoading, selectPocket } = pocketStore();
   const { pocket } = detailPocketStore()
   const [selectedPocketId, setSelectedPocketId] = useState<string>('');
@@ -25,6 +25,8 @@ export default function Header() {
 
   const router = useRouter();
   const pathname = usePathname();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   let menus: DrawerMenuItem[] = [];
   switch (selectedPocketId) {
@@ -119,9 +121,12 @@ export default function Header() {
         selectedPocketId={selectedPocketId}
         pockets={availablePocketsMenus}
         onLogout={handleLogout}
+        loggedUserName={user?.name ?? ""}
+        isMobile={isMobile}
       />
       <Drawer
         isOpen={open}
+        isMobile={isMobile}
         onToggleDrawer={toggleDrawerState}
         pockets={availablePocketsMenus}
         selectedPocketId={selectedPocketId}
@@ -149,15 +154,6 @@ function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
       id: 'global',
       name: 'Semua Pocket',
       icon: "pocket",
-      color: purple[500],
-    });
-  }
-
-  if (pocketMenu.length === 0) {
-    pocketMenu.push({
-      id: '',
-      name: '',
-      icon: "error",
       color: purple[500],
     });
   }

@@ -4,5 +4,6 @@ import { BepLoss } from "../entities/bep-loss.entities";
 
 export async function getBep(pocketId: string): Promise<BepProfit | BepLoss> {
   const result = await bepRepository.getBep(pocketId);
+
   return result;
 }

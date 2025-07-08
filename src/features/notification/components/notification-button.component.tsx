@@ -1,9 +1,10 @@
-import { Box, Divider, IconButton, Popover, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Popover, SwipeableDrawer, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import notificationStore from "../stores/notification.store";
-import { orange, purple } from "@/lib/custom-color";
+import { gray, orange, purple } from "@/lib/custom-color";
 import generateShades from "@/lib/generate-shades";
+import { getNonWhiteShades } from "@/lib/get-non-white-shades";
 
 export default function NotificationButton({
   color
@@ -18,6 +19,9 @@ export default function NotificationButton({
   } = notificationStore()
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -33,6 +37,74 @@ export default function NotificationButton({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  const renderNotificationList = (
+    <>
+      <Typography
+        variant="h6"
+        fontWeight={600}
+        gutterBottom
+        px={2}
+        position="sticky"
+        top={-8}
+        pt={2}
+        pb={1}
+        m={0}
+        borderBottom={1}
+        borderColor="border.main"
+        sx={{
+          backgroundColor: "white",
+          textAlign: {
+            xs: "center",
+            sm: "inherit",
+          }
+        }}>
+        Notifikasi
+      </Typography>
+      {(notifications?.length ?? 0) > 0 ? (
+        notifications?.map((item, index) => {
+          const hasAction = item.type.includes("need");
+
+          return (
+            <React.Fragment key={`${item.id}`}>
+              {index > 0 && (
+                <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: "1px" }} />
+              )}
+              <Box
+                sx={{
+                  bgcolor: item.isRead ? "inherit" : getNonWhiteShades(colorShades),
+                  padding: 2,
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {item.title}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" mt={1}>
+                  {item.description}
+                </Typography>
+                {hasAction && (
+                  <Typography variant="caption" color="textSecondary" display="block" mt={2}>
+                    Buka{" "}
+                    <Box component="span" fontWeight="bold" color={orange[500]}>
+                      wondr
+                    </Box>{" "}
+                    untuk selengkapnya
+                  </Typography>
+                )}
+              </Box>
+            </React.Fragment>
+          );
+        })
+      ) : (
+        <>
+          <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: "1px" }} />
+          <Box sx={{ p: 2 }}>
+            <Typography variant="subtitle1">Belum ada notifikasi</Typography>
+          </Box>
+        </>
+      )}
+    </>
+  );
+
   return (
     <>
       <IconButton
@@ -41,7 +113,10 @@ export default function NotificationButton({
         aria-describedby={id}
         onClick={handleClick}
       >
-        <Icon icon={unreadNotificationsCount > 0 ? "eva:bell-fill" : "eva:bell-outline"} style={{ color: "black" }} />
+        <Icon
+          icon={unreadNotificationsCount > 0 ? "eva:bell-fill" : "eva:bell-outline"}
+          style={{ color: "black" }}
+        />
         {unreadNotificationsCount > 0 && (
           <Typography
             variant="caption"
@@ -56,84 +131,74 @@ export default function NotificationButton({
               color: "white",
               height: 24,
               lineHeight: 2,
-              translate: "25% -25%"
+              translate: "25% -25%",
             }}
-          >{unreadNotificationsCount}</Typography>
+          >
+            {unreadNotificationsCount}
+          </Typography>
         )}
       </IconButton>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              maxWidth: 300,
-              paddingY: 2,
-              mt: 1,
-              maxHeight: "80vh",
-              overflowY: "auto",
-              borderRadius: 6,
-              boxShadow: (theme) => theme.shadows[3],
-            },
-          },
-        }}
-      >
-        <Typography variant="h6" fontWeight={600} gutterBottom px={2}>
-          Notifikasi
-        </Typography>
-        {(notifications?.length ?? 0) > 0 ?
-          notifications?.map((item) => {
-            const hasAction = item.type.includes("need")
 
-            return (
-              (
-                <React.Fragment key={`${item.title}-${item.description}-${item.type}`}>
-                  <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: '1px' }} />
-                  <Box
-                    sx={{
-                      bgcolor: item.isRead ? "inherit" : getNonWhiteColor(colorShades),
-                      padding: 2,
-                    }}
-                  >
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {item.title}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" mt={1}>
-                      {item.description}
-                    </Typography>
-                    {hasAction && (
-                      <Typography variant="caption" color="textSecondary" display="block" mt={2}>
-                        Buka <Box component="span" fontWeight="bold" color={orange[500]}>Wondr</Box> untuk selengkapnya
-                      </Typography>
-                    )}
-                  </Box>
-                </React.Fragment>
-              )
-            )
-          }) : (
-            <React.Fragment>
-              <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: '1px' }} />
-              <Box sx={{
-                p: 2,
-              }}>
-                <Typography variant="subtitle1">
-                  Belum ada notifikasi
-                </Typography>
-              </Box>
-            </React.Fragment>
-          )}
-      </Popover>
+      {isMobile ? (
+        <SwipeableDrawer
+          open={open}
+          onClose={handleClose}
+          onOpen={handleClose}
+          anchor="bottom"
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: 4,
+                py: 1,
+                height: "90vh",
+                display: "flex",
+                flexDirection: "column",
+              },
+            },
+          }}
+        >
+          <Box
+            sx={{
+              width: 64,
+              height: 64,
+              borderRadius: 999,
+              backgroundColor: gray[500],
+              mx: "auto",
+              my: 1,
+            }}
+          />
+
+          <Box sx={{ flexGrow: 1, overflow: "auto" }}>
+            {renderNotificationList}
+          </Box>
+        </SwipeableDrawer>
+
+      ) : (
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            slotProps={{
+              paper: {
+                sx: {
+                  width: 460,
+                  maxWidth: "80%",
+                  maxHeight: "80vh",
+                  overflowY: "auto",
+                  borderRadius: 6,
+                  boxShadow: (theme) => theme.shadows[2],
+                },
+              },
+            }}
+          >
+          {renderNotificationList}
+        </Popover>
+      )}
     </>
   );
-}
-
-function getNonWhiteColor(colorShades: Record<number, string>, fallback = "#f0f0f0") {
-  const color = Object.values(colorShades).find((value) => value.toLowerCase() !== "#ffffff");
-  return color ?? fallback;
 }
