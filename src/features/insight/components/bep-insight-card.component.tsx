@@ -165,7 +165,7 @@ export default function BEPInsightCard({
         >
           <Box>
             <Typography variant="body1" fontWeight="bold" textOverflow="ellipsis" overflow="hidden" width={64}>
-              {Math.round(progressPercent)}%
+              {progressPercent}%
             </Typography>
             {'\n'}
             <Typography variant='body2' color="text.secondary">
@@ -230,7 +230,7 @@ function AdditionalInformation({ bep }: Readonly<{ bep: BepProfit | BepLoss }>) 
       <Stack spacing={1} mt={4} textAlign="center">
         <Typography variant="body2" mt={3}>
           Yeay! kamu sudah mencapai{' '}
-          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{Math.round(progressPercent)}%</Typography> dari BEP
+          <Typography variant="body1" component="span" borderBottom={3} borderColor="tosca.main" fontWeight="bold">{progressPercent}%</Typography> dari BEP
         </Typography>
         <Typography variant="body2">
           dan <b>rata-rata keuntungan harian</b>{' '}
