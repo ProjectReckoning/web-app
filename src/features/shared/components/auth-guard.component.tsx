@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import authStore from "@/features/auth/stores/auth.store";
+import pocketStore from "@/features/pocket/stores/pocket.store";
 
 
 export function AuthGuard({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { token, getUser, errorMessage } = authStore();
+  const { pockets } = pocketStore()
 
   const router = useRouter();
   const pathname = usePathname();
@@ -41,6 +43,12 @@ export function AuthGuard({
       router.replace("/auth");
     }
   }, [pathname, token, router, hydrated]);
+
+  useEffect(() => {
+    if (!pockets?.length) {
+      router.replace("/dashboard");
+    }
+  }, [pockets?.length])
 
   useEffect(() => {
     if (token) {

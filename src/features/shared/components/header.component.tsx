@@ -154,14 +154,5 @@ function getAvailablePocketsMenu(pockets: PocketEntity[]): PocketMenuItem[] {
     });
   }
 
-  if (pocketMenu.length === 0) {
-    pocketMenu.push({
-      id: '',
-      name: '',
-      icon: "error",
-      color: purple[500],
-    });
-  }
-
   return pocketMenu;
 }
