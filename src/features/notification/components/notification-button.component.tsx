@@ -1,8 +1,8 @@
-import { Box, Dialog, DialogContent, Divider, IconButton, Popover, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Popover, SwipeableDrawer, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import notificationStore from "../stores/notification.store";
-import { orange, purple } from "@/lib/custom-color";
+import { gray, orange, purple } from "@/lib/custom-color";
 import generateShades from "@/lib/generate-shades";
 import { getNonWhiteShades } from "@/lib/get-non-white-shades";
 
@@ -39,7 +39,25 @@ export default function NotificationButton({
 
   const renderNotificationList = (
     <>
-      <Typography variant="h6" fontWeight={600} gutterBottom px={2} position="sticky" top={0} pt={2} pb={1} m={0} borderBottom={1} borderColor="border.main" sx={{ backgroundColor: "white" }}>
+      <Typography
+        variant="h6"
+        fontWeight={600}
+        gutterBottom
+        px={2}
+        position="sticky"
+        top={-8}
+        pt={2}
+        pb={1}
+        m={0}
+        borderBottom={1}
+        borderColor="border.main"
+        sx={{
+          backgroundColor: "white",
+          textAlign: {
+            xs: "center",
+            sm: "inherit",
+          }
+        }}>
         Notifikasi
       </Typography>
       {(notifications?.length ?? 0) > 0 ? (
@@ -122,11 +140,39 @@ export default function NotificationButton({
       </IconButton>
 
       {isMobile ? (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-          <DialogContent sx={{ p: 0, m: 0 }}>
+        <SwipeableDrawer
+          open={open}
+          onClose={handleClose}
+          onOpen={handleClose}
+          anchor="bottom"
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: 4,
+                py: 1,
+                height: "90vh",
+                display: "flex",
+                flexDirection: "column",
+              },
+            },
+          }}
+        >
+          <Box
+            sx={{
+              width: 64,
+              height: 64,
+              borderRadius: 999,
+              backgroundColor: gray[500],
+              mx: "auto",
+              my: 1,
+            }}
+          />
+
+          <Box sx={{ flexGrow: 1, overflow: "auto" }}>
             {renderNotificationList}
-          </DialogContent>
-        </Dialog>
+          </Box>
+        </SwipeableDrawer>
+
       ) : (
           <Popover
             id={id}
