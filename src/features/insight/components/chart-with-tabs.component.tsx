@@ -120,7 +120,7 @@ export default function ChartWithTabs({
                   borderRadius: 999,
                   mb: 4,
                   ...(isDemo && {
-                    filter: "blur(1px)",
+                    filter: "blur(2px)",
                     opacity: 0.6,
                     pointerEvents: "none",
                   }),
@@ -186,7 +186,7 @@ export default function ChartWithTabs({
       />
 
       {isDemo && (
-        <Typography variant="caption" fontStyle="italic" display="block" width="100%" textAlign="center" mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" whiteSpace="nowrap" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
+        <Typography variant="body2" display="block" width="100%" textAlign="center" mt={4}>Data masih kosong, grafik keuanganmu akan muncul setelah <Box component="span" fontWeight="bold" whiteSpace="nowrap" borderBottom={4} borderColor="purple.main">7 hari {' '}</Box> setelah transaksi</Typography>
       )}
     </Box>
   );
