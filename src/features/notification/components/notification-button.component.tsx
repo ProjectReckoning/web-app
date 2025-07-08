@@ -47,7 +47,7 @@ export default function NotificationButton({
           const hasAction = item.type.includes("need");
 
           return (
-            <React.Fragment key={`${item.title}-${item.description}-${item.type}`}>
+            <React.Fragment key={`${item.id}`}>
               <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: "1px" }} />
               <Box
                 sx={{

@@ -122,7 +122,7 @@ export default function Header() {
         pockets={availablePocketsMenus}
         onLogout={handleLogout}
         loggedUserName={user?.name ?? ""}
-        mobile={isMobile}
+        isMobile={isMobile}
       />
       <Drawer
         isOpen={open}

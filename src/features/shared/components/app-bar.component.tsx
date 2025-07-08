@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { styled, Theme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { Box, Button, Skeleton, useMediaQuery } from '@mui/material';
+import { Box, Button, Skeleton } from '@mui/material';
 import { orange, purple } from '@/lib/custom-color';
 import { Icon } from '@iconify/react';
 import { PocketMenuItem } from '../entities/pocket-menu-item';
@@ -15,10 +15,12 @@ const drawerWidth = 300;
 
 interface CustomAppBarProps extends MuiAppBarProps {
   open?: boolean;
-  mobile?: boolean;
+  isMobile?: boolean;
 }
 
-const StyledAppBar = styled(MuiAppBar)<CustomAppBarProps>(({ theme, open, mobile }) => ({
+const StyledAppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open' && prop !== "isMobile",
+})<CustomAppBarProps>(({ theme, open, isMobile }) => ({
   zIndex: theme.zIndex.drawer + 0,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -28,7 +30,7 @@ const StyledAppBar = styled(MuiAppBar)<CustomAppBarProps>(({ theme, open, mobile
   width: `calc(100% - 48px)`,
   ...(open && {
     marginLeft: drawerWidth,
-    width: mobile ? 'inherit' : `calc(100% - ${drawerWidth}px)`,
+    width: isMobile ? 'inherit' : `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -37,7 +39,7 @@ const StyledAppBar = styled(MuiAppBar)<CustomAppBarProps>(({ theme, open, mobile
 }));
 
 interface AppbarComponentProps {
-  mobile?: boolean;
+  isMobile?: boolean;
   isOpen: boolean;
   selectedPocketId: string;
   pockets: PocketMenuItem[];
@@ -53,16 +55,15 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   pockets,
   onLogout,
   loggedUserName,
-  mobile = false,
+  isMobile = false,
 }) => {
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const currentPocket = pockets.find(p => p.id === selectedPocketId);
   const displayPocketName = currentPocket?.name ?? '';
   const displayPocketColor = currentPocket?.color ?? purple[500];
 
   return (
-    <StyledAppBar position="fixed" mobile={mobile} open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
+    <StyledAppBar position="fixed" isMobile={isMobile} open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
       <Toolbar sx={{ justifyContent: "space-between", display: "flex", gap: 2 }}>
         <Box flex={1} display="flex" alignItems="start" flexDirection="column" gap={0} px={{ xs: 0, md: 2 }} minWidth={0}>
           {isMobile && <GreetingComponent name={loggedUserName} />}
