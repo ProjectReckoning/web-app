@@ -39,16 +39,18 @@ export default function NotificationButton({
 
   const renderNotificationList = (
     <>
-      <Typography variant="h6" fontWeight={600} gutterBottom px={2} position="sticky" top={0} pt={2} pb={1} borderBottom={1} borderColor="border.main" sx={{ backgroundColor: "white" }}>
+      <Typography variant="h6" fontWeight={600} gutterBottom px={2} position="sticky" top={0} pt={2} pb={1} m={0} borderBottom={1} borderColor="border.main" sx={{ backgroundColor: "white" }}>
         Notifikasi
       </Typography>
       {(notifications?.length ?? 0) > 0 ? (
-        notifications?.map((item) => {
+        notifications?.map((item, index) => {
           const hasAction = item.type.includes("need");
 
           return (
             <React.Fragment key={`${item.id}`}>
-              <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: "1px" }} />
+              {index > 0 && (
+                <Divider sx={{ backgroundColor: "border.light", borderBottomWidth: "1px" }} />
+              )}
               <Box
                 sx={{
                   bgcolor: item.isRead ? "inherit" : getNonWhiteShades(colorShades),
