@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { SelectChangeEvent } from '@mui/material';
+import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material';
 
 import authStore from '@/features/auth/stores/auth.store';
 import pocketStore from '@/features/pocket/stores/pocket.store';
@@ -25,6 +25,8 @@ export default function Header() {
 
   const router = useRouter();
   const pathname = usePathname();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   let menus: DrawerMenuItem[] = [];
   switch (selectedPocketId) {
@@ -120,6 +122,7 @@ export default function Header() {
         pockets={availablePocketsMenus}
         onLogout={handleLogout}
         loggedUserName={user?.name ?? ""}
+        mobile={isMobile}
       />
       <Drawer
         isOpen={open}

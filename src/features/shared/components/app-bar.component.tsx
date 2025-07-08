@@ -15,11 +15,10 @@ const drawerWidth = 300;
 
 interface CustomAppBarProps extends MuiAppBarProps {
   open?: boolean;
+  mobile?: boolean;
 }
 
-const StyledAppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<CustomAppBarProps>(({ theme, open }) => ({
+const StyledAppBar = styled(MuiAppBar)<CustomAppBarProps>(({ theme, open, mobile }) => ({
   zIndex: theme.zIndex.drawer + 0,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
@@ -29,7 +28,7 @@ const StyledAppBar = styled(MuiAppBar, {
   width: `calc(100% - 48px)`,
   ...(open && {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    width: mobile ? 'inherit' : `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -38,6 +37,7 @@ const StyledAppBar = styled(MuiAppBar, {
 }));
 
 interface AppbarComponentProps {
+  mobile?: boolean;
   isOpen: boolean;
   selectedPocketId: string;
   pockets: PocketMenuItem[];
@@ -53,6 +53,7 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   pockets,
   onLogout,
   loggedUserName,
+  mobile = false,
 }) => {
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
@@ -61,7 +62,7 @@ const Appbar: React.FC<AppbarComponentProps> = ({
   const displayPocketColor = currentPocket?.color ?? purple[500];
 
   return (
-    <StyledAppBar position="fixed" open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
+    <StyledAppBar position="fixed" mobile={mobile} open={isOpen} sx={{ boxShadow: 0, borderBottom: 1, borderColor: 'border.main' }}>
       <Toolbar sx={{ justifyContent: "space-between", display: "flex", gap: 2 }}>
         <Box flex={1} display="flex" alignItems="start" flexDirection="column" gap={0} px={{ xs: 0, md: 2 }} minWidth={0}>
           {isMobile && <GreetingComponent name={loggedUserName} />}
