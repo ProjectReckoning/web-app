@@ -126,6 +126,7 @@ export default function Header() {
       />
       <Drawer
         isOpen={open}
+        isMobile={isMobile}
         onToggleDrawer={toggleDrawerState}
         pockets={availablePocketsMenus}
         selectedPocketId={selectedPocketId}

@@ -73,6 +73,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 
 interface DrawerComponentProps {
   isOpen: boolean;
+  isMobile?: boolean;
   onToggleDrawer: () => void;
   pockets: PocketMenuItem[];
   selectedPocketId: string;
@@ -84,6 +85,7 @@ interface DrawerComponentProps {
 
 export default function Drawer({
   isOpen,
+  isMobile = false,
   onToggleDrawer,
   pockets,
   selectedPocketId,
@@ -98,7 +100,7 @@ export default function Drawer({
   return (
     <>
       {
-        isOpen && (
+        isOpen && isMobile && (
           <Box
             onClick={onToggleDrawer}
             sx={{
